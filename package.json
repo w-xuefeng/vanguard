@@ -1,0 +1,7 @@
+{
+  "name": "vanguard",
+  "private": true,
+  "devDependencies": {
+    "lerna": "^6.5.1"
+  }
+}
