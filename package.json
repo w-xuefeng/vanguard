@@ -2,9 +2,11 @@
   "name": "vanguard",
   "private": true,
   "scripts": {
-    "ii": "pnpm clean-deps -y && pnpm i",
+    "ii": "sh check-bun.sh && pnpm clean-deps -y && pnpm i",
     "clean-deps": "lerna clean",
-    "start:fe": "lerna run start --scope @vangaurd/fe"
+    "start:fe": "cd packages/frontend && bun run start",
+    "dev:fe": "cd packages/frontend && bun dev",
+    "build:fe": "cd packages/frontend && bun run build"
   },
   "devDependencies": {
     "lerna": "^6.5.1"

@@ -1,5 +1,5 @@
 {
-  "name": "@vangaurd/fe",
+  "name": "@vanguard/fe",
   "version": "0.0.0",
   "scripts": {
     "start": "bun dev",
