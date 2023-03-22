@@ -1,6 +1,11 @@
 {
   "name": "vanguard",
   "private": true,
+  "scripts": {
+    "ii": "pnpm clean-deps -y && pnpm i",
+    "clean-deps": "lerna clean",
+    "start:fe": "lerna run start --scope @vangaurd/fe"
+  },
   "devDependencies": {
     "lerna": "^6.5.1"
   }

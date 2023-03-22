@@ -1,0 +1,56 @@
+{
+  "compilerOptions": {
+    "allowUnreachableCode": true,
+    "allowUnusedLabels": false,
+    "alwaysStrict": false,
+    "experimentalDecorators": true,
+    "jsx": "react",
+    "sourceMap": false,
+    "module": "ESNext",
+    "noImplicitAny": false,
+    "removeComments": true,
+    "isolatedModules": true,
+    "resolveJsonModule": true,
+    "preserveValueImports": true,
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "types": [
+      "node",
+    ],
+    "baseUrl": ".",
+    "paths": {
+      "@/*": [
+        "./src/*"
+      ]
+    },
+    "target": "ESNext",
+    "outDir": "./dist",
+    "declaration": true,
+    "declarationDir": "./lib",
+    "allowJs": true,
+    "lib": [
+      "ES5",
+      "ES2015",
+      "ES2016",
+      "ES2017",
+      "ES2018",
+      "ES2019",
+      "ES2020",
+      "ES2021",
+      "ES2022",
+      "DOM",
+      "DOM.Iterable"
+    ]
+  },
+  "include": [
+    "src/**/*"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist",
+    "*.d.ts",
+    "*/**/dist",
+    "*/**/mocker"
+  ]
+}
