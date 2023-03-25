@@ -2,7 +2,8 @@
   "name": "@vanguard/fe",
   "version": "0.0.0",
   "scripts": {
-    "start": "bun dev",
+    "start": "bun dev --port 7086",
+    "dev": "bun dev --port 7086",
     "build": "react-scripts build"
   },
   "dependencies": {
