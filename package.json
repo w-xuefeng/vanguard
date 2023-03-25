@@ -2,7 +2,7 @@
   "name": "vanguard",
   "private": true,
   "scripts": {
-    "ii": "sh check-bun.sh && bun run clean-deps -y && pnpm i && bun i",
+    "ii": "sh check-bun.sh && bun run clean-deps -y && pnpm i",
     "clean-deps": "lerna clean",
     "start": "run-p dev:fe dev:be",
     "dev:fe": "cd packages/frontend && bun run dev",
@@ -10,6 +10,7 @@
     "build:fe": "cd packages/frontend && bun run build"
   },
   "devDependencies": {
+    "@types/node": "^18.15.9",
     "lerna": "^6.5.1"
   }
 }

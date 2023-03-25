@@ -1,9 +1,13 @@
 {
   "scripts": {
-    "dev": "bun run --port 7087 --hot src/index.ts"
+    "dev": "bun run --hot src/index.ts --mode dev",
+    "dev:qa": "bun run --hot src/index.ts --mode qa",
+    "dev:pd": "bun run --hot src/index.ts --mode pd"
   },
   "dependencies": {
-    "hono": "^3.1.0"
+    "hono": "^3.1.0",
+    "dotenv": "^16.0.3",
+    "minimist": "^1.2.8"
   },
   "devDependencies": {
     "bun-types": "^0.4.0"
