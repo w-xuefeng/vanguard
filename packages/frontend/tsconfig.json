@@ -17,6 +17,7 @@
     "forceConsistentCasingInFileNames": true,
     "types": [
       "node",
+      "bun-types"
     ],
     "baseUrl": ".",
     "paths": {

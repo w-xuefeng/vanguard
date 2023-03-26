@@ -1,8 +1,7 @@
 {
   "scripts": {
     "dev": "bun run --hot src/index.ts --mode dev",
-    "dev:qa": "bun run --hot src/index.ts --mode qa",
-    "dev:pd": "bun run --hot src/index.ts --mode pd"
+    "dev:pd": "bun run --hot src/index.ts --mode production"
   },
   "dependencies": {
     "hono": "^3.1.0",
