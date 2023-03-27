@@ -1,8 +1,3 @@
-```
-bun install
-bun run dev
-```
+# @vanguard/be
 
-```
-open http://localhost:3000
-```
+> Gateway vanguard backend

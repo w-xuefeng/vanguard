@@ -1,3 +1,3 @@
 # @vanguard/fe
 
-> Gateway vanguard
+> Gateway vanguard frontend

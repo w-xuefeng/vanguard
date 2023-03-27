@@ -1,40 +1,29 @@
 {
   "name": "@vanguard/fe",
-  "version": "0.0.0",
+  "private": true,
+  "author": "XueFLY <xuefeng@kcalb.wang>",
   "scripts": {
-    "start": "bun dev --port 7086",
-    "dev": "bun dev --port 7086",
-    "build": "react-scripts build"
+    "build": "max build",
+    "bun-i": "bun install",
+    "dev": "max dev",
+    "format": "prettier --cache --write .",
+    "postinstall": "max setup",
+    "setup": "max setup",
+    "start": "npm run dev"
   },
   "dependencies": {
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "web-vitals": "^3.0.3"
-  },
-  "eslintConfig": {
-    "extends": [
-      "react-app"
-    ]
+    "@ant-design/icons": "^4.7.0",
+    "@ant-design/pro-components": "^2.0.1",
+    "@umijs/max": "^4.0.63",
+    "antd": "^5.0.0"
   },
   "devDependencies": {
-    "@types/react": "^18.0.28",
-    "@types/react-dom": "^18.0.11",
-    "react-refresh": "0.10.0",
-    "react-scripts": "^5.0.1",
-    "typescript": "latest",
-    "dotenv": "^16.0.3",
-    "minimist": "^1.2.8"
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
+    "@types/react": "^18.0.0",
+    "@types/react-dom": "^18.0.0",
+    "lint-staged": "^13.0.3",
+    "prettier": "^2.7.1",
+    "prettier-plugin-organize-imports": "^2",
+    "prettier-plugin-packagejson": "^2",
+    "typescript": "^5.0.0"
   }
 }

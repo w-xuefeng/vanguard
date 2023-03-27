@@ -1,11 +1,13 @@
 {
   "cSpell.ignorePaths": [
     "package-lock.json",
+    "package.json",
     "node_modules",
     "vscode-extension",
     ".git/objects",
     ".vscode",
     ".vscode-insiders",
+    ".umirc.ts",
     "pnpm-lock.yaml"
   ],
   "cSpell.words": [

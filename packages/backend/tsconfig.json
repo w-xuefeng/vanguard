@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "target": "ESNext",
     "allowUnreachableCode": true,
     "allowUnusedLabels": false,
     "alwaysStrict": false,

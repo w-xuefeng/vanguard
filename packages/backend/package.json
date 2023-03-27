@@ -1,7 +1,10 @@
 {
+  "name": "@vanguard/be",
+  "version": "0.0.0",
   "scripts": {
-    "dev": "bun run --hot src/index.ts --mode dev",
-    "dev:pd": "bun run --hot src/index.ts --mode production"
+    "bun-i": "bun install",
+    "dev": "bun run --hot app/index.ts --mode dev",
+    "start": "bun run --hot app/index.ts --mode production"
   },
   "dependencies": {
     "hono": "^3.1.0",

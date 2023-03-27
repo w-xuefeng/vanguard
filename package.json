@@ -2,12 +2,15 @@
   "name": "vanguard",
   "private": true,
   "scripts": {
-    "ii": "sh check-bun.sh && bun run clean-deps -y && pnpm i",
+    "i": "sh check-bun.sh && bun i && lerna run bun-i",
+    "ii": "sh check-bun.sh && bun run clean-deps -y && lerna run bun-i",
     "clean-deps": "lerna clean",
     "start": "run-p dev:fe dev:be",
+    "start:pd": "bun run build:fe && bun run start:be",
     "dev:fe": "cd packages/frontend && bun run dev",
     "dev:be": "cd packages/backend && bun run dev",
-    "build:fe": "cd packages/frontend && bun run build"
+    "build:fe": "cd packages/frontend && bun run build",
+    "start:be": "cd packages/backend && bun run start"
   },
   "devDependencies": {
     "@types/node": "^18.15.9",
