@@ -15,6 +15,11 @@ if (env.BUN_MODE === 'production') {
   app.get('/_', async c => c.redirect(env.FE_PATH))
 }
 
+app.all('*', (c) => {
+  // return fetch(c.req.url, c.req.raw)
+  return c.text('nice request')
+})
+
 export default {
   port: env.BE_PORT,
   fetch: app.fetch,
