@@ -1,37 +1,24 @@
-import { defineConfig } from '@umijs/max';
+import { defineConfig } from "umi";
 
 export default defineConfig({
-  antd: {},
-  access: {},
-  model: {},
-  initialState: {},
-  request: {},
-  layout: {
-    title: '@umijs/max',
-  },
+  base: '/_/',
   publicPath: '/_/',
   outputPath: '../backend/app/web/views/_',
   routes: [
     {
       path: '/',
-      redirect: '/home',
+      redirect: '/home'
     },
     {
-      name: '首页',
+      path: '/login',
+      layout: false,
+      component: 'login/index'
+    },
+    {
       path: '/home',
-      component: './Home',
-    },
-    {
-      name: '权限演示',
-      path: '/access',
-      component: './Access',
-    },
-    {
-      name: ' CRUD 示例',
-      path: '/table',
-      component: './Table',
+      component: 'home/index',
+      wrappers: ['@/wrappers/auth'],
     },
   ],
   npmClient: 'pnpm',
 });
-

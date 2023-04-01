@@ -3,27 +3,19 @@
   "private": true,
   "author": "XueFLY <xuefeng@kcalb.wang>",
   "scripts": {
-    "build": "max build",
     "bun-i": "bun install",
-    "dev": "max dev",
-    "format": "prettier --cache --write .",
-    "postinstall": "max setup",
-    "setup": "max setup",
-    "start": "npm run dev"
+    "dev": "umi dev",
+    "build": "umi build",
+    "postinstall": "umi setup",
+    "setup": "umi setup",
+    "start": "bun run dev"
   },
   "dependencies": {
-    "@ant-design/icons": "^4.7.0",
-    "@ant-design/pro-components": "^2.0.1",
-    "@umijs/max": "^4.0.63",
-    "antd": "^5.0.0"
+    "umi": "^4.0.64"
   },
   "devDependencies": {
     "@types/react": "^18.0.0",
     "@types/react-dom": "^18.0.0",
-    "lint-staged": "^13.0.3",
-    "prettier": "^2.7.1",
-    "prettier-plugin-organize-imports": "^2",
-    "prettier-plugin-packagejson": "^2",
     "typescript": "^5.0.0"
   }
 }

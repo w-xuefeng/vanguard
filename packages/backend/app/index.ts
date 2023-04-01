@@ -11,8 +11,9 @@ app.get('/', (c) => {
 
 if (env.BUN_MODE === 'production') {
   app.use('/_/*', serveStatic({ root: env.FE_PATH }))
+  app.use('/_/*', serveStatic({ root: env.FE_PATH, path: '_/index.html' }))
 } else {
-  app.get('/_', async c => c.redirect(env.FE_PATH))
+  app.get('/_/*', async c => c.redirect(env.FE_PATH))
 }
 
 app.all('*', (c) => {
