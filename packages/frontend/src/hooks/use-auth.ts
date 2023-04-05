@@ -1,5 +1,8 @@
+import { LDK } from "@/config/dict";
+import { useStorage } from "@/utils";
+
 export function useAuth() {
   return {
-    isLogin: true
+    isLogin: useStorage.getStorage(LDK.USER)
   }
 }
