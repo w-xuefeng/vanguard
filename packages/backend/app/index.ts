@@ -10,8 +10,6 @@ app.get('/', (c) => {
   return c.json({ success: true, code: 200, message: '', data: { time: Date.now(), text: 'Hello world' } })
 })
 
-app.use('/favicon.ico', serveStatic({ path: 'app/web/assets/favicon.png' }))
-
 if (env.BUN_MODE === 'production') {
   app.use('/_/*', serveStatic({ root: env.FE_PATH }))
   app.use('/_/*', serveStatic({ root: env.FE_PATH, path: '_/index.html' }))

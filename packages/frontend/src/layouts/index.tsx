@@ -5,8 +5,7 @@ export interface ILayoutProps {}
 
 export default function Layout(_props: ILayoutProps) {
   return (
-    <div className={styles.navs}>
-      Layout
+    <div className={styles.layout}>
       <Outlet />
     </div>
   );
