@@ -1,9 +1,12 @@
 import { Hono } from 'hono'
 import { serveStatic } from 'hono/bun'
+import { logger } from 'hono/logger'
 import { env } from './utils/env'
-import guards from './guard'
+import guards, { notFound } from './guard'
 
 const app = new Hono()
+
+app.use('*', logger());
 
 app.get('/', (c) => {
   c.res.headers.set('Access-Control-Allow-Origin', '*');
@@ -18,6 +21,7 @@ if (env.BUN_MODE === 'production') {
 }
 
 app.all('*', guards)
+app.notFound(notFound)
 
 export default {
   port: env.BE_PORT,

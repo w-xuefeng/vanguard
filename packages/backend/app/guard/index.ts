@@ -5,6 +5,8 @@ import prehandle from "./prehandle";
 import useCheck from "./checker";
 import R from "../utils/r";
 
+export { notFound } from "./proxyRequest";
+
 export default async function guards(c: Context) {
   const { url, ban, pick, checkers } = await prehandle(c);
   if (ban) {
