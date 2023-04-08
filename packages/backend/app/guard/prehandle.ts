@@ -1,7 +1,10 @@
-import type { Context } from "hono";
+import type { Context, Next } from "hono";
 import { queryGuardsByPrefix } from "../database";
+import { ban, pick } from "./bp";
+import { logReq } from "../utils/logger";
 
-export default async function prehandle(c: Context) {
+export default async function prehandle(c: Context, next?: Next) {
+  logReq(c, next);
   const path = c.req.path;
   const rawUrl = c.req.url;
   const prefix = path.split('/').at(1);
@@ -19,7 +22,7 @@ export default async function prehandle(c: Context) {
   return {
     url,
     checkers,
-    ban: banList.includes(path),
-    pick: pickList.includes(path),
+    ban: ban(c, banList),
+    pick: pick(c, pickList),
   }
 }

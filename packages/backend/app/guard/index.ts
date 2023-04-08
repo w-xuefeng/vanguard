@@ -1,4 +1,4 @@
-import type { Context } from "hono";
+import type { Context, Next } from "hono";
 import { HTTP_CODE, HTTP_MSG } from "./const";
 import proxyRequest, { notFound } from "./proxyRequest";
 import prehandle from "./prehandle";
@@ -7,8 +7,8 @@ import R from "../utils/r";
 
 export { notFound } from "./proxyRequest";
 
-export default async function guards(c: Context) {
-  const { url, ban, pick, checkers } = await prehandle(c);
+export default async function guards(c: Context, next: Next) {
+  const { url, ban, pick, checkers } = await prehandle(c, next);
   if (ban) {
     return c.json(R.fail(HTTP_CODE.BAN, HTTP_MSG.BAN));
   }

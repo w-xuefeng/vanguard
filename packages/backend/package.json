@@ -7,9 +7,10 @@
     "start": "bun run --hot app/index.ts --mode production"
   },
   "dependencies": {
-    "hono": "^3.1.0",
     "dotenv": "^16.0.3",
-    "minimist": "^1.2.8"
+    "hono": "^3.1.5",
+    "minimist": "^1.2.8",
+    "redis": "^4.6.5"
   },
   "devDependencies": {
     "bun-types": "^0.4.0"
