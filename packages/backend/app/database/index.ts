@@ -1,4 +1,7 @@
-import type { IBPItem } from "./type";
+import { logErr } from '../utils/logger';
+import { connectRedis } from "./connection";
+import { getRecordByPrefix } from './dao';
+import { GuardRecord, type IBPItem } from "./type";
 
 
 /**
@@ -19,6 +22,15 @@ export async function queryGuardsByPrefix(prefix?: string) {
   if (!prefix) {
     return rs;
   }
-  // query nextOrigin and guard-rules and ban-pick-List form database by prefix
-  return rs;
+
+  try {
+    const record = await getRecordByPrefix(prefix);
+    if (!record) {
+      return rs;
+    }
+    return record;
+  } catch (error) {
+    logErr(error, 'QueryGuardsByPrefix Error:')
+    return rs;
+  }
 }

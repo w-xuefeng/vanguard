@@ -1,10 +1,8 @@
 import type { Context, Next } from "hono";
 import { queryGuardsByPrefix } from "../database";
 import { ban, pick } from "./bp";
-import { logReq } from "../utils/logger";
 
-export default async function prehandle(c: Context, next?: Next) {
-  logReq(c, next);
+export default async function prehandle(c: Context) {
   const path = c.req.path;
   const rawUrl = c.req.url;
   const prefix = path.split('/').at(1);

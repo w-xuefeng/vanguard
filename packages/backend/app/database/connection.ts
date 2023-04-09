@@ -1,12 +1,21 @@
 import { env } from '../utils/env'
 import { createClient } from 'redis';
+import { logErr, sLog } from '../utils/logger';
 
 const client = createClient({ url: env.DBC });
 
-client.on('error', err => console.log('Redis Client Error', err));
+export const SET_KEY = 'vanguard-rules';
 
-await client.connect();
-
-await client.set('key', 'value');
-const value = await client.get('key');
-await client.disconnect();
+export async function connectRedis(cause?: string) {
+  client.on('connect', async () => {
+    await sLog(`Redis Client Connect ${cause ? `for ${cause}` : ''}`)
+  });
+  client.on('end', async () => {
+    await sLog(`Redis Client Disconnect ${cause ? `by ${cause} end` : ''}`)
+  });
+  client.on('error', async err => {
+    await logErr(err, 'Redis Client Error:')
+  });
+  await client.connect();
+  return client
+}

@@ -22,17 +22,20 @@ export async function logToFile(content: string, rootPath: string) {
   }
 }
 
-export async function sLog(info: string, serverName = process.env.PROJECT_NAME) {
-  const sn = serverName ? `[${serverName}] ` : '';
-  await logToFile(`${sn}${info}`, env.LOG_PATH);
+export async function sLog(info: string, prefix?: string) {
+  prefix = prefix || `${process.env.PROJECT_NAME}::logger ${new Date(Date.now()).toLocaleString('zh-CN', { hour12: false })}`
+  await logToFile(`[${prefix}] ${info}`, env.LOG_PATH);
 }
 
-export async function logReq(c: Context, next?: Next) {
-  await next?.()
-  const User = c.req.headers.get('User-Agent')
-  const status: number = c.res.status
+export async function logErr(error: Error | any, prefix?: string) {
+  await sLog(`${prefix} ${error instanceof Error ? error.name || error.message : error?.toString?.()}`)
+}
+
+export async function logReq(c: Context, next?: Next, statusCode?: number, result: string = '') {
+  await next?.();
+  const ua = c.req.headers.get('User-Agent')
+  const status: number = statusCode || c.res.status
   const ip = getClientIP(c)
-  const log_string = `${ip} "${c.req.method} ${c.req.path}" ${String(status)} ${User}`
-  const prefix = `${process.env.PROJECT_NAME}::logger ${new Date(Date.now()).toLocaleString('zh-CN', { hour12: false })}`
-  await sLog(log_string, prefix)
+  const record = `${ip} "${c.req.method} ${c.req.path}" ${String(status)} ${ua} ${result}`
+  await sLog(record)
 }
