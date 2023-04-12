@@ -28,8 +28,11 @@ export async function removeRecord(record: GuardRecord) {
   return rs;
 }
 
-export async function modifyRecord(prev: GuardRecord, next: GuardRecord) {
-  await removeRecord(prev);
+export async function modifyRecord(prefix: string, next: GuardRecord) {
+  const prev = await getRecordByPrefix(prefix);
+  if (prev) {
+    await removeRecord(prev);
+  }
   const rs = await addRecord([next]);
   return rs;
 }
