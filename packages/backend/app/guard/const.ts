@@ -1,4 +1,5 @@
 export enum HTTP_CODE {
+  OK = 200,
   BAN = 401,
   NOT_FOUND = 404,
   CHECK_FAIL = 405,
@@ -8,6 +9,7 @@ export enum HTTP_CODE {
 }
 
 export enum HTTP_MSG {
+  OK = 'OK',
   BAN = 'Access denied',
   NOT_FOUND = 'Not found',
   CHECK_FAIL = 'Condition is not satisfied',

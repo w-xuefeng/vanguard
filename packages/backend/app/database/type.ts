@@ -34,11 +34,15 @@ export class GuardRecord {
     return JSON.stringify(this);
   }
 
-  static parse(recordString: string) {
-    const record = JSONSafeParse<GuardRecord>(recordString);
+  static parse(originalRecord?: string | null | GuardRecord | Record<string, any>) {
+    const record = typeof originalRecord === 'string'
+      ? JSONSafeParse<GuardRecord>(originalRecord)
+      : originalRecord;
+
     if (!record) {
       return null
     }
+
     return new GuardRecord(
       record.prefix,
       record.nextOrigin,

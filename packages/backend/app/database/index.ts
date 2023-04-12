@@ -1,7 +1,6 @@
 import { logErr } from '../utils/logger';
-import { connectRedis } from "./connection";
 import { getRecordByPrefix } from './dao';
-import { GuardRecord, type IBPItem } from "./type";
+import { type IBPItem } from "./type";
 
 
 /**
@@ -24,7 +23,7 @@ export async function queryGuardsByPrefix(prefix?: string) {
   }
 
   try {
-    const record = await getRecordByPrefix(prefix);
+    const record = (await getRecordByPrefix(prefix))?.value;
     if (!record) {
       return rs;
     }
