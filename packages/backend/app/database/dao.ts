@@ -21,7 +21,13 @@ export async function addRecord(record: GuardRecord[]) {
   return rs;
 }
 
-export async function removeRecord(record: GuardRecord) {
+export async function removeRecord(prefixOrRecord: string | GuardRecord) {
+  const record = typeof prefixOrRecord === 'string'
+    ? await getRecordByPrefix(prefixOrRecord)
+    : prefixOrRecord;
+  if (!record) {
+    return 0;
+  }
   const client = await connectRedis(`Removing '${record.prefix}' record`);
   const rs = await client.sRem(SET_KEY, record.toString())
   await client.disconnect();
@@ -29,10 +35,7 @@ export async function removeRecord(record: GuardRecord) {
 }
 
 export async function modifyRecord(prefix: string, next: GuardRecord) {
-  const prev = await getRecordByPrefix(prefix);
-  if (prev) {
-    await removeRecord(prev);
-  }
+  await removeRecord(prefix);
   const rs = await addRecord([next]);
   return rs;
 }
