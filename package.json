@@ -5,12 +5,13 @@
     "i": "sh check-bun.sh && bun i && lerna run bun-i",
     "ii": "sh check-bun.sh && bun run clean-deps -y && lerna run bun-i",
     "clean-deps": "lerna clean",
-    "start": "run-p dev:fe dev:be",
-    "start:pd": "bun run build:fe && bun run start:be",
     "dev:fe": "cd packages/frontend && bun run dev",
     "dev:be": "cd packages/backend && bun run dev",
+    "start": "run-p dev:fe dev:be",
+    "start-pd": "bun run build:fe && bun run start-pd:be",
+    "start-pd:be": "cd packages/backend && bun run start",
     "build:fe": "cd packages/frontend && bun run build",
-    "start:be": "cd packages/backend && bun run start"
+    "build": "bun run build:fe && sh generate.sh"
   },
   "devDependencies": {
     "@types/node": "^18.15.9",
