@@ -7,7 +7,7 @@ import {
   getGuardRuleByPrefix,
   postGuardRule
 } from './web/services/guard'
-import { logReq } from './utils/logger'
+import { logAppStart, logReq } from './utils/logger'
 import guards, { notFound } from './guard'
 import R from './utils/r'
 
@@ -25,7 +25,7 @@ app.get('/__internal/api/ruls/prefix', getGuardRuleByPrefix)
 app.get('/__internal/api/ruls/all', getAllGuardRule)
 app.post('/__internal/api/ruls', postGuardRule)
 
-if (env.BUN_MODE === 'production') {
+if (env.__PROD__) {
   app.use('/_/*', serveStatic({ root: env.FE_PATH }))
   app.use('/_/*', serveStatic({ root: env.FE_PATH, path: '_/index.html' }))
   app.use('/favicon.ico', serveStatic({ root: env.FE_PATH, path: '_/favicon.png' }))
@@ -36,6 +36,8 @@ if (env.BUN_MODE === 'production') {
 
 app.all('*', guards)
 app.notFound(notFound)
+
+await logAppStart(env.BE_PORT)
 
 export default {
   port: env.BE_PORT,

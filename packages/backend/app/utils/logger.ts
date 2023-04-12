@@ -2,6 +2,7 @@ import type { Context, Next } from 'hono';
 import { env } from './env';
 import { createPathSync, pathJoin, existsSync } from './file';
 import { getClientIP } from '.';
+import * as colors from 'colors';
 
 export async function logToFile(content: string, rootPath: string) {
   try {
@@ -38,4 +39,10 @@ export async function logReq(c: Context, next?: Next, statusCode?: number, resul
   const ip = getClientIP(c)
   const record = `${ip} "${c.req.method} ${c.req.path}" ${String(status)} ${ua} ${result}`
   await sLog(record)
+}
+
+export async function logAppStart(port: string) {
+  const info = `App started successfully at port ${port}`;
+  console.log(colors.green(info));
+  await sLog(info)
 }

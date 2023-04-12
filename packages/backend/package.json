@@ -8,6 +8,7 @@
     "serve": "bun run app/index.ts --mode production"
   },
   "dependencies": {
+    "colors": "^1.4.0",
     "dotenv": "^16.0.3",
     "hono": "^3.1.5",
     "minimist": "^1.2.8",

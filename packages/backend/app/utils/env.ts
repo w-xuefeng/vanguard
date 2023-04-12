@@ -20,9 +20,9 @@ export function getDotEnv(mode?: string) {
     ...process.env,
     ...projectEnv,
     BUN_MODE: mode,
+    __DEV__: mode === 'dev',
+    __PROD__: mode === 'production',
   } as Record<string, any>;
 }
-
-
 
 export const env = getDotEnv(mode)
