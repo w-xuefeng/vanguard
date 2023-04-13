@@ -21,9 +21,9 @@ export function useWebRouter(app: Hono) {
   if (env.__PROD__) {
     app.use('/_/*', serveStatic({ root: env.FE_PATH }))
     app.use('/_/*', serveStatic({ root: env.FE_PATH, path: '_/index.html' }))
-    app.use('/favicon.ico', serveStatic({ root: env.FE_PATH, path: '_/favicon.png' }))
+    app.use('/favicon.ico', serveStatic({ root: env.FE_PATH, path: '_/favicon.ico' }))
   } else {
     app.get('/_/*', async c => c.redirect(env.FE_PATH))
-    app.get('/favicon.ico', async c => c.redirect(`${env.FE_PATH}/_/favicon.png`))
+    app.get('/favicon.ico', async c => c.redirect(`${env.FE_PATH}/_/favicon.ico`))
   }
 }
