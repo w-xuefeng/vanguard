@@ -27,7 +27,7 @@ export function pathJoin(
 export function createPathSync(
   type: 'file' | 'dir',
   path: string,
-  content: string | ArrayBufferView | ArrayBufferLike = ''
+  content: string = ''
 ) {
   if (type === 'dir') {
     mkdirSync(path, { recursive: true });

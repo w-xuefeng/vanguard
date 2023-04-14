@@ -1,5 +1,5 @@
 import { logErr } from '../utils/logger';
-import { getRecordByPrefix } from './dao';
+import { RuleDAO } from './dao';
 import { type IBPItem } from "./type";
 
 
@@ -23,7 +23,7 @@ export async function queryGuardsByPrefix(prefix?: string) {
   }
 
   try {
-    const record = (await getRecordByPrefix(prefix))?.value;
+    const record = (await RuleDAO.getRecordByPrefix(prefix))?.value;
     if (!record) {
       return rs;
     }

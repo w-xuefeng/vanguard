@@ -3,7 +3,6 @@ import type { IUniReponse } from "./types"
 import { logReqFail } from "./logger"
 import { HTTP_CODE, HTTP_MSG } from "../guard/const"
 
-
 export default class R {
   static json<T>(option: IUniReponse<T>) {
     return option

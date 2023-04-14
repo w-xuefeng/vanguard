@@ -1,10 +1,13 @@
 {
   "name": "vanguard",
   "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
   "scripts": {
-    "i": "sh check-bun.sh && bun i && lerna run bun-i",
-    "ii": "sh check-bun.sh && bun run clean-deps -y && lerna run bun-i",
-    "clean-deps": "lerna clean",
+    "i": "sh check-bun.sh && bun i",
+    "ii": "sh check-bun.sh && bun run clean-deps && bun i",
+    "clean-deps": "sh clean-deps.sh",
     "dev:fe": "cd packages/frontend && bun run dev",
     "dev:be": "cd packages/backend && bun run dev",
     "start": "run-p dev:fe dev:be",
@@ -14,8 +17,7 @@
     "build": "bun run build:fe && sh generate.sh"
   },
   "devDependencies": {
-    "@types/node": "^18.15.9",
-    "lerna": "^6.5.1",
+    "@types/node": "latest",
     "npm-run-all": "^4.1.5"
   }
 }

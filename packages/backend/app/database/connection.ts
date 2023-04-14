@@ -4,7 +4,8 @@ import { logErr, sLog } from '../utils/logger';
 
 const client = createClient({ url: env.DBC });
 
-export const SET_KEY = 'vanguard-rules';
+export const RULE_SET_KEY = 'vanguard-rules';
+export const USER_SET_KEY = 'vanguard-users';
 
 export async function connectRedis(cause?: string) {
   client.on('connect', async () => {

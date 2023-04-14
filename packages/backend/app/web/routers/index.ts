@@ -6,15 +6,29 @@ import {
   getGuardRuleByPrefix,
   modifyGuardRule,
   postGuardRule,
-  removeGuardRule
+  removeGuardRule,
+  getUserByName,
+  getAllUser,
+  postUser,
+  modifyUser,
+  removeUser,
+  login,
 } from '../services/guard'
 
 export function useInternalRouters(app: Hono) {
-  app.get('/__internal/api/ruls/prefix', getGuardRuleByPrefix)
-  app.get('/__internal/api/ruls/all', getAllGuardRule)
-  app.post('/__internal/api/ruls/add', postGuardRule)
-  app.post('/__internal/api/ruls/modify', modifyGuardRule)
-  app.delete('/__internal/api/ruls/remove', removeGuardRule)
+  app.get('/__internal/api/rule/prefix', getGuardRuleByPrefix)
+  app.get('/__internal/api/rule/all', getAllGuardRule)
+  app.post('/__internal/api/rule/add', postGuardRule)
+  app.post('/__internal/api/rule/modify', modifyGuardRule)
+  app.delete('/__internal/api/rule/remove', removeGuardRule)
+
+  app.get('/__internal/api/user/name', getUserByName)
+  app.get('/__internal/api/user/all', getAllUser)
+  app.post('/__internal/api/user/add', postUser)
+  app.post('/__internal/api/user/modify', modifyUser)
+  app.delete('/__internal/api/user/remove', removeUser)
+
+  app.post('/__internal/api/user/login', login)
 }
 
 export function useWebRouter(app: Hono) {

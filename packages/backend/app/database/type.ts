@@ -52,3 +52,31 @@ export class GuardRecord {
     )
   }
 }
+
+export class User {
+  name: string;
+  password: string;
+
+  constructor(name: string, password: string) {
+    this.name = name;
+    this.password = password;
+  }
+
+  toString() {
+    return JSON.stringify(this);
+  }
+
+  static parse(originalRecord?: string | null | User | Record<string, any>) {
+    const record = typeof originalRecord === 'string'
+      ? JSONSafeParse<User>(originalRecord)
+      : originalRecord;
+
+    if (!record) {
+      return null
+    }
+    return new User(
+      record.name,
+      record.password
+    )
+  }
+}
