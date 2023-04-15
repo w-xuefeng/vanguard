@@ -12,7 +12,7 @@ export function getDotEnvBase(mode?: string, basePath = process.cwd(),) {
   const envPath = fs.existsSync(localModeEnvPath) ? localModeEnvPath : modeEnvPath
   return Object.assign({}, config({ path: envPath }).parsed);
 }
-export const appPath = (...paths: string[]) => path.resolve(import.meta.url, '..', ...paths);
+export const appPath = (...paths: string[]) => path.resolve(import.meta.dir, '..', ...paths);
 export const projectPath = (...paths: string[]) => appPath('..', ...paths);
 export function getDotEnv(mode?: string) {
   const projectEnv = getDotEnvBase(mode)

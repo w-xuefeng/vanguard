@@ -8,9 +8,7 @@ export default async function proxyRequest(url: string, c: Context) {
   await sLog(`Proxy request: '${url}'`)
   const rs = await fetch(url, c.req.raw);
   await logReq(c, void 0, rs.status, await rs.clone().text());
-  const headers: Record<string, any> = {}
-  rs.headers.forEach((v, k) => { headers[k] = v })
-  return c.newResponse(rs.body, rs.status as StatusCode, headers)
+  return c.newResponse(rs.body, rs.status as StatusCode, rs.headers.toJSON())
 }
 
 export async function notFound(c: Context) {
