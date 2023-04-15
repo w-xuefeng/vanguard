@@ -12,6 +12,7 @@ interface ILoginProps {}
 const Login: React.FC<ILoginProps> = (props) => {
   const [dividerExtend, setDividerExtend] = useState(false);
   const [inputExtend, setInputExtend] = useState(false);
+  const [passwordIsFocus, setPasswordIsFocus] = useState(false);
 
   const dividerClassName = classNames([
     styles["divider"],
@@ -22,6 +23,19 @@ const Login: React.FC<ILoginProps> = (props) => {
     styles["input"],
     { [styles["input-open"]]: inputExtend },
   ]);
+
+  const coverClassName = classNames([
+    styles["cover"],
+    { [styles["cover-close"]]: passwordIsFocus },
+  ]);
+
+  const passwordFocus = () => {
+    setPasswordIsFocus(true);
+  };
+
+  const passwordBlur = () => {
+    setPasswordIsFocus(false);
+  };
 
   React.useEffect(() => {
     const timerDivider = setTimeout(() => {
@@ -41,7 +55,7 @@ const Login: React.FC<ILoginProps> = (props) => {
   return (
     <ConfigProvider theme={theme}>
       <div className={styles["login-page"]}>
-        <div className={styles["cover"]}>
+        <div className={coverClassName}>
           <img src={logo} alt="logo" className={styles["logo"]} />
           <div className={dividerClassName}></div>
           <div className={styles["panel"]}>
@@ -52,6 +66,8 @@ const Login: React.FC<ILoginProps> = (props) => {
             />
             <Input.Password
               className={inputClassName}
+              onFocus={passwordFocus}
+              onBlur={passwordBlur}
               placeholder="请输入密码"
             />
           </div>
