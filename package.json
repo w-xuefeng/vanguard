@@ -5,8 +5,8 @@
     "packages/*"
   ],
   "scripts": {
-    "i": "sh check-bun.sh && bun i",
-    "ii": "sh check-bun.sh && bun run clean-deps && bun i",
+    "i": "sh check-bun.sh && bun install",
+    "ii": "sh check-bun.sh && bun run clean-deps && bun install",
     "clean-deps": "sh clean-deps.sh",
     "dev:fe": "cd packages/frontend && bun run dev",
     "dev:be": "cd packages/backend && bun run dev",
