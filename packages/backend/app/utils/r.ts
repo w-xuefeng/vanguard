@@ -1,10 +1,10 @@
 import type { Context } from "hono"
-import type { IUniReponse } from "./types"
+import type { IUniResponse } from "./types"
 import { logReqFail } from "./logger"
 import { HTTP_CODE, HTTP_MSG } from "../guard/const"
 
 export default class R {
-  static json<T>(option: IUniReponse<T>) {
+  static json<T>(option: IUniResponse<T>) {
     return option
   }
 

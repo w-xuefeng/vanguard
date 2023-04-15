@@ -11,8 +11,10 @@
     "pnpm-lock.yaml"
   ],
   "cSpell.words": [
+    "antd",
     "hono",
     "packagejson",
+    "prehandle",
     "stylelint",
     "umijs"
   ]

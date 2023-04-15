@@ -189,9 +189,9 @@ export async function login(c: Context) {
     return userException.res;
   }
 
-  const passowrd = (await encodeUserPassword(user!)).password;
+  const password = (await encodeUserPassword(user!)).password;
 
-  const passwordException = await checkException(c, passowrd !== rs?.value?.password, body, 'PASSWORD_ERROR')
+  const passwordException = await checkException(c, password !== rs?.value?.password, body, 'PASSWORD_ERROR')
   if (passwordException.res) {
     return passwordException.res;
   }
