@@ -36,9 +36,10 @@ export async function logErr(error: Error | any, prefix?: string) {
 export async function logReq(c: Context, next?: Next, statusCode?: number, result: string | number | boolean = '') {
   await next?.();
   const ua = c.req.headers.get('User-Agent')
+  const traceId = c.req.headers.get('trace-id')
   const status: number = statusCode || c.res.status
   const ip = getClientIP(c)
-  const record = `${ip} "${c.req.method} ${c.req.path}" ${String(status)} ${ua} ${result}`
+  const record = `${ip} ${traceId ? 'trace-id: ' + traceId : ''} "${c.req.method} ${c.req.path}" ${String(status)} ${ua} ${result}`
   await sLog(record)
 }
 

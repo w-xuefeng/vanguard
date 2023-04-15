@@ -1,10 +1,11 @@
 import type { Context } from "hono";
-import R, { bodyCheck, checkException } from "../../utils/r";
+import R, { bodyCheck, checkException, useAuthInterceptor } from "../../utils/r";
 import { RuleDAO, UserDAO } from "../../database/dao";
 import { GuardRecord, User } from "../../database/type";
 import { logReqOk } from "../../utils/logger";
 import { encodeUserPassword } from "../../utils";
 import { EMPTY_PLACEHOLDER } from "../../guard/const";
+import { encodeToken } from "../../utils/token";
 
 
 /**
@@ -12,6 +13,10 @@ import { EMPTY_PLACEHOLDER } from "../../guard/const";
  */
 
 export async function getGuardRuleByPrefix(c: Context) {
+  const authCheck = await useAuthInterceptor(c);
+  if (authCheck.res) {
+    return authCheck.res
+  }
   const prefix = c.req.query('prefix');
   const { res } = await checkException(c, !prefix, `prefix=${prefix}`, 'MISSING_PARAM')
   if (res) {
@@ -23,12 +28,20 @@ export async function getGuardRuleByPrefix(c: Context) {
 }
 
 export async function getAllGuardRule(c: Context) {
+  const authCheck = await useAuthInterceptor(c);
+  if (authCheck.res) {
+    return authCheck.res
+  }
   const rs = (await RuleDAO.getAllRecords() || []).map(e => e.value);
   await logReqOk(c, null, rs);
   return c.json(R.ok(rs))
 }
 
 export async function postGuardRule(c: Context) {
+  const authCheck = await useAuthInterceptor(c);
+  if (authCheck.res) {
+    return authCheck.res
+  }
   const { hasBody, res } = await bodyCheck(c)
   if (!hasBody) {
     return res;
@@ -49,6 +62,10 @@ export async function postGuardRule(c: Context) {
 }
 
 export async function modifyGuardRule(c: Context) {
+  const authCheck = await useAuthInterceptor(c);
+  if (authCheck.res) {
+    return authCheck.res
+  }
   const { hasBody, res } = await bodyCheck(c)
   if (!hasBody) {
     return res;
@@ -67,6 +84,10 @@ export async function modifyGuardRule(c: Context) {
 }
 
 export async function removeGuardRule(c: Context) {
+  const authCheck = await useAuthInterceptor(c);
+  if (authCheck.res) {
+    return authCheck.res
+  }
   const { hasBody, res } = await bodyCheck(c)
   if (!hasBody) {
     return res;
@@ -91,6 +112,10 @@ export async function removeGuardRule(c: Context) {
  */
 
 export async function getUserByName(c: Context) {
+  const authCheck = await useAuthInterceptor(c);
+  if (authCheck.res) {
+    return authCheck.res
+  }
   const name = c.req.query('name');
   const { res } = await checkException(c, !name, `name=${name}`, 'MISSING_PARAM')
   if (res) {
@@ -105,6 +130,10 @@ export async function getUserByName(c: Context) {
 }
 
 export async function getAllUser(c: Context) {
+  const authCheck = await useAuthInterceptor(c);
+  if (authCheck.res) {
+    return authCheck.res
+  }
   const rs = (await UserDAO.getAllUser() || []).map(e => {
     const user = e.value;
     if (user) {
@@ -117,6 +146,10 @@ export async function getAllUser(c: Context) {
 }
 
 export async function postUser(c: Context) {
+  const authCheck = await useAuthInterceptor(c);
+  if (authCheck.res) {
+    return authCheck.res
+  }
   const { hasBody, res } = await bodyCheck(c)
   if (!hasBody) {
     return res;
@@ -137,6 +170,10 @@ export async function postUser(c: Context) {
 }
 
 export async function modifyUser(c: Context) {
+  const authCheck = await useAuthInterceptor(c);
+  if (authCheck.res) {
+    return authCheck.res
+  }
   const { hasBody, res } = await bodyCheck(c)
   if (!hasBody) {
     return res;
@@ -155,6 +192,10 @@ export async function modifyUser(c: Context) {
 }
 
 export async function removeUser(c: Context) {
+  const authCheck = await useAuthInterceptor(c);
+  if (authCheck.res) {
+    return authCheck.res
+  }
   const { hasBody, res } = await bodyCheck(c)
   if (!hasBody) {
     return res;
@@ -196,8 +237,13 @@ export async function login(c: Context) {
     return passwordException.res;
   }
 
-  await logReqOk(c, body, rs);
-  return c.json(R.ok(body))
+  const token = await encodeToken(rs!.value!.name!)
+  const data = {
+    token,
+    name: body.name
+  }
+  await logReqOk(c, body, data);
+  return c.json(R.ok(data))
 }
 /**
  * User end

@@ -8,6 +8,9 @@ export enum HTTP_CODE {
   MISSING_BODY = 407,
   MISSING_PARAM = 408,
   PASSWORD_ERROR = 409,
+  UNAUTHORIZED = 410,
+  AUTH_EXPIRED = 411,
+  ILLEGAL_ACCESS = 412,
 }
 
 export enum HTTP_MSG {
@@ -20,8 +23,14 @@ export enum HTTP_MSG {
   MISSING_BODY = 'Missing request body',
   MISSING_PARAM = 'Missing request parameters',
   PASSWORD_ERROR = 'Password error',
+  UNAUTHORIZED = 'Unauthorized access',
+  AUTH_EXPIRED = 'Authorization expiration',
+  ILLEGAL_ACCESS = 'Illegal access'
 }
 
-export enum EMPTY_PLACEHOLDER {
-  STRING = '<empty placeholder>'
+export const EMPTY_PLACEHOLDER = {
+  STRING: '<empty placeholder>',
+  OBJECT: {},
+  ARRAY: [],
+  FUNCTION: () => { }
 }

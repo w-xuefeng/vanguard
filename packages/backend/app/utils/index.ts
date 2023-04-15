@@ -36,3 +36,39 @@ export const encodeUserPassword = async (user: User) => {
   user.password = base64UrlEncode(hashed);
   return user
 }
+
+export const generateKey = async () => {
+  const keyPair = await crypto.subtle.generateKey(
+    {
+      name: "RSA-OAEP",
+      modulusLength: 2048,
+      publicExponent: new Uint8Array([1, 0, 1]),
+      hash: "SHA-256",
+    },
+    true,
+    ["encrypt", "decrypt"]
+  )
+  return keyPair;
+}
+
+export const encryptText = async (text: string, key: CryptoKey) => {
+  const encrypted = await crypto.subtle.encrypt(
+    {
+      name: "RSA-OAEP"
+    },
+    key,
+    new TextEncoder().encode(text)
+  );
+  return base64UrlEncode(encrypted);
+}
+
+export const decryptText = async (text: string, key: CryptoKey) => {
+  const decrypted = await crypto.subtle.decrypt(
+    {
+      name: "RSA-OAEP"
+    },
+    key,
+    Base64.toUint8Array(text)
+  );
+  return new TextDecoder().decode(decrypted);
+}
