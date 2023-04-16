@@ -12,12 +12,13 @@ export default defineConfig({
     {
       path: '/login',
       layout: false,
-      component: 'login/index'
+      component: 'login/index',
+      wrappers: ['@/wrappers/global', '@/wrappers/inject'],
     },
     {
       path: '/home',
       component: 'home/index',
-      wrappers: ['@/wrappers/auth'],
+      wrappers: ['@/wrappers/global', '@/wrappers/inject', '@/wrappers/auth'],
     },
   ],
   npmClient: 'pnpm',
@@ -25,7 +26,6 @@ export default defineConfig({
     '/__internal': {
       'target': 'http://127.0.0.1:7087/',
       'changeOrigin': true,
-      // 'pathRewrite': { '^/api': '' },
     }
   }
 });

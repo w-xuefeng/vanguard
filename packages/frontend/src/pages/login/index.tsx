@@ -3,13 +3,13 @@ import classNames from "classnames";
 import logo from "@/assets/logo.png";
 import { useRef, useState } from "react";
 import { UserOutlined } from "@ant-design/icons";
-import { ConfigProvider, Input, type InputRef } from "antd";
-import { theme } from "@/config";
+import { Input, type InputRef } from "antd";
 import { login } from "@/services";
 import { useStorage } from "@/utils";
 import { useAuth } from "@/hooks/use-auth";
 import { LDK } from "@/config/dict";
 import { history } from "umi";
+import { notification } from "@/utils/antd";
 import styles from "./style.less";
 
 interface ILoginProps {}
@@ -93,6 +93,10 @@ const Login: React.FC<ILoginProps> = (props) => {
     if (rs?.data) {
       useStorage.setStorage(LDK.USER, rs.data.name);
       useStorage.setStorage(LDK.TOKEN, rs.data.token);
+      notification.success({
+        message: `${rs.data.name}, 欢迎回来 👏`,
+        description: `当前时间：${new Date().toLocaleString()}`,
+      });
       history.push("/home");
     }
   };
@@ -122,41 +126,39 @@ const Login: React.FC<ILoginProps> = (props) => {
   }, []);
 
   return (
-    <ConfigProvider theme={theme}>
-      <div className={styles["login-page"]}>
-        <div className={coverClassName}>
-          <img
-            src={logo}
-            alt="logo"
-            className={styles["logo"]}
-            onClick={submit}
+    <div className={styles["login-page"]}>
+      <div className={coverClassName}>
+        <img
+          src={logo}
+          alt="logo"
+          className={styles["logo"]}
+          onClick={submit}
+        />
+        <div className={dividerClassName}></div>
+        <div className={styles["panel"]}>
+          <Input
+            className={inputClassName}
+            placeholder="请输入用户名"
+            prefix={<UserOutlined />}
+            value={name}
+            onInput={onNameInput}
+            ref={nameRef}
+            status={nameError ? "error" : void 0}
           />
-          <div className={dividerClassName}></div>
-          <div className={styles["panel"]}>
-            <Input
-              className={inputClassName}
-              placeholder="请输入用户名"
-              prefix={<UserOutlined />}
-              value={name}
-              onInput={onNameInput}
-              ref={nameRef}
-              status={nameError ? "error" : void 0}
-            />
-            <Input.Password
-              className={inputClassName}
-              onFocus={passwordFocus}
-              onBlur={passwordBlur}
-              placeholder="请输入密码"
-              value={password}
-              onInput={onPasswordInput}
-              onKeyDownCapture={onPasswordKeyDown}
-              ref={passwordRef}
-              status={passwordError ? "error" : void 0}
-            />
-          </div>
+          <Input.Password
+            className={inputClassName}
+            onFocus={passwordFocus}
+            onBlur={passwordBlur}
+            placeholder="请输入密码"
+            value={password}
+            onInput={onPasswordInput}
+            onKeyDownCapture={onPasswordKeyDown}
+            ref={passwordRef}
+            status={passwordError ? "error" : void 0}
+          />
         </div>
       </div>
-    </ConfigProvider>
+    </div>
   );
 };
 

@@ -1,13 +1,26 @@
 import * as React from "react";
-import logo from "@/assets/logo.png";
+import { getAllRules } from "@/services";
+import { IGuardRecord } from "@vanguard/shared/models/rule";
 
 interface IHomeProps {}
 
 const Home: React.FC<IHomeProps> = (props) => {
+  const [rules, setRules] = React.useState<IGuardRecord[]>([]);
+  React.useEffect(() => {
+    getAllRules()
+      .req()
+      .then((rs) => {
+        if (rs.data?.length) {
+          setRules(rs.data);
+        }
+      });
+  }, []);
+
   return (
     <div>
-      <img src={logo} alt="logo" width="500px" />
-      Home Page
+      {rules.map((e) => (
+        <div key={e.prefix}>{e.prefix}</div>
+      ))}
     </div>
   );
 };

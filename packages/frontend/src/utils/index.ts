@@ -153,6 +153,23 @@ export function toggleClass(
   });
 }
 
+export const safeCallback = <ArgsType extends unknown[], ReturnsTypes = void>(
+  callback?: null | ((...args: ArgsType) => ReturnsTypes | void),
+  args?: ArgsType,
+): ReturnsTypes | void => {
+  return typeof callback === 'function'
+    ? callback.apply(null, args!)
+    : undefined;
+};
+
+export function catchError(func: any, args?: any[], errorHandle?: (error: unknown) => void) {
+  try {
+    return safeCallback(func, args)
+  } catch (error) {
+    safeCallback(errorHandle, [error])
+  }
+}
+
 export const JSONSafeParse = <T extends object>(
   text: string,
   reviver?: ((this: any, key: string, value: any) => any) | undefined,
@@ -173,3 +190,8 @@ export const AorB = (
 
 export const vIf = (condition: boolean | (() => boolean), A: JSX.Element) =>
   AorB(condition, A, null);
+
+export function firstLocaleUpperCase(word: string) {
+  const lowerCase = word.trim().toLocaleLowerCase();
+  return lowerCase.replace(lowerCase[0], lowerCase[0].toUpperCase());
+}

@@ -1,6 +1,8 @@
+import { history } from "umi";
 import { LDK } from "@/config/dict";
 import { useStorage } from "@/utils";
 import { nanoid } from 'nanoid';
+import { HTTP_CODE } from '@vanguard/shared/types/const'
 import { notification } from "@/utils/antd";
 import type { IUniResponse } from '@vanguard/shared/types'
 
@@ -36,11 +38,13 @@ function uniErrorHandle(error: unknown, config?: Partial<ICustomRequestInit>) {
 }
 
 function uniBusinessErrorHandle<T>(data: IUniResponse<T>, config?: Partial<ICustomRequestInit>) {
-  if (config?.silentBusinessError) {
-    return;
+  if ([HTTP_CODE.UNAUTHORIZED, HTTP_CODE.AUTH_EXPIRED, HTTP_CODE.ILLEGAL_ACCESS].includes(data.code)) {
+    useStorage.removeStorage(LDK.TOKEN)
+    useStorage.removeStorage(LDK.USER)
+    history.replace('/login')
   }
 
-  if (!timerRef.visible) {
+  if (!timerRef.visible && !config?.silentBusinessError) {
     timerRef.visible = true
     clearTimeout(timerRef.timer);
     notification.error({
