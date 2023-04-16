@@ -9,7 +9,7 @@ import { useStorage } from "@/utils";
 import { useAuth } from "@/hooks/use-auth";
 import { LDK } from "@/config/dict";
 import { history } from "umi";
-import { notification } from "@/utils/antd";
+import { notification } from "@/utils/toast";
 import styles from "./style.less";
 
 interface ILoginProps {}

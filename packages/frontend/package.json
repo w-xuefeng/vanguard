@@ -3,10 +3,11 @@
   "private": true,
   "author": "XueFLY <xuefeng@kcalb.wang>",
   "scripts": {
+    "build": "umi build",
     "bun-i": "bun install",
     "dev": "umi dev",
-    "build": "umi build",
     "postinstall": "umi setup",
+    "lint": "umi lint --fix",
     "setup": "umi setup",
     "start": "bun run dev"
   },
@@ -14,11 +15,19 @@
     "@ant-design/icons": "^5.0.1",
     "antd": "^5.4.2",
     "classnames": "^2.3.2",
+    "toastr": "^2.1.4",
     "umi": "^4.0.64"
   },
   "devDependencies": {
     "@types/react": "^18.0.35",
     "@types/react-dom": "^18.0.0",
+    "@types/toastr": "^2.1.40",
+    "@umijs/lint": "^4.0.65",
+    "eslint": "^8.38.0",
+    "prettier": "^2",
+    "prettier-plugin-organize-imports": "^2",
+    "prettier-plugin-packagejson": "^2",
+    "stylelint": "^15.5.0",
     "typescript": "^5.0.0"
   }
 }

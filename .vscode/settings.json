@@ -16,6 +16,7 @@
     "packagejson",
     "prehandle",
     "stylelint",
+    "toastr",
     "umijs"
   ]
 }

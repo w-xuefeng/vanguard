@@ -14,7 +14,8 @@
     "start-pd": "bun run build:fe && bun run start-pd:be",
     "start-pd:be": "cd packages/backend && bun run start",
     "build:fe": "cd packages/frontend && bun run build",
-    "build": "bun run build:fe && sh generate.sh"
+    "build": "bun run build:fe && sh generate.sh",
+    "lint:fe": "cd packages/frontend && bun run lint"
   },
   "devDependencies": {
     "@types/node": "latest",
