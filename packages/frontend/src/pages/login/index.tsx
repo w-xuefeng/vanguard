@@ -5,12 +5,10 @@ import { useRef, useState } from "react";
 import { UserOutlined } from "@ant-design/icons";
 import { Input, type InputRef } from "antd";
 import { login } from "@/services";
-import { useStorage } from "@/utils";
 import { useAuth } from "@/hooks/use-auth";
-import { LDK } from "@/config/dict";
 import { history } from "umi";
-import { notification } from "@/utils/toast";
 import styles from "./style.less";
+import { loginAfter } from "@/config";
 
 interface ILoginProps {}
 
@@ -91,13 +89,7 @@ const Login: React.FC<ILoginProps> = (props) => {
     const rs = await login({ name, password }).req();
 
     if (rs?.data) {
-      useStorage.setStorage(LDK.USER, rs.data.name);
-      useStorage.setStorage(LDK.TOKEN, rs.data.token);
-      notification.success({
-        message: `${rs.data.name}, 欢迎回来 👏`,
-        description: `当前时间：${new Date().toLocaleString()}`,
-      });
-      history.push("/home");
+      loginAfter(rs.data);
     }
   };
 

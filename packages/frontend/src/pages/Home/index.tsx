@@ -1,6 +1,7 @@
 import * as React from "react";
 import { getAllRules } from "@/services";
 import { IGuardRecord } from "@vanguard/shared/models/rule";
+import { logoutAfter } from "@/config";
 
 interface IHomeProps {}
 
@@ -18,6 +19,7 @@ const Home: React.FC<IHomeProps> = (props) => {
 
   return (
     <div>
+      <button onClick={logoutAfter}>Logout</button>
       {rules.map((e) => (
         <div key={e.prefix}>{e.prefix}</div>
       ))}
