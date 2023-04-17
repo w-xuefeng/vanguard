@@ -1,7 +1,8 @@
 import * as React from "react";
 import { getAllRules } from "@/services";
 import { IGuardRecord } from "@vanguard/shared/models/rule";
-import { logoutAfter } from "@/config";
+import { Footer } from "./components/footer/footer";
+import styles from './index.less';
 
 interface IHomeProps {}
 
@@ -18,11 +19,8 @@ const Home: React.FC<IHomeProps> = (props) => {
   }, []);
 
   return (
-    <div>
-      <button onClick={logoutAfter}>Logout</button>
-      {rules.map((e) => (
-        <div key={e.prefix}>{e.prefix}</div>
-      ))}
+    <div className={styles.home}>
+      <Footer />
     </div>
   );
 };
