@@ -1,37 +1,40 @@
-import { RULE_SET_KEY, USER_SET_KEY, connectRedis } from "./connection";
+import { connectRedis, RULE_SET_KEY, USER_SET_KEY } from "./connection";
 import { GuardRecord, User } from "./type";
 
 export class RuleDAO {
   static async getAllRecords(cause?: string) {
-    const client = await connectRedis(`[RuleDAO] Searching all records ${cause ? `by ${cause}` : ''}`);
-    const rs = await client.sMembers(RULE_SET_KEY)
+    const client = await connectRedis(
+      `[RuleDAO] Searching all records ${cause ? `by ${cause}` : ""}`,
+    );
+    const rs = await client.sMembers(RULE_SET_KEY);
     await client.disconnect();
-    return rs.map(e => ({
+    return rs.map((e) => ({
       value: GuardRecord.parse(e),
-      raw: e
+      raw: e,
     }));
   }
 
   static async getRecordByPrefix(prefix: string) {
     const rs = await this.getAllRecords(`Querying '${prefix}'`);
-    return rs.findLast(e => e?.value?.prefix === prefix);
+    return rs.findLast((e) => e?.value?.prefix === prefix);
   }
 
   static async addRecord(record: GuardRecord[]) {
-    const prefixes = record.map(e => e.prefix).join(',')
-    const client = await connectRedis(`[RuleDAO] Adding '${prefixes}' record`)
-    const rs = await client.sAdd(RULE_SET_KEY, record.map(e => e.toString()))
+    const prefixes = record.map((e) => e.prefix).join(",");
+    const client = await connectRedis(`[RuleDAO] Adding '${prefixes}' record`);
+    const rs = await client.sAdd(RULE_SET_KEY, record.map((e) => e.toString()));
     await client.disconnect();
     return rs;
   }
 
   static async removeRecord(prefixOrRecord: string | GuardRecord) {
     const record = {
-      raw: '',
+      raw: "",
       value: null as GuardRecord | null,
-    }
-    if (typeof prefixOrRecord === 'string') {
-      const { raw, value } = await this.getRecordByPrefix(prefixOrRecord) || record
+    };
+    if (typeof prefixOrRecord === "string") {
+      const { raw, value } = await this.getRecordByPrefix(prefixOrRecord) ||
+        record;
       record.raw = raw;
       record.value = value;
     } else {
@@ -41,8 +44,10 @@ export class RuleDAO {
     if (!record.raw || !record.value) {
       return 0;
     }
-    const client = await connectRedis(`[RuleDAO] Removing '${record.value.prefix}' record`);
-    const rs = await client.sRem(RULE_SET_KEY, record.raw)
+    const client = await connectRedis(
+      `[RuleDAO] Removing '${record.value.prefix}' record`,
+    );
+    const rs = await client.sRem(RULE_SET_KEY, record.raw);
     await client.disconnect();
     return rs;
   }
@@ -54,38 +59,39 @@ export class RuleDAO {
   }
 }
 
-
 export class UserDAO {
   static async getAllUser(cause?: string) {
-    const client = await connectRedis(`[UserDAO] Searching all users ${cause ? `by ${cause}` : ''}`);
-    const rs = await client.sMembers(USER_SET_KEY)
+    const client = await connectRedis(
+      `[UserDAO] Searching all users ${cause ? `by ${cause}` : ""}`,
+    );
+    const rs = await client.sMembers(USER_SET_KEY);
     await client.disconnect();
-    return rs.map(e => ({
+    return rs.map((e) => ({
       value: User.parse(e),
-      raw: e
+      raw: e,
     }));
   }
 
   static async getUserByName(name: string) {
     const rs = await this.getAllUser(`Querying user '${name}'`);
-    return rs.findLast(e => e?.value?.name === name);
+    return rs.findLast((e) => e?.value?.name === name);
   }
 
   static async addUser(users: User[]) {
-    const names = users.map(e => e.name).join(',')
-    const client = await connectRedis(`[UserDAO] Adding '${names}' users`)
-    const rs = await client.sAdd(USER_SET_KEY, users.map(e => e.toString()))
+    const names = users.map((e) => e.name).join(",");
+    const client = await connectRedis(`[UserDAO] Adding '${names}' users`);
+    const rs = await client.sAdd(USER_SET_KEY, users.map((e) => e.toString()));
     await client.disconnect();
     return rs;
   }
 
   static async removeUser(nameOrUser: string | User) {
     const record = {
-      raw: '',
+      raw: "",
       value: null as User | null,
-    }
-    if (typeof nameOrUser === 'string') {
-      const { raw, value } = await this.getUserByName(nameOrUser) || record
+    };
+    if (typeof nameOrUser === "string") {
+      const { raw, value } = await this.getUserByName(nameOrUser) || record;
       record.raw = raw;
       record.value = value;
     } else {
@@ -95,8 +101,10 @@ export class UserDAO {
     if (!record.raw || !record.value) {
       return 0;
     }
-    const client = await connectRedis(`[UserDAO] Removing '${record.value.name}' record`);
-    const rs = await client.sRem(USER_SET_KEY, record.raw)
+    const client = await connectRedis(
+      `[UserDAO] Removing '${record.value.name}' record`,
+    );
+    const rs = await client.sRem(USER_SET_KEY, record.raw);
     await client.disconnect();
     return rs;
   }

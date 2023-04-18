@@ -13,9 +13,11 @@ export default async function guards(c: Context, next: Next) {
     return c.json(R.fail(HTTP_CODE.BAN, HTTP_MSG.BAN));
   }
   if (!pick) {
-    const rs = useCheck(c, checkers)
+    const rs = useCheck(c, checkers);
     if (!rs.next) {
-      return c.json(R.fail(HTTP_CODE.CHECK_FAIL, rs.message || HTTP_MSG.CHECK_FAIL))
+      return c.json(
+        R.fail(HTTP_CODE.CHECK_FAIL, rs.message || HTTP_MSG.CHECK_FAIL),
+      );
     }
   }
   return url ? await proxyRequest(url, c) : await next();

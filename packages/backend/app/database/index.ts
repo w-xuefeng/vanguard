@@ -1,7 +1,6 @@
-import { logErr } from '../utils/logger';
-import { RuleDAO } from './dao';
+import { logErr } from "../utils/logger";
+import { RuleDAO } from "./dao";
 import { type IBPItem } from "./type";
-
 
 /**
  * query nextOrigin and guard-rules and ban-pick-List form database by prefix
@@ -16,8 +15,8 @@ export async function queryGuardsByPrefix(prefix?: string) {
     banList: [] as IBPItem[],
     pickList: [] as IBPItem[],
     checkers: [] as string[],
-    nextOrigin: '',
-  }
+    nextOrigin: "",
+  };
   if (!prefix) {
     return rs;
   }
@@ -29,7 +28,7 @@ export async function queryGuardsByPrefix(prefix?: string) {
     }
     return record;
   } catch (error) {
-    logErr(error, 'QueryGuardsByPrefix Error:')
+    logErr(error, "QueryGuardsByPrefix Error:");
     return rs;
   }
 }

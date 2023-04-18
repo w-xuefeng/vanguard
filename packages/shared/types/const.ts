@@ -14,16 +14,16 @@ export enum HTTP_CODE {
 }
 
 export enum HTTP_MSG {
-  OK = 'OK',
-  BAN = 'Access denied',
-  NOT_FOUND = 'Not found',
-  USER_NOT_FOUND = 'User not found',
-  CHECK_FAIL = 'Condition is not satisfied',
-  REQ_EXCEPTION = 'Request exception',
-  MISSING_BODY = 'Missing request body',
-  MISSING_PARAM = 'Missing request parameters',
-  PASSWORD_ERROR = 'Password error',
-  UNAUTHORIZED = 'Unauthorized access',
-  AUTH_EXPIRED = 'Authorization expiration',
-  ILLEGAL_ACCESS = 'Illegal access'
+  OK = "OK",
+  BAN = "Access denied",
+  NOT_FOUND = "Not found",
+  USER_NOT_FOUND = "User not found",
+  CHECK_FAIL = "Condition is not satisfied",
+  REQ_EXCEPTION = "Request exception",
+  MISSING_BODY = "Missing request body",
+  MISSING_PARAM = "Missing request parameters",
+  PASSWORD_ERROR = "Password error",
+  UNAUTHORIZED = "Unauthorized access",
+  AUTH_EXPIRED = "Authorization expiration",
+  ILLEGAL_ACCESS = "Illegal access",
 }

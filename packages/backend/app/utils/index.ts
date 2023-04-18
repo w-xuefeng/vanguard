@@ -4,7 +4,7 @@ import { logErr } from "./logger";
 import { User } from "../database/type";
 
 export function getClientIP(c: Context) {
-  return '127.0.0.1';
+  return "127.0.0.1";
 }
 
 export const JSONSafeParse = <T extends object = any>(
@@ -14,7 +14,7 @@ export const JSONSafeParse = <T extends object = any>(
   try {
     return JSON.parse(text, reviver) as T;
   } catch (error) {
-    logErr(error, 'JSON.parse Error at JSONSafeParse: error:')
+    logErr(error, "JSON.parse Error at JSONSafeParse: error:");
     return null;
   }
 };
@@ -28,14 +28,14 @@ export const base64UrlEncode = (hashed: ArrayBuffer) => {
 export const sha256 = (plain: string) => {
   const encoder = new TextEncoder();
   const data = encoder.encode(plain);
-  return crypto.subtle.digest('SHA-256', data);
+  return crypto.subtle.digest("SHA-256", data);
 };
 
 export const encodeUserPassword = async (user: User) => {
   const hashed = await sha256(user.password);
   user.password = base64UrlEncode(hashed);
-  return user
-}
+  return user;
+};
 
 export const generateKey = async () => {
   const keyPair = await crypto.subtle.generateKey(
@@ -46,29 +46,29 @@ export const generateKey = async () => {
       hash: "SHA-256",
     },
     true,
-    ["encrypt", "decrypt"]
-  )
+    ["encrypt", "decrypt"],
+  );
   return keyPair;
-}
+};
 
 export const encryptText = async (text: string, key: CryptoKey) => {
   const encrypted = await crypto.subtle.encrypt(
     {
-      name: "RSA-OAEP"
+      name: "RSA-OAEP",
     },
     key,
-    new TextEncoder().encode(text)
+    new TextEncoder().encode(text),
   );
   return base64UrlEncode(encrypted);
-}
+};
 
 export const decryptText = async (text: string, key: CryptoKey) => {
   const decrypted = await crypto.subtle.decrypt(
     {
-      name: "RSA-OAEP"
+      name: "RSA-OAEP",
     },
     key,
-    Base64.toUint8Array(text)
+    Base64.toUint8Array(text),
   );
   return new TextDecoder().decode(decrypted);
-}
+};

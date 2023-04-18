@@ -3,6 +3,6 @@ import { useStorage } from "@/utils";
 
 export function useAuth() {
   return {
-    isLogin: useStorage.getStorage(LDK.USER)
-  }
+    isLogin: useStorage.getStorage(LDK.USER),
+  };
 }

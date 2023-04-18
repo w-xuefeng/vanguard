@@ -16,12 +16,12 @@ export class useStorage {
       return undefined;
     }
 
-    if (v.indexOf('obj-') === 0) {
+    if (v.indexOf("obj-") === 0) {
       v = v.slice(4);
       return JSON.parse(v) as T;
     }
 
-    if (v.indexOf('str-') === 0) {
+    if (v.indexOf("str-") === 0) {
       return v.slice(4);
     }
 
@@ -35,11 +35,11 @@ export class useStorage {
   ) {
     if ([2, 3].includes(arguments.length)) {
       let v = value;
-      if (typeof v === 'object') {
+      if (typeof v === "object") {
         v = JSON.stringify(v);
-        v = 'obj-' + v;
+        v = "obj-" + v;
       } else {
-        v = 'str-' + v;
+        v = "str-" + v;
       }
       const ls = storage;
       if (ls) {
@@ -86,7 +86,7 @@ export function addCSS(
   cssText: string,
   styleId: string = `global-customer-css-${Date.now()}`,
 ) {
-  const styleTag = document.createElement('style');
+  const styleTag = document.createElement("style");
   styleTag.id = styleId;
   const content = document.createTextNode(cssText);
   styleTag.appendChild(content);
@@ -95,7 +95,7 @@ export function addCSS(
 }
 
 export function removeCSS(styleIdOrDom: string | HTMLStyleElement) {
-  if (typeof styleIdOrDom === 'string') {
+  if (typeof styleIdOrDom === "string") {
     const style = document.head.querySelector(`#${styleIdOrDom}`);
     style?.remove();
   } else {
@@ -109,10 +109,10 @@ export function addClass(
 ) {
   const classNames = Array.isArray(className) ? className : [className];
   const target = (
-    typeof dom === 'string' ? document.querySelector(dom) : dom
+    typeof dom === "string" ? document.querySelector(dom) : dom
   ) as HTMLElement | null;
   if (!target) return;
-  classNames.forEach(e => {
+  classNames.forEach((e) => {
     if (!target?.classList?.contains?.(e)) {
       target?.classList?.add?.(e);
     }
@@ -125,10 +125,10 @@ export function removeClass(
 ) {
   const classNames = Array.isArray(className) ? className : [className];
   const target = (
-    typeof dom === 'string' ? document.querySelector(dom) : dom
+    typeof dom === "string" ? document.querySelector(dom) : dom
   ) as HTMLElement | null;
   if (!target) return;
-  classNames.forEach(e => {
+  classNames.forEach((e) => {
     if (target?.classList?.contains?.(e)) {
       target.classList.remove(e);
     }
@@ -141,10 +141,10 @@ export function toggleClass(
 ) {
   const classNames = Array.isArray(className) ? className : [className];
   const target = (
-    typeof dom === 'string' ? document.querySelector(dom) : dom
+    typeof dom === "string" ? document.querySelector(dom) : dom
   ) as HTMLElement | null;
   if (!target) return;
-  classNames.forEach(e => {
+  classNames.forEach((e) => {
     if (target?.classList?.contains?.(e)) {
       target.classList.remove(e);
     } else {
@@ -157,16 +157,20 @@ export const safeCallback = <ArgsType extends unknown[], ReturnsTypes = void>(
   callback?: null | ((...args: ArgsType) => ReturnsTypes | void),
   args?: ArgsType,
 ): ReturnsTypes | void => {
-  return typeof callback === 'function'
+  return typeof callback === "function"
     ? callback.apply(null, args!)
     : undefined;
 };
 
-export function catchError(func: any, args?: any[], errorHandle?: (error: unknown) => void) {
+export function catchError(
+  func: any,
+  args?: any[],
+  errorHandle?: (error: unknown) => void,
+) {
   try {
-    return safeCallback(func, args)
+    return safeCallback(func, args);
   } catch (error) {
-    safeCallback(errorHandle, [error])
+    safeCallback(errorHandle, [error]);
   }
 }
 
@@ -177,7 +181,7 @@ export const JSONSafeParse = <T extends object>(
   try {
     return JSON.parse(text, reviver) as T;
   } catch (error) {
-    console.debug('[JSONSafeParse Error]', error);
+    console.debug("[JSONSafeParse Error]", error);
     return null;
   }
 };
@@ -186,7 +190,7 @@ export const AorB = (
   condition: boolean | (() => boolean),
   A: JSX.Element | null,
   B: JSX.Element | null,
-) => ((typeof condition === 'function' ? condition() : condition) ? A : B);
+) => ((typeof condition === "function" ? condition() : condition) ? A : B);
 
 export const vIf = (condition: boolean | (() => boolean), A: JSX.Element) =>
   AorB(condition, A, null);

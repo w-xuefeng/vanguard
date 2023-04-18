@@ -1,11 +1,11 @@
 export enum IBPType {
-  path = 'path',
-  ip = 'ip'
+  path = "path",
+  ip = "ip",
 }
 
 export interface IBPItem {
   content: string;
-  type: IBPType
+  type: IBPType;
 }
 
 export interface IGuardRecord {

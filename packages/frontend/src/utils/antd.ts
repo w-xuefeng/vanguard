@@ -1,1 +1,1 @@
-export { notification } from 'antd';
+export { notification } from "antd";

@@ -1,11 +1,11 @@
-import { mkdirSync, writeFileSync } from 'node:fs';
+import { mkdirSync, writeFileSync } from "node:fs";
 
-export { existsSync } from 'node:fs';
+export { existsSync } from "node:fs";
 
 export function pathJoin(
   prevPath: string | number | (string | number)[],
   nextPath: string | number | (string | number)[],
-  separator = '/',
+  separator = "/",
 ) {
   const handleSinglePath = (singlePath: string | number) => {
     return `${singlePath}`.endsWith(separator)
@@ -25,17 +25,17 @@ export function pathJoin(
 }
 
 export function createPathSync(
-  type: 'file' | 'dir',
+  type: "file" | "dir",
   path: string,
-  content: string = ''
+  content: string = "",
 ) {
-  if (type === 'dir') {
+  if (type === "dir") {
     mkdirSync(path, { recursive: true });
     return;
   }
-  const paths = path.split('/');
+  const paths = path.split("/");
   paths.pop();
-  const dirPath = paths.join('/');
+  const dirPath = paths.join("/");
   mkdirSync(dirPath, { recursive: true });
   writeFileSync(path, content);
 }

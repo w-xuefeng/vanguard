@@ -1,1 +1,1 @@
-export type { IUniResponse } from '@vanguard/shared/types'
+export type { IUniResponse } from "@vanguard/shared/types";

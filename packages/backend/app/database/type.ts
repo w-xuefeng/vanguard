@@ -1,13 +1,13 @@
 import { JSONSafeParse } from "../utils";
 
 export enum IBPType {
-  path = 'path',
-  ip = 'ip'
+  path = "path",
+  ip = "ip",
 }
 
 export interface IBPItem {
   content: string;
-  type: IBPType
+  type: IBPType;
 }
 
 export class GuardRecord {
@@ -21,7 +21,7 @@ export class GuardRecord {
     nextOrigin: string,
     checkers: string[] = [],
     banList: IBPItem[] = [],
-    pickList: IBPItem[] = []
+    pickList: IBPItem[] = [],
   ) {
     this.prefix = prefix;
     this.nextOrigin = nextOrigin;
@@ -34,13 +34,15 @@ export class GuardRecord {
     return JSON.stringify(this);
   }
 
-  static parse(originalRecord?: string | null | GuardRecord | Record<string, any>) {
-    const record = typeof originalRecord === 'string'
+  static parse(
+    originalRecord?: string | null | GuardRecord | Record<string, any>,
+  ) {
+    const record = typeof originalRecord === "string"
       ? JSONSafeParse<GuardRecord>(originalRecord)
       : originalRecord;
 
     if (!record) {
-      return null
+      return null;
     }
 
     return new GuardRecord(
@@ -49,7 +51,7 @@ export class GuardRecord {
       record.checkers,
       record.banList,
       record.pickList,
-    )
+    );
   }
 }
 
@@ -67,16 +69,16 @@ export class User {
   }
 
   static parse(originalRecord?: string | null | User | Record<string, any>) {
-    const record = typeof originalRecord === 'string'
+    const record = typeof originalRecord === "string"
       ? JSONSafeParse<User>(originalRecord)
       : originalRecord;
 
     if (!record) {
-      return null
+      return null;
     }
     return new User(
       record.name,
-      record.password
-    )
+      record.password,
+    );
   }
 }
