@@ -25,6 +25,7 @@
     "@types/toastr": "^2.1.40",
     "@umijs/lint": "^4.0.65",
     "eslint": "^8.38.0",
+    "monaco-editor-webpack-plugin": "^7.0.1",
     "prettier": "^2",
     "prettier-plugin-organize-imports": "^2",
     "prettier-plugin-packagejson": "^2",

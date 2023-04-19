@@ -2,24 +2,6 @@ import { useEffect, useRef, useState } from "react";
 import styles from "./editor.less";
 import * as monaco from "monaco-editor/esm/vs/editor/editor.api";
 
-self.MonacoEnvironment = {
-  getWorkerUrl: function (_moduleId: any, label: string) {
-    if (label === "json") {
-      return "./json.worker.bundle.js";
-    }
-    if (label === "css" || label === "scss" || label === "less") {
-      return "./css.worker.bundle.js";
-    }
-    if (label === "html" || label === "handlebars" || label === "razor") {
-      return "./html.worker.bundle.js";
-    }
-    if (label === "typescript" || label === "javascript") {
-      return "./ts.worker.bundle.js";
-    }
-    return "./editor.worker.bundle.js";
-  },
-};
-
 export interface IEditorProps {
   code: string | Record<string, any> | any[];
 }
@@ -58,6 +40,10 @@ export function Editor(props: IEditorProps) {
       });
       initResizeObserver();
     }
+
+    return () => {
+      editor?.dispose();
+    };
   }, []);
 
   useEffect(() => {

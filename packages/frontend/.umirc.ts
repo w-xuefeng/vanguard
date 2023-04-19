@@ -1,4 +1,5 @@
 import { defineConfig } from "umi";
+import MonacoWebpackPlugin from "monaco-editor-webpack-plugin";
 
 export default defineConfig({
   title: "Vanguard",
@@ -33,21 +34,9 @@ export default defineConfig({
     },
   },
   chainWebpack(memo, args) {
-    memo.entry("editor.worker")
-      .add("monaco-editor/esm/vs/editor/editor.worker.js")
-      .end();
-    memo.entry("json.worker")
-      .add("monaco-editor/esm/vs/language/json/json.worker")
-      .end();
-    memo.entry("css.worker")
-      .add("monaco-editor/esm/vs/language/css/css.worker")
-      .end();
-    memo.entry("html.worker")
-      .add("monaco-editor/esm/vs/language/html/html.worker")
-      .end();
-    memo.entry("ts.worker")
-      .add("monaco-editor/esm/vs/language/typescript/ts.worker")
-      .end();
+    memo.plugin("monaco-editor-webpack-plugin").use(MonacoWebpackPlugin, [
+      { languages: ["json"] },
+    ]);
     return memo;
   },
 });

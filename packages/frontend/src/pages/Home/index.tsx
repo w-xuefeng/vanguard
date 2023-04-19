@@ -30,7 +30,7 @@ const Home: React.FC<IHomeProps> = (props) => {
 
   return (
     <div className={styles.home}>
-      {vIf(!loading, <Editor code={rules[0]} />)}
+      {vIf(!loading, <Editor code={rules} />)}
       <Footer />
     </div>
   );
