@@ -6,10 +6,11 @@ export interface IEditorProps {
   code: string | Record<string, any> | any[];
 }
 
+let editor: monaco.editor.IStandaloneCodeEditor;
+
 export function Editor(props: IEditorProps) {
   const monacoElRef = useRef<HTMLDivElement>(null);
   let resizeObserver: ResizeObserver;
-  let editor: monaco.editor.IStandaloneCodeEditor;
 
   const getCode = (code?: string | Record<string, any>) => {
     return typeof code === "object"

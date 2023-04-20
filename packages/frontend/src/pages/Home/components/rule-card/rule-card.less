@@ -1,0 +1,35 @@
+.rule-card {
+  width: 80%;
+  max-width: 800px;
+  min-width: 300px;
+  margin: 20px;
+  background-color: #333333;
+  transition: all 300ms;
+  cursor: pointer;
+  :global {
+    .ant-card-head {
+      border-bottom-color: #3c3c3c;
+    }
+    .ant-card-head-title {
+      color: #fff;
+    }
+  }
+  .label {
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 20px;
+    color: #858c97;
+    &::after {
+      content: ':';
+    }
+  }
+
+  .value {
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 22px;
+    color: #fff;
+  }
+}

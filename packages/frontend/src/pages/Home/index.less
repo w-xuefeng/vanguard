@@ -2,4 +2,43 @@
   width: 100vw;
   height: 100vh;
   position: relative;
+  .card-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    box-sizing: border-box;
+    padding: 20px;
+    align-items: center;
+    transition: all 500ms;
+    width: 100%;
+    height: calc(100vh - 60px);
+    overflow-x: hidden;
+    overflow-y: auto;
+    &-open {
+      width: 340px;
+    }
+  }
+}
+
+.editor-drawer {
+  .editor-container {
+    width: 100%;
+    height: 100vh;
+    border: 1px solid #3c3c3c;
+  }
+  :global {
+    .ant-drawer-content {
+      background-color: transparent;
+    }
+    .ant-drawer-body {
+      padding: 0;
+      overflow: hidden;
+    }
+  }
+}
+
+@media screen and (max-width: 740px) {
+  .editor-container {
+    width: 100vw;
+  }
 }
