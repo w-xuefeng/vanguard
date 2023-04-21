@@ -1,3 +1,6 @@
+@MEDIA_QUERY_WIDTH: 740px;
+@MIN_RULE_CARD_WIDTH: 350px;
+
 .home {
   width: 100vw;
   height: 100vh;
@@ -14,16 +17,45 @@
     height: calc(100vh - 60px);
     overflow-x: hidden;
     overflow-y: auto;
+
+    &::-webkit-scrollbar {
+      width: 14px;
+    }
+    &::-webkit-scrollbar-corner {
+      background-color: transparent;
+    }
+    &::-webkit-scrollbar-thumb {
+      border-radius: 0;
+      background: #424242;
+    }
+    &::-webkit-scrollbar-track {
+      border-radius: 0;
+      background: #1e1e1e;
+      border-left: 1px solid #424242;
+      border-right: 1px solid #424242;
+    }
+
     &-open {
-      width: 340px;
+      width: @MIN_RULE_CARD_WIDTH;
     }
   }
 }
 
 .editor-drawer {
+  @editor-header-height: 26px;
+  .editor-header {
+    height: @editor-header-height;
+    background-color: #3c3c3c;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    color: #cccccc;
+    padding: 0 10px;
+  }
   .editor-container {
     width: 100%;
-    height: 100vh;
+    height: calc(100vh - @editor-header-height);
     border: 1px solid #3c3c3c;
   }
   :global {
@@ -37,7 +69,7 @@
   }
 }
 
-@media screen and (max-width: 740px) {
+@media screen and (max-width: @MEDIA_QUERY_WIDTH) {
   .editor-container {
     width: 100vw;
   }

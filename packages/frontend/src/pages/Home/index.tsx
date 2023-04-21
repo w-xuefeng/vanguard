@@ -1,15 +1,25 @@
 import * as React from "react";
-import { getAllRules } from "@/services";
-import { IGuardRecord } from "@vanguard/shared/models/rule";
-import { Footer } from "./components/footer/footer";
-import { Editor } from "./components/editor/editor";
-import { vIf } from "@/utils";
-import { Button, Drawer } from "antd";
-import RuleCard from "./components/rule-card/rule-card";
-import styles from "./index.less";
 import classNames from "classnames";
+import RuleCard from "./components/rule-card/rule-card";
+import { Drawer, message, Spin } from "antd";
+import { addRule, getAllRules, modifyRule, removeRule } from "@/services";
+import { Footer } from "./components/footer/footer";
+import { Editor, editor } from "./components/editor/editor";
+import { JSONSafeParse, vIf } from "@/utils";
+import { CloseOutlined, SaveOutlined } from "@ant-design/icons";
+import type { IGuardRecord } from "@vanguard/shared/models/rule";
+import styles from "./index.less";
 
 const MEDIA_QUERY_WIDTH = 740;
+const MIN_RULE_CARD_WIDTH = 350;
+
+const CREATE_RULE_TEMPLATE = {
+  prefix: "prefix",
+  nextOrigin: "https://example.com:8080",
+  banList: [],
+  pickList: [],
+  checkers: [],
+};
 
 interface IHomeProps {}
 
@@ -17,18 +27,18 @@ const Home: React.FC<IHomeProps> = (props) => {
   const [rules, setRules] = React.useState<IGuardRecord[]>([]);
   const [currentRule, setCurrentRule] = React.useState<IGuardRecord>();
   const [loading, setLoading] = React.useState<boolean>(false);
+  const [saving, setSaving] = React.useState<boolean>(false);
   const [openDrawer, setOpenDrawer] = React.useState(false);
+  const [isCreate, setIsCreate] = React.useState(false);
+  const [messageApi, contextHolder] = message.useMessage();
 
   const showDrawer = () => {
     setOpenDrawer(true);
   };
 
   const closeDrawer = () => {
+    setCurrentRule(void 0);
     setOpenDrawer(false);
-  };
-
-  const handleCardClick = (e: IGuardRecord) => {
-    setCurrentRule(e);
   };
 
   async function getRules() {
@@ -43,11 +53,56 @@ const Home: React.FC<IHomeProps> = (props) => {
     setLoading(false);
   }
 
+  const handleCardClick = (e: IGuardRecord) => {
+    setCurrentRule(e);
+  };
+
+  const handleRemove = async (e: IGuardRecord) => {
+    setLoading(true);
+    const rs = await removeRule(e.prefix).req();
+    setLoading(false);
+    if (rs.success) {
+      getRules();
+      messageApi.success("服务删除成功");
+    }
+  };
+
   const getDrawerWidth = () => {
     const clientWidth = document.documentElement.clientWidth;
     return clientWidth <= MEDIA_QUERY_WIDTH
       ? "100%"
-      : `${(clientWidth - 350)}px`;
+      : `${(clientWidth - MIN_RULE_CARD_WIDTH)}px`;
+  };
+
+  const saveRule = async () => {
+    const code = editor?.getValue();
+    const rule = JSONSafeParse<IGuardRecord>(code);
+    if (!rule) {
+      return;
+    }
+    setSaving(true);
+    if (isCreate) {
+      const rs = await addRule(rule).req();
+      if (rs?.success) {
+        messageApi.success("新规则添加成功");
+        setIsCreate(false);
+        closeDrawer();
+        getRules();
+      }
+    } else if (currentRule) {
+      const rs = await modifyRule(currentRule.prefix, rule).req();
+      if (rs?.success) {
+        messageApi.success("规则修改成功");
+        closeDrawer();
+        getRules();
+      }
+    }
+    setSaving(false);
+  };
+
+  const onCreate = () => {
+    setIsCreate(true);
+    setCurrentRule(CREATE_RULE_TEMPLATE);
   };
 
   React.useEffect(() => {
@@ -62,6 +117,7 @@ const Home: React.FC<IHomeProps> = (props) => {
 
   return (
     <div className={styles.home}>
+      {contextHolder}
       <div
         className={classNames(styles["card-list"], {
           [styles["card-list-open"]]: openDrawer,
@@ -70,6 +126,7 @@ const Home: React.FC<IHomeProps> = (props) => {
         {rules.map((e) => (
           <RuleCard
             onClick={() => handleCardClick(e)}
+            onRemove={() => handleRemove(e)}
             rule={e}
             key={e.prefix}
           />
@@ -84,14 +141,23 @@ const Home: React.FC<IHomeProps> = (props) => {
         open={openDrawer}
         closable={false}
       >
-        <div
-          className={styles["editor-container"]}
-        >
-          {vIf(!loading && !!currentRule, <Editor code={currentRule!} />)}
-        </div>
+        <Spin tip="Loading..." spinning={saving}>
+          <div className={styles["editor-header"]}>
+            <div className={styles["editor-header-left"]}>
+              <CloseOutlined onClick={closeDrawer} />
+            </div>
+            <div className={styles["editor-header-right"]}>
+              <SaveOutlined onClick={saveRule} />
+            </div>
+          </div>
+          <div
+            className={styles["editor-container"]}
+          >
+            {vIf(!loading && !!currentRule, <Editor code={currentRule!} />)}
+          </div>
+        </Spin>
       </Drawer>
-
-      <Footer />
+      <Footer onCreate={onCreate} />
     </div>
   );
 };

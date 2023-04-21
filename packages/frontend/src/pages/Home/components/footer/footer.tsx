@@ -4,12 +4,15 @@ import { useStorage } from "@/utils";
 import { LDK } from "@/config/dict";
 import { logoutAfter } from "@/config";
 import { Button } from "antd";
+import { AppstoreAddOutlined } from "@ant-design/icons";
 
 export interface IFooterProps {
+  onCreate?: () => void;
 }
 
 export function Footer(props: IFooterProps) {
   const user = useStorage.getStorage<string>(LDK.USER);
+  const { onCreate } = props;
   return (
     <div className={styles.footer}>
       <div className={styles.avatar}>
@@ -19,6 +22,10 @@ export function Footer(props: IFooterProps) {
         {user}
       </div>
       <div className={styles.actions}>
+        <AppstoreAddOutlined
+          className={styles["icon-btn"]}
+          onClick={onCreate}
+        />
         <svg
           className={styles["icon-btn"]}
           onClick={logoutAfter}

@@ -1,12 +1,12 @@
-import { useEffect, useRef, useState } from "react";
-import styles from "./editor.less";
+import { useEffect, useRef } from "react";
 import * as monaco from "monaco-editor/esm/vs/editor/editor.api";
+import styles from "./editor.less";
 
 export interface IEditorProps {
   code: string | Record<string, any> | any[];
 }
 
-let editor: monaco.editor.IStandaloneCodeEditor;
+export let editor: monaco.editor.IStandaloneCodeEditor;
 
 export function Editor(props: IEditorProps) {
   const monacoElRef = useRef<HTMLDivElement>(null);
