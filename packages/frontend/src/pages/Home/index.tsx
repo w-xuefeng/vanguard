@@ -157,7 +157,7 @@ const Home: React.FC<IHomeProps> = (props) => {
         closable={false}
         mask={false}
       >
-        <Spin spinning={saving}>
+        <Spin spinning={saving} className={styles.saving}>
           <div className={styles["editor-header"]}>
             <div className={styles["editor-header-left"]}>
               <CloseOutlined onClick={closeDrawer} />

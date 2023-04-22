@@ -58,7 +58,7 @@
 }
 
 .editor-drawer {
-  @editor-header-height: 26px;
+  @editor-header-height: 36px;
   .editor-header {
     height: @editor-header-height;
     background-color: #3c3c3c;
@@ -68,11 +68,20 @@
     justify-content: space-between;
     color: #cccccc;
     padding: 0 10px;
+
+    &-left,
+    &-right {
+      font-size: 18px;
+    }
   }
   .editor-container {
     width: 100%;
     height: calc(100vh - @editor-header-height);
     border: 1px solid #3c3c3c;
+  }
+  .saving {
+    min-height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5);
   }
   :global {
     .ant-drawer-content {
