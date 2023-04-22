@@ -20,8 +20,8 @@ export const projectPath = (...paths: string[]) => appPath("..", ...paths);
 export function getDotEnv(mode?: string) {
   const projectEnv = getDotEnvBase(mode);
   return {
-    ...process.env,
     ...projectEnv,
+    ...process.env,
     BUN_MODE: mode,
     __DEV__: mode === "dev",
     __PROD__: mode === "production",
