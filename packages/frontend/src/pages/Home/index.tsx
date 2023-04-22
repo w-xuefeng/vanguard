@@ -5,16 +5,16 @@ import { Drawer, message, Spin } from "antd";
 import { addRule, getAllRules, modifyRule, removeRule } from "@/services";
 import { Footer } from "./components/footer/footer";
 import { Editor, editor } from "./components/editor/editor";
-import { JSONSafeParse, vIf } from "@/utils";
+import { AorB, JSONSafeParse, vIf } from "@/utils";
 import { CloseOutlined, SaveOutlined } from "@ant-design/icons";
 import type { IGuardRecord } from "@vanguard/shared/models/rule";
 import styles from "./index.less";
 
 const MEDIA_QUERY_WIDTH = 740;
-const MIN_RULE_CARD_WIDTH = 350;
+const MIN_RULE_CARD_WIDTH = 400;
 
 const CREATE_RULE_TEMPLATE = {
-  prefix: "prefix",
+  prefix: "new-service-prefix",
   nextOrigin: "https://example.com:8080",
   banList: [],
   pickList: [],
@@ -28,6 +28,7 @@ const Home: React.FC<IHomeProps> = (props) => {
   const [currentRule, setCurrentRule] = React.useState<IGuardRecord>();
   const [loading, setLoading] = React.useState<boolean>(false);
   const [saving, setSaving] = React.useState<boolean>(false);
+  const [removing, setRemoving] = React.useState<boolean>(false);
   const [openDrawer, setOpenDrawer] = React.useState(false);
   const [isCreate, setIsCreate] = React.useState(false);
   const [messageApi, contextHolder] = message.useMessage();
@@ -47,7 +48,7 @@ const Home: React.FC<IHomeProps> = (props) => {
     }
     setLoading(true);
     const rs = await getAllRules().req();
-    if (rs.data?.length) {
+    if (rs.data) {
       setRules(rs.data);
     }
     setLoading(false);
@@ -58,12 +59,15 @@ const Home: React.FC<IHomeProps> = (props) => {
   };
 
   const handleRemove = async (e: IGuardRecord) => {
-    setLoading(true);
+    if (removing) {
+      return;
+    }
+    setRemoving(true);
     const rs = await removeRule(e.prefix).req();
-    setLoading(false);
+    setRemoving(false);
     if (rs.success) {
-      getRules();
       messageApi.success("服务删除成功");
+      getRules();
     }
   };
 
@@ -118,20 +122,31 @@ const Home: React.FC<IHomeProps> = (props) => {
   return (
     <div className={styles.home}>
       {contextHolder}
-      <div
-        className={classNames(styles["card-list"], {
-          [styles["card-list-open"]]: openDrawer,
-        })}
-      >
-        {rules.map((e) => (
-          <RuleCard
-            onClick={() => handleCardClick(e)}
-            onRemove={() => handleRemove(e)}
-            rule={e}
-            key={e.prefix}
-          />
-        ))}
-      </div>
+      <Spin spinning={loading || removing} className={styles.loading}>
+        {vIf(
+          !loading,
+          AorB(
+            rules.length <= 0,
+            <div className={styles.empty}>
+              空空如也, 可点击下方按钮添加服务哦～
+            </div>,
+            <div
+              className={classNames(styles["card-list"], {
+                [styles["card-list-open"]]: openDrawer,
+              })}
+            >
+              {rules.map((e) => (
+                <RuleCard
+                  onClick={() => handleCardClick(e)}
+                  onRemove={() => handleRemove(e)}
+                  rule={e}
+                  key={e.prefix}
+                />
+              ))}
+            </div>,
+          ),
+        )}
+      </Spin>
 
       <Drawer
         rootClassName={styles["editor-drawer"]}
@@ -140,11 +155,15 @@ const Home: React.FC<IHomeProps> = (props) => {
         onClose={closeDrawer}
         open={openDrawer}
         closable={false}
+        mask={false}
       >
-        <Spin tip="Loading..." spinning={saving}>
+        <Spin spinning={saving}>
           <div className={styles["editor-header"]}>
             <div className={styles["editor-header-left"]}>
               <CloseOutlined onClick={closeDrawer} />
+            </div>
+            <div className={styles["editor-title"]}>
+              {currentRule?.prefix?.toLocaleUpperCase()}
             </div>
             <div className={styles["editor-header-right"]}>
               <SaveOutlined onClick={saveRule} />

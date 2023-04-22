@@ -192,8 +192,10 @@ export const AorB = (
   B: JSX.Element | null,
 ) => ((typeof condition === "function" ? condition() : condition) ? A : B);
 
-export const vIf = (condition: boolean | (() => boolean), A: JSX.Element) =>
-  AorB(condition, A, null);
+export const vIf = (
+  condition: boolean | (() => boolean),
+  A: JSX.Element | null,
+) => AorB(condition, A, null);
 
 export function firstLocaleUpperCase(word: string) {
   const lowerCase = word.trim().toLocaleLowerCase();

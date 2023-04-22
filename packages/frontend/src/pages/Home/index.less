@@ -1,5 +1,5 @@
 @MEDIA_QUERY_WIDTH: 740px;
-@MIN_RULE_CARD_WIDTH: 350px;
+@MIN_RULE_CARD_WIDTH: 400px;
 
 .home {
   width: 100vw;
@@ -8,15 +8,15 @@
   .card-list {
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 40px;
     box-sizing: border-box;
     padding: 20px;
     align-items: center;
-    transition: all 500ms;
     width: 100%;
     height: calc(100vh - 60px);
     overflow-x: hidden;
     overflow-y: auto;
+    transition: all 500ms;
 
     &::-webkit-scrollbar {
       width: 14px;
@@ -37,7 +37,23 @@
 
     &-open {
       width: @MIN_RULE_CARD_WIDTH;
+      padding: 0;
+      gap: 20px;
     }
+  }
+  .empty {
+    width: 100%;
+    height: calc(100vh - 60px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #a9a9a9;
+    font-size: 16px;
+  }
+
+  .loading {
+    background-color: rgba(0, 0, 0, 0.5);
+    min-height: calc(100vh - 60px);
   }
 }
 
@@ -70,6 +86,9 @@
 }
 
 @media screen and (max-width: @MEDIA_QUERY_WIDTH) {
+  .card-list {
+    padding: 0;
+  }
   .editor-container {
     width: 100vw;
   }
