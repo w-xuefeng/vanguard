@@ -5,7 +5,11 @@ if hash bun 2>/dev/null; then
 else
   echo '🚀 Start installing Bun ...'
   curl -fsSL https://bun.sh/install | bash
-  sudo ln -s $HOME/.bun/bin/bun /usr/bin
+  {
+    ln -s $HOME/.bun/bin/bun /usr/bin
+  } || {
+    sudo ln -s $HOME/.bun/bin/bun /usr/bin
+  }
   echo '🥰 Bun has been installed!'
   v=$(bun --version)
   echo "👌 Bun version: $v"
