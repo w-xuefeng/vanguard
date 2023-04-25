@@ -1,7 +1,7 @@
 #!/bin/sh
 
 target="dist"
-backend="packages/backend/*"
+backend="packages/backend/."
 
 rm -rf $target
 mkdir $target
