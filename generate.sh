@@ -9,5 +9,3 @@ cp -r $backend $target
 cp check-bun.sh $target/check-bun.sh
 rm -rf $target/runtime
 echo "bun serve" >>$target/vanguard.sh
-
-docker build . -t feuxw/vanguard
