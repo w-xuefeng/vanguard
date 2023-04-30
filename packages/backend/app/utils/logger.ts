@@ -57,6 +57,22 @@ export async function logReq(
   await sLog(record);
 }
 
+export async function logFetch(
+  c: Context,
+  traceId: string,
+  url: string,
+  statusCode?: number,
+  result: string | number | boolean = "",
+) {
+  const ua = c.req.headers.get("User-Agent");
+  const status = statusCode;
+  const ip = getClientIP(c);
+  const record = `${ip} ${
+    traceId ? "trace-id: " + traceId || c.req.headers.get("trace-id") : ""
+  } "${c.req.method} ${url}" ${String(status)} ${ua} ${result}`;
+  await sLog(record);
+}
+
 export async function logReqOk(
   c: Context,
   bodyOrQuery: string | number | boolean | null | object = "",

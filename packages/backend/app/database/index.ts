@@ -29,7 +29,7 @@ export async function queryGuardsByPrefix(prefix?: string) {
     }
     return record;
   } catch (error) {
-    logErr(error, "QueryGuardsByPrefix Error:");
+    logErr(error, `QueryGuardsByPrefix "${prefix}" Error:`);
     return rs;
   }
 }

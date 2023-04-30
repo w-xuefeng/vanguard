@@ -2,13 +2,19 @@ import type { Context } from "hono";
 import type { StatusCode } from "hono/utils/http-status";
 import R from "../utils/r";
 import { HTTP_CODE } from "./const";
-import { logReq, sLog } from "../utils/logger";
+import { logFetch, sLog } from "../utils/logger";
 
 export default async function proxyRequest(url: string, c: Context) {
   await sLog(`Proxy request: '${url}'`);
-  const req = new Request(c.req.raw, new Request(url));
-  const rs = await fetch(url, req);
-  await logReq(c, void 0, rs.status, await rs.clone().text());
+  const urlInstance = new URL(url);
+  const headers = new Headers(c.req.headers);
+  headers.set("host", urlInstance.host);
+  if (!headers.has("trace-id")) {
+    headers.set("trace-id", c.env.traceId);
+  }
+  const req = new Request(c.req.raw, new Request(url, { headers }));
+  const rs = await fetch(req);
+  await logFetch(c, c.env.traceId, url, rs.status, await rs.clone().text());
   return c.newResponse(rs.body, rs.status as StatusCode, rs.headers.toJSON());
 }
 
