@@ -2,21 +2,21 @@ import { useEffect, useRef } from "react";
 import * as monaco from "monaco-editor/esm/vs/editor/editor.api";
 import styles from "./editor.less";
 
-export interface IEditorProps {
-  code: string | Record<string, any> | any[];
-  onSave?: () => void;
+export interface IEditorProps<T = string | Record<string, any> | any[]> {
+  code: T;
+  onSave?: (code?: T) => void;
 }
 
 export let editor: monaco.editor.IStandaloneCodeEditor;
 
-export function Editor(props: IEditorProps) {
+export function Editor<T>(props: IEditorProps<T>) {
   const monacoElRef = useRef<HTMLDivElement>(null);
   let resizeObserver: ResizeObserver;
 
-  const getCode = (code?: string | Record<string, any>) => {
+  const getCode = (code?: T) => {
     return typeof code === "object"
       ? JSON.stringify(code, null, 2)
-      : code ?? "";
+      : (code ?? "") as string;
   };
 
   const resizeObserverCallback = (entries: ResizeObserverEntry[]) => {
@@ -46,7 +46,7 @@ export function Editor(props: IEditorProps) {
           typeof props.onSave === "function"
         ) {
           e.preventDefault();
-          props.onSave();
+          props.onSave(props.code);
         }
       });
       initResizeObserver();

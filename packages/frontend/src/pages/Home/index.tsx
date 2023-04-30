@@ -79,7 +79,7 @@ const Home: React.FC<IHomeProps> = (props) => {
       : `${(clientWidth - MIN_RULE_CARD_WIDTH)}px`;
   };
 
-  const saveRule = async () => {
+  const saveRule = async (current?: IGuardRecord) => {
     const code = editor?.getValue();
     const rule = JSONSafeParse<IGuardRecord>(code);
     if (!rule || saving) {
@@ -94,8 +94,8 @@ const Home: React.FC<IHomeProps> = (props) => {
         closeDrawer();
         getRules();
       }
-    } else if (currentRule) {
-      const rs = await modifyRule(currentRule.prefix, rule).req();
+    } else if (current) {
+      const rs = await modifyRule(current.prefix, rule).req();
       if (rs?.success) {
         messageApi.success("规则修改成功");
         closeDrawer();
@@ -115,8 +115,10 @@ const Home: React.FC<IHomeProps> = (props) => {
   }, []);
 
   React.useEffect(() => {
-    if (currentRule) {
+    if (currentRule && !openDrawer) {
       showDrawer();
+    } else if (!currentRule) {
+      closeDrawer();
     }
   }, [currentRule]);
 
@@ -167,7 +169,7 @@ const Home: React.FC<IHomeProps> = (props) => {
               {currentRule?.prefix?.toLocaleUpperCase()}
             </div>
             <div className={styles["editor-header-right"]}>
-              <SaveOutlined onClick={saveRule} />
+              <SaveOutlined onClick={() => saveRule(currentRule)} />
             </div>
           </div>
           <div
@@ -175,7 +177,11 @@ const Home: React.FC<IHomeProps> = (props) => {
           >
             {vIf(
               !loading && !!currentRule,
-              <Editor code={currentRule!} onSave={saveRule} />,
+              <Editor
+                key={currentRule?.prefix}
+                code={currentRule!}
+                onSave={saveRule}
+              />,
             )}
           </div>
         </Spin>
