@@ -16,10 +16,10 @@ const MIN_RULE_CARD_WIDTH = 400;
 const CREATE_RULE_TEMPLATE = {
   prefix: "new-service-prefix",
   nextOrigin: "https://example.com:8080",
-  ignorePrefix: false,
   banList: [],
   pickList: [],
   checkers: [],
+  ignorePrefix: false,
 };
 
 interface IHomeProps {}
@@ -82,7 +82,7 @@ const Home: React.FC<IHomeProps> = (props) => {
   const saveRule = async () => {
     const code = editor?.getValue();
     const rule = JSONSafeParse<IGuardRecord>(code);
-    if (!rule) {
+    if (!rule || saving) {
       return;
     }
     setSaving(true);
@@ -173,7 +173,10 @@ const Home: React.FC<IHomeProps> = (props) => {
           <div
             className={styles["editor-container"]}
           >
-            {vIf(!loading && !!currentRule, <Editor code={currentRule!} />)}
+            {vIf(
+              !loading && !!currentRule,
+              <Editor code={currentRule!} onSave={saveRule} />,
+            )}
           </div>
         </Spin>
       </Drawer>

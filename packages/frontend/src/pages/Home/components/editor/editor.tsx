@@ -4,6 +4,7 @@ import styles from "./editor.less";
 
 export interface IEditorProps {
   code: string | Record<string, any> | any[];
+  onSave?: () => void;
 }
 
 export let editor: monaco.editor.IStandaloneCodeEditor;
@@ -39,12 +40,17 @@ export function Editor(props: IEditorProps) {
         theme: "vs-dark",
         language: "json",
       });
+      editor.onKeyDown((e) => {
+        if (
+          (e.ctrlKey || e.metaKey) && e.keyCode === monaco.KeyCode.KeyS &&
+          typeof props.onSave === "function"
+        ) {
+          e.preventDefault();
+          props.onSave();
+        }
+      });
       initResizeObserver();
     }
-
-    return () => {
-      editor?.dispose();
-    };
   }, []);
 
   useEffect(() => {
