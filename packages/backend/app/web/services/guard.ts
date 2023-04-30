@@ -6,9 +6,9 @@ import R, {
 } from "../../utils/r";
 import { RuleDAO, UserDAO } from "../../database/dao";
 import { GuardRecord, User } from "../../database/type";
-import { logReqOk } from "../../utils/logger";
+import { logReqFail, logReqOk } from "../../utils/logger";
 import { encodeUserPassword } from "../../utils";
-import { EMPTY_PLACEHOLDER } from "../../guard/const";
+import { EMPTY_PLACEHOLDER, HTTP_CODE, HTTP_MSG } from "../../guard/const";
 import { encodeToken } from "../../utils/token";
 
 /**
@@ -71,6 +71,11 @@ export async function postGuardRule(c: Context) {
   }
 
   const rs = await RuleDAO.addRecord(rules);
+  if (!rs) {
+    await logReqFail(c, HTTP_CODE.RULE_EXIST, body, rs);
+    return c.json(R.fail(HTTP_CODE.RULE_EXIST, HTTP_MSG.RULE_EXIST));
+  }
+
   await logReqOk(c, body, rs);
   return c.json(R.ok(rs));
 }
@@ -101,6 +106,11 @@ export async function modifyGuardRule(c: Context) {
   }
 
   const rs = await RuleDAO.modifyRecord(body.prefix, nextRule!);
+  if (!rs) {
+    await logReqFail(c, HTTP_CODE.MODIFY_FAIL, body, rs);
+    return c.json(R.fail(HTTP_CODE.MODIFY_FAIL, HTTP_MSG.MODIFY_FAIL));
+  }
+
   await logReqOk(c, body, rs);
   return c.json(R.ok(rs));
 }
@@ -203,6 +213,11 @@ export async function postUser(c: Context) {
     users.map((u) => encodeUserPassword(u)),
   );
   const rs = await UserDAO.addUser(encodeUsers);
+  if (!rs) {
+    await logReqFail(c, HTTP_CODE.USER_EXIST, body, rs);
+    return c.json(R.fail(HTTP_CODE.USER_EXIST, HTTP_MSG.USER_EXIST));
+  }
+
   await logReqOk(c, body, rs);
   return c.json(R.ok(rs));
 }
@@ -233,6 +248,11 @@ export async function modifyUser(c: Context) {
   }
 
   const rs = await UserDAO.modifyUser(body.name, nextUser!);
+  if (!rs) {
+    await logReqFail(c, HTTP_CODE.MODIFY_FAIL, body, rs);
+    return c.json(R.fail(HTTP_CODE.MODIFY_FAIL, HTTP_MSG.MODIFY_FAIL));
+  }
+
   await logReqOk(c, body, rs);
   return c.json(R.ok(rs));
 }

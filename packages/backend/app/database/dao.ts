@@ -20,6 +20,10 @@ export class RuleDAO {
   }
 
   static async addRecord(record: GuardRecord[]) {
+    const all = await this.getAllRecords();
+    if (record.some((r) => all.some((e) => e.value?.prefix === r.prefix))) {
+      return 0;
+    }
     const prefixes = record.map((e) => e.prefix).join(",");
     const client = await connectRedis(`[RuleDAO] Adding '${prefixes}' record`);
     const rs = await client.sAdd(RULE_SET_KEY, record.map((e) => e.toString()));
@@ -53,6 +57,9 @@ export class RuleDAO {
   }
 
   static async modifyRecord(prefix: string, next: GuardRecord) {
+    if (prefix !== next.prefix) {
+      return 0;
+    }
     await this.removeRecord(prefix);
     const rs = await this.addRecord([next]);
     return rs;
@@ -78,6 +85,10 @@ export class UserDAO {
   }
 
   static async addUser(users: User[]) {
+    const all = await this.getAllUser();
+    if (users.some((u) => all.some((e) => e.value?.name === u.name))) {
+      return 0;
+    }
     const names = users.map((e) => e.name).join(",");
     const client = await connectRedis(`[UserDAO] Adding '${names}' users`);
     const rs = await client.sAdd(USER_SET_KEY, users.map((e) => e.toString()));
@@ -110,6 +121,9 @@ export class UserDAO {
   }
 
   static async modifyUser(name: string, next: User) {
+    if (name !== next.name) {
+      return 0;
+    }
     await this.removeUser(name);
     const rs = await this.addUser([next]);
     return rs;

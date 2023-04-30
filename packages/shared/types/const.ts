@@ -11,6 +11,9 @@ export enum HTTP_CODE {
   UNAUTHORIZED = 410,
   AUTH_EXPIRED = 411,
   ILLEGAL_ACCESS = 412,
+  USER_EXIST = 413,
+  RULE_EXIST = 414,
+  MODIFY_FAIL = 415,
 }
 
 export enum HTTP_MSG {
@@ -26,4 +29,7 @@ export enum HTTP_MSG {
   UNAUTHORIZED = "Unauthorized access",
   AUTH_EXPIRED = "Authorization expiration",
   ILLEGAL_ACCESS = "Illegal access",
+  USER_EXIST = "User already exists",
+  RULE_EXIST = "Rule already exists",
+  MODIFY_FAIL = "Modification failed",
 }
