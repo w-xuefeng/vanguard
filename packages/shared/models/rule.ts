@@ -14,4 +14,5 @@ export interface IGuardRecord {
   banList: IBPItem[];
   pickList: IBPItem[];
   checkers: string[];
+  ignorePrefix?: boolean;
 }

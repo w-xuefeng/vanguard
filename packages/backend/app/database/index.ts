@@ -16,6 +16,7 @@ export async function queryGuardsByPrefix(prefix?: string) {
     pickList: [] as IBPItem[],
     checkers: [] as string[],
     nextOrigin: "",
+    ignorePrefix: false,
   };
   if (!prefix) {
     return rs;

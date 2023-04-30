@@ -6,7 +6,8 @@ import { logReq, sLog } from "../utils/logger";
 
 export default async function proxyRequest(url: string, c: Context) {
   await sLog(`Proxy request: '${url}'`);
-  const rs = await fetch(url, c.req.raw);
+  const req = new Request(c.req.raw, new Request(url));
+  const rs = await fetch(url, req);
   await logReq(c, void 0, rs.status, await rs.clone().text());
   return c.newResponse(rs.body, rs.status as StatusCode, rs.headers.toJSON());
 }

@@ -44,6 +44,14 @@ export default function RuleCard(props: IRuleCardProps) {
         </Row>
         <Row gutter={16}>
           <Col className={styles["label"]} span={10}>
+            请求时是否忽略前缀
+          </Col>
+          <Col className={styles["value"]} span={14}>
+            {rule.ignorePrefix ? "忽略" : "不忽略"}
+          </Col>
+        </Row>
+        <Row gutter={16}>
+          <Col className={styles["label"]} span={10}>
             黑名单数
           </Col>
           <Col className={styles["value"]} span={14}>{rule.banList.length}</Col>

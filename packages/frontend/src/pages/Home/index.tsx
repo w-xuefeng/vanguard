@@ -16,6 +16,7 @@ const MIN_RULE_CARD_WIDTH = 400;
 const CREATE_RULE_TEMPLATE = {
   prefix: "new-service-prefix",
   nextOrigin: "https://example.com:8080",
+  ignorePrefix: false,
   banList: [],
   pickList: [],
   checkers: [],

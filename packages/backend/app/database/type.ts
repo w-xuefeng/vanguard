@@ -16,18 +16,21 @@ export class GuardRecord {
   banList: IBPItem[];
   pickList: IBPItem[];
   checkers: string[];
+  ignorePrefix?: boolean;
   constructor(
     prefix: string,
     nextOrigin: string,
     checkers: string[] = [],
     banList: IBPItem[] = [],
     pickList: IBPItem[] = [],
+    ignorePrefix = false,
   ) {
     this.prefix = prefix;
     this.nextOrigin = nextOrigin;
     this.checkers = checkers;
     this.banList = banList;
     this.pickList = pickList;
+    this.ignorePrefix = ignorePrefix;
   }
 
   toString() {
@@ -51,6 +54,7 @@ export class GuardRecord {
       record.checkers,
       record.banList,
       record.pickList,
+      record.ignorePrefix,
     );
   }
 }

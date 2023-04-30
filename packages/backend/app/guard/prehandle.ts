@@ -12,6 +12,7 @@ export default async function prehandle(c: Context) {
     pickList = [],
     checkers = [],
     nextOrigin = "",
+    ignorePrefix = false,
   } = await queryGuardsByPrefix(prefix);
 
   const urlInstance = new URL(rawUrl);
@@ -20,7 +21,7 @@ export default async function prehandle(c: Context) {
     : undefined;
 
   return {
-    url,
+    url: url && prefix && ignorePrefix ? url.replace(`/${prefix}`, "") : url,
     checkers,
     ban: ban(c, banList),
     pick: pick(c, pickList),
