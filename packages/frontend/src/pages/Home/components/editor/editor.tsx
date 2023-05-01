@@ -4,7 +4,7 @@ import styles from "./editor.less";
 
 export interface IEditorProps<T = string | Record<string, any> | any[]> {
   code: T;
-  onSave?: (code?: T) => void;
+  onSave?: () => void;
 }
 
 export let editor: monaco.editor.IStandaloneCodeEditor;
@@ -46,7 +46,7 @@ export function Editor<T>(props: IEditorProps<T>) {
           typeof props.onSave === "function"
         ) {
           e.preventDefault();
-          props.onSave(props.code);
+          props.onSave();
         }
       });
       initResizeObserver();

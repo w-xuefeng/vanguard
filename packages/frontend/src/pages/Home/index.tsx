@@ -56,6 +56,7 @@ const Home: React.FC<IHomeProps> = (props) => {
   }
 
   const handleCardClick = (e: IGuardRecord) => {
+    setIsCreate(false);
     setCurrentRule(e);
   };
 
@@ -79,7 +80,7 @@ const Home: React.FC<IHomeProps> = (props) => {
       : `${(clientWidth - MIN_RULE_CARD_WIDTH)}px`;
   };
 
-  const saveRule = async (current?: IGuardRecord) => {
+  const saveRule = async () => {
     const code = editor?.getValue();
     const rule = JSONSafeParse<IGuardRecord>(code);
     if (!rule || saving) {
@@ -94,8 +95,8 @@ const Home: React.FC<IHomeProps> = (props) => {
         closeDrawer();
         getRules();
       }
-    } else if (current) {
-      const rs = await modifyRule(current.prefix, rule).req();
+    } else if (currentRule) {
+      const rs = await modifyRule(currentRule.prefix, rule).req();
       if (rs?.success) {
         messageApi.success("规则修改成功");
         closeDrawer();
@@ -108,6 +109,14 @@ const Home: React.FC<IHomeProps> = (props) => {
   const onCreate = () => {
     setIsCreate(true);
     setCurrentRule(CREATE_RULE_TEMPLATE);
+  };
+
+  const onRootClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    if (
+      (e.target as HTMLDivElement).classList.contains(styles["card-list-open"])
+    ) {
+      closeDrawer();
+    }
   };
 
   React.useEffect(() => {
@@ -123,7 +132,7 @@ const Home: React.FC<IHomeProps> = (props) => {
   }, [currentRule]);
 
   return (
-    <div className={styles.home}>
+    <div className={styles.home} onClick={onRootClick}>
       {contextHolder}
       <Spin spinning={loading || removing} className={styles.loading}>
         {vIf(
@@ -166,10 +175,11 @@ const Home: React.FC<IHomeProps> = (props) => {
               <CloseOutlined onClick={closeDrawer} />
             </div>
             <div className={styles["editor-title"]}>
+              {isCreate ? "创建" : "编辑"} -{" "}
               {currentRule?.prefix?.toLocaleUpperCase()}
             </div>
             <div className={styles["editor-header-right"]}>
-              <SaveOutlined onClick={() => saveRule(currentRule)} />
+              <SaveOutlined onClick={saveRule} />
             </div>
           </div>
           <div
