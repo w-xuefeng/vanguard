@@ -13,8 +13,9 @@
     "start": "run-p dev:fe dev:be",
     "start-pd": "bun run build:fe && bun run start-pd:be",
     "start-pd:be": "cd packages/backend && bun run start",
+    "serve": "cd packages/backend && bun run serve",
     "build:fe": "cd packages/frontend && bun run build",
-    "build": "bun run build:fe && sh generate.sh",
+    "build": "bun run build:fe",
     "lint:fe": "cd packages/frontend && bun run lint"
   },
   "dependencies": {
