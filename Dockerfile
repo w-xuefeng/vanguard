@@ -1,12 +1,11 @@
-FROM node:18
+FROM oven/bun
 
 WORKDIR /usr/src/app
 
-COPY dist/. .
-
-RUN sh check-bun.sh
+COPY dist/. /usr/src/app
 
 RUN bun i
 
 EXPOSE 7087
+
 CMD [ "pm2", "start", "vanguard.sh"]
