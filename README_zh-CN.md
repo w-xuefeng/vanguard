@@ -50,10 +50,15 @@ docker run -id --name=vanguard -p 8080:7087 vanguard
 git clone https://github.com/w-xuefeng/vanguard.git
 ```
 
-2. 进入项目目录，启动服务，服务默认使用端口 7087
+2. 进入项目目录，安装依赖，启动服务，服务默认使用端口 7087
 
 ```shell
 cd vanguard
+
+npm run i
+# 将自动安装 bun 及项目依赖，如果安装 bun 失败，可使用以下命令手动安装:
+# curl -fsSL https://bun.sh/install | bash
+
 bun serve
 ```
 

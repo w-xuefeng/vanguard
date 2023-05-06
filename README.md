@@ -50,10 +50,15 @@ docker run -id --name=vanguard -p 8080:7087 vanguard
 git clone https://github.com/w-xuefeng/vanguard.git
 ```
 
-2. Go to the project directory and start the service, which uses port 7087 by default
+2. Enter the project directory, install the dependencies and start the service, which uses port 7087 by default
 
 ```shell
 cd vanguard
+
+npm run i
+# The bun and project dependencies will be installed automatically. If the installation of the bun fails, you can install it manually using the following command:
+# curl -fsSL https://bun.sh/install | bash
+
 bun serve
 ```
 
