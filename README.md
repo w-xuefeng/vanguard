@@ -18,8 +18,28 @@
 - Support for custom interceptors/checkers
 - Support access path black/white list
 - Support visit ip black/white list
+- More features and experience optimization continue to be improved...
 
 ## How to use
+
+### Configure production environment variables
+
+_Configure_ in `packages/backend/.env.production` as required
+
+```toml
+BE_PORT=7087
+# Service run port
+
+FE_PATH=app/web/views
+# Front-end page path
+
+DBC=redis://127.0.0.1:6379
+# redis database connection address
+# The format is redis[s]://[[username][:password]@][host][:port][/db-number]
+
+LOG_PATH=runtime/logs
+# Runtime Log Directory
+```
 
 ### Using Docker
 
@@ -29,7 +49,9 @@
 git clone https://github.com/w-xuefeng/vanguard.git
 ```
 
-2. Go to the project directory and build the image
+2. Enter the project directory and build the image
+
+   _Note: redis is not included in the docker environment, you can use a remote redis connection or install it manually outside the container and configure it in the environment variables_
 
 ```shell
 cd vanguard
@@ -52,6 +74,8 @@ git clone https://github.com/w-xuefeng/vanguard.git
 
 2. Enter the project directory, install the dependencies and start the service, which uses port 7087 by default
 
+   _Note: redis needs to be installed and configured in advance, either using a remote redis connection or installed locally and configured in the environment variable_
+
 ```shell
 cd vanguard
 
@@ -63,3 +87,68 @@ bun serve
 ```
 
 Visit the service path `/_` to access the configuration screen
+
+## Development Debugging
+
+1. Environmental Preparation
+
+Install bun
+
+```shell
+curl -fsSL https://bun.sh/install | bash
+```
+
+[Install redis](https://redis.io/docs/getting-started/installation/)，If there is a remote redis available, you can use the remote connection
+
+```toml
+DBC=redis[s]://[[username][:password]@][host][:port][/db-number]
+```
+
+2. Clone this project
+
+```shell
+git clone https://github.com/w-xuefeng/vanguard.git
+```
+
+3. Enter the project directory, install the dependencies, and start the service
+
+   _The front-end project uses port 7086 by default, and the server uses port 7087 by default._
+
+```shell
+cd vanguard
+bun run i
+bun start
+```
+
+Visit the service path `http://localhost:7086/_` or `http://localhost:7087/_`
+to access the configuration
+
+4. Directory Structure
+
+```
+🛡︎ vanguard
+ └ 📦 packages
+    ├ 📂 backend
+    | └ 📂 app
+    |   ├ 🛢️ database
+    |   ├ 📜 guard
+    |   ├ 🛠️ utils
+    |   ├ 📑 web
+    |   └ index.ts
+    |
+    ├ 📂 frontend
+    | ├ 📜 .umirc.ts
+    | └ 📂 src
+    |   ├ 📜 assets
+    |   ├ 📜 config
+    |   ├ 📜 hooks
+    |   ├ 📜 layout
+    |   ├ 📜 pages
+    |   ├ 📜 services
+    |   ├ 📜 utils
+    |   └ 📜 wrappers
+    |
+    └ 📂 shared
+        ├ 📜 models
+        └ 📜 types
+```
