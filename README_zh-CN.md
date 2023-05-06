@@ -26,7 +26,7 @@
 
 _根据需求在 `packages/backend/.env.production` 中配置_
 
-```toml
+```dotenv
 BE_PORT=7087
 # 服务运行端口
 
@@ -100,7 +100,7 @@ curl -fsSL https://bun.sh/install | bash
 
 [安装 redis](https://redis.io/docs/getting-started/installation/)，如果有可用的远程 redis, 可以使用远程连接
 
-```toml
+```dotenv
 DBC=redis[s]://[[username][:password]@][host][:port][/db-number]
 ```
 

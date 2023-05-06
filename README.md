@@ -26,7 +26,7 @@
 
 _Configure_ in `packages/backend/.env.production` as required
 
-```toml
+```dotenv
 BE_PORT=7087
 # Service run port
 
@@ -100,7 +100,7 @@ curl -fsSL https://bun.sh/install | bash
 
 [Install redis](https://redis.io/docs/getting-started/installation/)，If there is a remote redis available, you can use the remote connection
 
-```toml
+```dotenv
 DBC=redis[s]://[[username][:password]@][host][:port][/db-number]
 ```
 
