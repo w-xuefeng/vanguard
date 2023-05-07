@@ -4,16 +4,16 @@
   "scripts": {
     "bun-i": "bun install",
     "dev": "bun run --hot app/index.ts --mode dev",
-    "start": "bun run --hot app/index.ts --mode production",
-    "serve": "bun run app/index.ts --mode production"
+    "serve": "bun run app/index.ts --mode production",
+    "start": "bun run --hot app/index.ts --mode production"
   },
   "dependencies": {
     "colors": "^1.4.0",
     "dotenv": "^16.0.3",
-    "hono": "^3.1.5",
+    "hono": "^3.1.8",
     "js-base64": "^3.7.5",
     "minimist": "^1.2.8",
-    "redis": "^4.6.5"
+    "redis": "^4.6.6"
   },
   "devDependencies": {
     "@types/js-base64": "^3.3.1",
