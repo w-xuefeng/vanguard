@@ -1,9 +1,9 @@
 import type { Context, Next } from "hono";
+import { HTTP_CODE } from "../guard/const";
 import { env } from "./env";
 import { createPathSync, existsSync, pathJoin } from "./file";
 import { getClientIP } from ".";
-import * as colors from "colors";
-import { HTTP_CODE } from "../guard/const";
+import colors from "colors";
 
 export async function logToFile(content: string, rootPath: string) {
   try {
