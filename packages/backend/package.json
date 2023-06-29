@@ -10,14 +10,14 @@
   "dependencies": {
     "colors": "^1.4.0",
     "dotenv": "^16.0.3",
-    "hono": "^3.1.8",
+    "hono": "^3.2.7",
     "js-base64": "^3.7.5",
     "minimist": "^1.2.8",
-    "redis": "^4.6.6"
+    "redis": "^4.6.7"
   },
   "devDependencies": {
     "@types/js-base64": "^3.3.1",
     "@types/minimist": "^1.2.2",
-    "bun-types": "^0.5.8"
+    "bun-types": "^0.6.11"
   }
 }
