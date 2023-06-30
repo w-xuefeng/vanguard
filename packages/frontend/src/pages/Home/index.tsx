@@ -8,7 +8,7 @@ import { Editor, editor } from "./components/editor/editor";
 import { AorB, JSONSafeParse, vIf } from "@/utils";
 import { CloseOutlined, SaveOutlined } from "@ant-design/icons";
 import type { IGuardRecord } from "@vanguard/shared/models/rule";
-import styles from "./index.less";
+import styles from "./style.less";
 
 const MEDIA_QUERY_WIDTH = 740;
 const MIN_RULE_CARD_WIDTH = 400;
