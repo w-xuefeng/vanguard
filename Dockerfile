@@ -14,4 +14,6 @@ RUN npm install -g pm2
 RUN bun i
 EXPOSE 7087
 
+ARG DBC
+ENV DBC=$DBC
 ENTRYPOINT [ "pm2-runtime", "start", "bun", "--", "serve" ]
