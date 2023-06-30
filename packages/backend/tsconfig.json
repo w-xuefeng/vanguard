@@ -11,7 +11,7 @@
     "removeComments": true,
     "isolatedModules": true,
     "resolveJsonModule": true,
-    "preserveValueImports": true,
+    "verbatimModuleSyntax": true,
     "moduleResolution": "node",
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
@@ -31,7 +31,6 @@
     ],
     "strict": true,
     "jsx": "react-jsx",
-    "jsxFragmentFactory": "Fragment",
     "jsxImportSource": "hono/jsx",
     "types": [
       "bun-types"
