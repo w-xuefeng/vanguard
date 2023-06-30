@@ -9,8 +9,9 @@ RUN curl -sL https://deb.nodesource.com/setup_18.x  | bash -
 RUN apt-get -y install nodejs
 RUN echo "NODE Version:" && node --version
 RUN echo "NPM Version:" && npm --version
+RUN npm install -g pm2
 
 RUN bun i
 EXPOSE 7087
 
-CMD ["bun", "serve"]
+ENTRYPOINT [ "pm2-runtime", "start", "bun", "--", "serve" ]
