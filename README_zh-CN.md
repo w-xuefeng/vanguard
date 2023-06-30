@@ -56,6 +56,7 @@ git clone https://github.com/w-xuefeng/vanguard.git
 ```shell
 cd vanguard
 docker build -t vanguard .
+# docker build -t vanguard . --build-arg DBC=redis://127.0.0.1:6379
 ```
 
 3. 运行镜像，docker 容器内部服务默认使用端口 7087，映射容器外端口 8080

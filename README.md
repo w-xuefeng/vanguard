@@ -56,6 +56,7 @@ git clone https://github.com/w-xuefeng/vanguard.git
 ```shell
 cd vanguard
 docker build -t vanguard .
+# docker build -t vanguard . --build-arg DBC=redis://127.0.0.1:6379
 ```
 
 3. Run the image, docker container internal services use port 7087 by default, mapped outside the container port 8080
