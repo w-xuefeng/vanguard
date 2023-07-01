@@ -17,6 +17,9 @@ export async function connectRedis(cause?: string) {
   client.on("error", async (err) => {
     await logErr(err, "Redis Client Error:");
   });
+  if (client.isReady || client.isOpen) {
+    return client;
+  }
   await client.connect();
   return client;
 }
