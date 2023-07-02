@@ -2,12 +2,11 @@ import { env } from "../utils/env";
 import { createClient } from "redis";
 import { logErr, sLog } from "../utils/logger";
 
-const client = createClient({ url: env.DBC });
-
 export const RULE_SET_KEY = "vanguard-rules";
 export const USER_SET_KEY = "vanguard-users";
 
 export async function connectRedis(cause?: string) {
+  const client = createClient({ url: env.DBC });
   client.on("connect", async () => {
     await sLog(`Redis Client Connect ${cause ? `for ${cause}` : ""}`);
   });

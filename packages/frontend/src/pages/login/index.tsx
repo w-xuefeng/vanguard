@@ -7,8 +7,9 @@ import { Input, type InputRef } from "antd";
 import { login } from "@/services";
 import { useAuth } from "@/hooks/use-auth";
 import { history } from "umi";
-import styles from "./style.less";
 import { loginAfter } from "@/config";
+import { vIf } from "@/utils";
+import styles from "./style.less";
 
 interface ILoginProps {}
 
@@ -24,6 +25,7 @@ const Login: React.FC<ILoginProps> = (props) => {
   const [passwordIsFocus, setPasswordIsFocus] = useState(false);
   const [nameError, setNameError] = useState(false);
   const [passwordError, setPasswordError] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const dividerClassName = classNames([
     styles["divider"],
@@ -86,7 +88,13 @@ const Login: React.FC<ILoginProps> = (props) => {
       return;
     }
 
+    if (loading) {
+      return;
+    }
+
+    setLoading(true);
     const rs = await login({ name, password }).req();
+    setLoading(false);
 
     if (rs?.data) {
       loginAfter(rs.data);
@@ -150,6 +158,12 @@ const Login: React.FC<ILoginProps> = (props) => {
           />
         </div>
       </div>
+      {vIf(
+        loading,
+        <div className={styles.loading}>
+          <div className={styles["loading-item"]}>Loading</div>
+        </div>,
+      )}
     </div>
   );
 };

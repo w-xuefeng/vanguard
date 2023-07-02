@@ -71,6 +71,143 @@
   }
 }
 
+.loading {
+  width: 100vw;
+  height: 100vh;
+  background-color: #1a262a;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+
+  @bg: #17262b;
+  @glow1: #00d8ff;
+  @glow2: #ff3f00;
+  @glow3: #3bff00;
+
+  @size: 5em;
+
+  .loading-item {
+    cursor: pointer;
+    font-size: 0.5em;
+    color: white;
+    font-weight: 100;
+    width: @size*1.8;
+    height: @size*1.8;
+    line-height: @size*1.8;
+    text-align: center;
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    margin-left: -(@size / 2);
+    margin-top: -(@size / 2);
+    border-radius: 100%;
+
+    border: 2px solid @glow1;
+
+    box-shadow: 0 0 0 0 @bg, 0 0 2px 3px @glow1, 0 0 4px 25px @bg,
+      0 0 1px 32px @bg, 0 0 32px 25px @glow1, 0 0 32px 25px @bg;
+
+    animation: pulse 1.4s linear infinite;
+    transition: all 0.3s ease;
+
+    &:before {
+      @multi: 1.55;
+
+      box-sizing: border-box;
+
+      content: '';
+      border-radius: 100%;
+
+      animation: rotate 0.45s linear infinite;
+
+      transition: opacity 1s ease 0.6s, border 0.4s ease 0s,
+        width 0.4s ease 0.2s, height 0.4s ease 0.2s, margin 0.4s ease 0.2s;
+
+      position: absolute;
+      left: 50%;
+      top: 50%;
+
+      width: @size* @multi;
+      height: @size* @multi;
+      margin-left: -((@size* @multi)/2);
+      margin-top: -((@size* @multi)/2);
+
+      border-top: 1px solid @glow3;
+      border-bottom: 1px solid @glow2;
+    }
+
+    &.danger {
+      border-color: @glow2;
+      box-shadow: 0 0 10px 2px @glow2;
+      animation: none;
+
+      &:before {
+        border-color: @glow2;
+        opacity: 0;
+
+        @multi: 7;
+        width: @size* @multi;
+        height: @size* @multi;
+        margin-left: -((@size* @multi)/2);
+        margin-top: -((@size* @multi)/2);
+      }
+    }
+
+    &.ok {
+      border-color: @glow3;
+      box-shadow: 0 0 10px 0px @glow3;
+      animation: none;
+
+      &:before {
+        border-color: @glow3;
+        opacity: 0;
+
+        @multi: 1.6;
+        width: @size* @multi;
+        height: @size* @multi;
+        margin-left: -((@size* @multi)/2);
+        margin-top: -((@size* @multi)/2);
+      }
+    }
+  }
+
+  @keyframes rotate {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+
+  @keyframes pulse {
+    0% {
+      box-shadow: 0 0 0 0 @bg, 0 0 2px 3px @glow1, 0 0 1px 32px @bg,
+        0 0 32px 25px @glow1;
+    }
+
+    49.9% {
+      box-shadow: 0 0 1px 32px @bg, 0 0 32px 25px @glow1, 0 0 1px 64px @bg,
+        0 0 60px 25px @glow1;
+    }
+
+    50% {
+      box-shadow: 0 0 0 0 @bg, 0 0 2px 3px @glow1, 0 0 1px 32px @bg,
+        0 0 32px 25px @glow1;
+    }
+
+    100% {
+      box-shadow: 0 0 1px 32px @bg, 0 0 32px 25px @glow1, 0 0 1px 64px @bg,
+        0 0 60px 25px @glow1;
+    }
+  }
+}
+
 @media screen and (max-width: 740px) {
   .login-page {
     .cover {
