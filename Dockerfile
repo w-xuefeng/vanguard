@@ -1,4 +1,4 @@
-FROM feuxw/bun-node:1.1
+FROM feuxw/bun-node:1.2
 
 WORKDIR /usr/src/app
 COPY . /usr/src/app
