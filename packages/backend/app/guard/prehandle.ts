@@ -4,7 +4,7 @@ import { ban, pick } from "./bp";
 import { nanoid } from "nanoid";
 
 export function handleTrace(c: Context) {
-  c.env.traceId = c.req.headers.get("trace-id") || nanoid(36);
+  c.env.traceId = c.req.header("trace-id") || nanoid(36);
 }
 
 export default async function prehandle(c: Context) {

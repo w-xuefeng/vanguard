@@ -54,8 +54,7 @@ export async function postGuardRule(c: Context) {
   if (!hasBody) {
     return res;
   }
-  const body = await new Response(c.req.body)
-    .json() as (GuardRecord | GuardRecord[]);
+  const body = await c.req.json() as (GuardRecord | GuardRecord[]);
   const rules = (body ? Array.isArray(body) ? body : [body] : [])
     .map((e) => GuardRecord.parse(e))
     .filter((e) => !!e) as GuardRecord[];
@@ -89,7 +88,7 @@ export async function modifyGuardRule(c: Context) {
   if (!hasBody) {
     return res;
   }
-  const body = await new Response(c.req.body).json() as {
+  const body = await c.req.json() as {
     prefix: string;
     next: GuardRecord;
   };
@@ -124,7 +123,7 @@ export async function removeGuardRule(c: Context) {
   if (!hasBody) {
     return res;
   }
-  const body = await new Response(c.req.body).json() as { prefix: string };
+  const body = await c.req.json() as { prefix: string };
   const exception = await checkException(
     c,
     !body?.prefix,
@@ -195,7 +194,7 @@ export async function postUser(c: Context) {
   if (!hasBody) {
     return res;
   }
-  const body = await new Response(c.req.body).json() as (User | User[]);
+  const body = await c.req.json() as (User | User[]);
   const users = (body ? Array.isArray(body) ? body : [body] : [])
     .map((e) => User.parse(e))
     .filter((e) => !!e) as User[];
@@ -231,7 +230,7 @@ export async function modifyUser(c: Context) {
   if (!hasBody) {
     return res;
   }
-  const body = await new Response(c.req.body).json() as {
+  const body = await c.req.json() as {
     name: string;
     next: User;
   };
@@ -266,7 +265,7 @@ export async function removeUser(c: Context) {
   if (!hasBody) {
     return res;
   }
-  const body = await new Response(c.req.body).json() as { name: string };
+  const body = await c.req.json() as { name: string };
   const exception = await checkException(c, !body?.name, body, "MISSING_BODY");
   if (exception.res) {
     return exception.res;
@@ -281,7 +280,7 @@ export async function login(c: Context) {
   if (!hasBody) {
     return res;
   }
-  const body = await new Response(c.req.body).json() as User;
+  const body = await c.req.json() as User;
   const user = User.parse(body);
 
   const exception = await checkException(

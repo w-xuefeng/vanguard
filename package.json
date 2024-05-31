@@ -19,7 +19,7 @@
     "lint:fe": "cd packages/frontend && bun run lint"
   },
   "dependencies": {
-    "nanoid": "^4.0.2"
+    "nanoid": "^5.0.7"
   },
   "devDependencies": {
     "@types/node": "latest",

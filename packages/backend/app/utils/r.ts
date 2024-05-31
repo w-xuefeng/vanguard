@@ -30,11 +30,11 @@ export default class R {
 }
 
 export async function bodyCheck(c: Context) {
-  if (!c.req.body) {
+  if (!c.req.raw.body) {
     await logReqFail(
       c,
       HTTP_CODE.MISSING_BODY,
-      c.req.body,
+      c.req.raw.body,
       HTTP_MSG.MISSING_BODY,
     );
     return {
@@ -44,7 +44,7 @@ export async function bodyCheck(c: Context) {
   }
   return {
     hasBody: true,
-    res: new Response(c.req.body),
+    res: new Response(c.req.raw.body),
   };
 }
 
@@ -67,7 +67,7 @@ export async function checkException(
 }
 
 export async function useAuthInterceptor(c: Context) {
-  const token = c.req.headers.get("Authorization");
+  const token = c.req.raw.headers.get("Authorization");
 
   const tokenExistCheck = await checkException(
     c,

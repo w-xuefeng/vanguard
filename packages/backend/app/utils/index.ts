@@ -4,8 +4,8 @@ import { logErr } from "./logger";
 import { User } from "../database/type";
 
 export function getClientIP(c: Context) {
-  const XRealIP = c.req.headers.get("X-Real-IP");
-  const XForwardFor = c.req.headers.get("X-Forwarded-For");
+  const XRealIP = c.req.header("X-Real-IP");
+  const XForwardFor = c.req.header("X-Forwarded-For");
   if (XRealIP) {
     return XRealIP;
   }

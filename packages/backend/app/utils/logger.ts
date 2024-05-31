@@ -47,8 +47,8 @@ export async function logReq(
   result: string | number | boolean = "",
 ) {
   await next?.();
-  const ua = c.req.headers.get("User-Agent");
-  const traceId = c.req.headers.get("trace-id");
+  const ua = c.req.header("User-Agent");
+  const traceId = c.req.header("trace-id");
   const status: number = statusCode || c.res.status;
   const ip = getClientIP(c);
   const record = `${ip} ${
@@ -64,11 +64,11 @@ export async function logFetch(
   statusCode?: number,
   content: string | number | boolean = "",
 ) {
-  const ua = c.req.headers.get("User-Agent");
+  const ua = c.req.header("User-Agent");
   const status = statusCode;
   const ip = getClientIP(c);
   const record = `${ip} ${
-    traceId ? "trace-id: " + traceId || c.req.headers.get("trace-id") : ""
+    traceId ? "trace-id: " + traceId || c.req.header("trace-id") : ""
   } "${c.req.method} ${url}" ${String(status)} ${ua}\n${content}\n`;
   await sLog(record);
 }

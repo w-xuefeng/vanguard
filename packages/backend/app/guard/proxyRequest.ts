@@ -40,7 +40,7 @@ async function handleFetchLog(c: Context, req: Request, rs: Response) {
 export default async function proxyRequest(url: string, c: Context) {
   await sLog(`Proxy request: '${url}'`);
   const urlInstance = new URL(url);
-  const headers = new Headers(c.req.headers);
+  const headers = new Headers(c.req.raw.headers);
   headers.set("host", urlInstance.host);
   if (!headers.has("trace-id")) {
     headers.set("trace-id", c.env.traceId);
