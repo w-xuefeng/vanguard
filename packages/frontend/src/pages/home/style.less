@@ -5,6 +5,7 @@
   width: 100vw;
   height: 100vh;
   position: relative;
+
   .card-list {
     display: flex;
     flex-direction: column;
@@ -14,20 +15,22 @@
     align-items: center;
     width: 100%;
     height: calc(100vh - 60px);
-    overflow-x: hidden;
-    overflow-y: auto;
+    overflow: hidden auto;
     transition: all 500ms;
 
     &::-webkit-scrollbar {
       width: 14px;
     }
+
     &::-webkit-scrollbar-corner {
       background-color: transparent;
     }
+
     &::-webkit-scrollbar-thumb {
       border-radius: 0;
       background: #424242;
     }
+
     &::-webkit-scrollbar-track {
       border-radius: 0;
       background: #1e1e1e;
@@ -41,6 +44,7 @@
       gap: 20px;
     }
   }
+
   .empty {
     width: 100%;
     height: calc(100vh - 60px);
@@ -52,13 +56,14 @@
   }
 
   .loading {
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: rgba(0, 0, 0, 50%);
     min-height: calc(100vh - 60px);
   }
 }
 
 .editor-drawer {
   @editor-header-height: 36px;
+
   .editor-header {
     height: @editor-header-height;
     background-color: #3c3c3c;
@@ -66,7 +71,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    color: #cccccc;
+    color: #ccc;
     padding: 0 10px;
 
     &-left,
@@ -74,19 +79,23 @@
       font-size: 18px;
     }
   }
+
   .editor-container {
     width: 100%;
     height: calc(100vh - @editor-header-height);
     border: 1px solid #3c3c3c;
   }
+
   .saving {
     min-height: 100vh;
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: rgba(0, 0, 0, 50%);
   }
+
   :global {
     .ant-drawer-content {
       background-color: transparent;
     }
+
     .ant-drawer-body {
       padding: 0;
       overflow: hidden;
@@ -98,6 +107,7 @@
   .card-list {
     padding: 0;
   }
+
   .editor-container {
     width: 100vw;
   }
