@@ -1,5 +1,5 @@
 
-import { connectRedis, RULE_SET_KEY, RULE_SET_TABLE } from "../connection";
+import { closeSQLite, connectRedis, connectSQLite, RULE_SET_KEY, RULE_SET_TABLE } from "../connection";
 import { GuardRecord } from "../type";
 import { isRedis, isSQLite } from "../utils";
 
@@ -70,20 +70,30 @@ export class RuleDAOForRedis {
 
 export class RuleDAOForSQLite {
   static async getAllRecords(cause?: string) {
-    const client = await connectRedis(
+    const client = await connectSQLite(
       `[RuleDAO] Searching all records ${cause ? `by ${cause}` : ""}`,
     );
-    const rs = await client.sMembers(RULE_SET_KEY);
-    await client.disconnect();
-    return rs.map((e) => ({
-      value: GuardRecord.parse(e),
-      raw: e,
-    }));
+    const rs = client.query(`SELECT * FROM ${RULE_SET_TABLE};`);
+    const data = rs.all().map(e => {
+      return {
+        value: GuardRecord.parse(e as GuardRecord),
+        raw: GuardRecord.parse(e as GuardRecord)?.toString() || JSON.stringify(e)
+      }
+    });
+    await closeSQLite(client, cause);
+    return data;
   }
 
   static async getRecordByPrefix(prefix: string) {
-    const rs = await this.getAllRecords(`Querying '${prefix}'`);
-    return rs.findLast((e) => e?.value?.prefix === prefix);
+    const cause = `Querying '${prefix}'`;
+    const client = await connectSQLite(cause);
+    const rs = client.query(`SELECT * FROM ${RULE_SET_TABLE} where prefix = ?1;`)
+    const data = rs.get(prefix);
+    await closeSQLite(client, cause);
+    return data ? {
+      value: GuardRecord.parse(data as GuardRecord),
+      raw: GuardRecord.parse(data as GuardRecord)?.toString() || JSON.stringify(data)
+    } : null;
   }
 
   static async addRecord(record: GuardRecord[]) {
@@ -92,10 +102,23 @@ export class RuleDAOForSQLite {
       return 0;
     }
     const prefixes = record.map((e) => e.prefix).join(",");
-    const client = await connectRedis(`[RuleDAO] Adding '${prefixes}' record`);
-    const rs = await client.sAdd(RULE_SET_KEY, record.map((e) => e.toString()));
-    await client.disconnect();
-    return rs;
+    const cause = `[RuleDAO] Adding '${prefixes}' record`
+    const db = await connectSQLite(cause);
+    const insert = db.prepare(`INSERT INTO ${RULE_SET_TABLE} (prefix, nextOrigin, banList, pickList, checkers, ignorePrefix) VALUES ($prefix, $nextOrigin, $banList, $pickList, $checkers, $ignorePrefix)`);
+    const insertRecords = db.transaction(iRecords => {
+      for (const record of iRecords) insert.run(record);
+      return iRecords.length
+    });
+    const count = insertRecords(record.map(e => ({
+      $prefix: e.prefix,
+      $nextOrigin: e.nextOrigin,
+      $banList: JSON.stringify(e.banList || []),
+      $pickList: JSON.stringify(e.pickList || []),
+      $checkers: JSON.stringify(e.checkers || []),
+      $ignorePrefix: `${e.ignorePrefix || false}`
+    })));
+    await closeSQLite(db, cause);
+    return count;
   }
 
   static async removeRecord(prefixOrRecord: string | GuardRecord) {
@@ -115,12 +138,16 @@ export class RuleDAOForSQLite {
     if (!record.raw || !record.value) {
       return 0;
     }
-    const client = await connectRedis(
-      `[RuleDAO] Removing '${record.value.prefix}' record`,
-    );
-    const rs = await client.sRem(RULE_SET_KEY, record.raw);
-    await client.disconnect();
-    return rs;
+    const cause = `[RuleDAO] Removing '${record.value.prefix}' record`;
+    const client = await connectSQLite(cause);
+    const del = client.prepare(`DELETE FROM ${RULE_SET_TABLE} WHERE prefix = $prefix;`);
+    const delRecords = client.transaction(records => {
+      for (const r of records) del.run(r);
+      return records.length;
+    });
+    const count = delRecords([{ $prefix: record.value.prefix }]);
+    await closeSQLite(client, cause);
+    return count;
   }
 
   static async modifyRecord(prefix: string, next: GuardRecord) {

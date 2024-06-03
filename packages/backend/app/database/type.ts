@@ -10,6 +10,14 @@ export interface IBPItem {
   type: IBPType;
 }
 
+export function parseString<T extends object = any>(mayBeString: T | string, defaultValue?: T) {
+  return typeof mayBeString === 'string' ? JSONSafeParse<T>(mayBeString) || defaultValue : mayBeString
+}
+
+export function parseBoolean(mayBeBoolean: boolean | 'true' | 'false') {
+  return typeof mayBeBoolean === 'boolean' ? mayBeBoolean : mayBeBoolean === 'true'
+}
+
 export class GuardRecord {
   prefix: string;
   nextOrigin: string;
@@ -51,10 +59,10 @@ export class GuardRecord {
     return new GuardRecord(
       record.prefix,
       record.nextOrigin,
-      record.checkers,
-      record.banList,
-      record.pickList,
-      record.ignorePrefix,
+      parseString<string[]>(record.checkers),
+      parseString<IBPItem[]>(record.banList),
+      parseString<IBPItem[]>(record.pickList),
+      parseBoolean(record.ignorePrefix),
     );
   }
 }
