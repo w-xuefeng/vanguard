@@ -246,7 +246,7 @@ export async function modifyUser(c: Context) {
     return exception.res;
   }
 
-  const rs = await UserDAO.modifyUser(body.name, nextUser!);
+  const rs = await UserDAO.modifyUser(body.name, await encodeUserPassword(nextUser!));
   if (!rs) {
     await logReqFail(c, HTTP_CODE.MODIFY_FAIL, body, rs);
     return c.json(R.fail(HTTP_CODE.MODIFY_FAIL, HTTP_MSG.MODIFY_FAIL));
