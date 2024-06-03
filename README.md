@@ -33,9 +33,12 @@ BE_PORT=7087
 FE_PATH=app/web/views
 # Front-end page path
 
+DB_TYPE=redis
+# Database type, support sqlite and redis
+
 DBC=redis://127.0.0.1:6379
-# redis database connection address
-# The format is redis[s]://[[username][:password]@][host][:port][/db-number]
+# sqlite file path or redis database connection address
+# If DB_TYPE is redis, the format is redis[s]://[[username][:password]@][host][:port][/db-number]
 
 LOG_PATH=runtime/logs
 # Runtime Log Directory
@@ -57,6 +60,7 @@ git clone https://github.com/w-xuefeng/vanguard.git
 cd vanguard
 docker build -t vanguard .
 # docker build -t vanguard . --build-arg DBC=redis://127.0.0.1:6379
+# docker build -t vanguard . --build-arg DBC=mydb.sqlite
 ```
 
 3. Run the image, docker container internal services use port 7087 by default, mapped outside the container port 8080

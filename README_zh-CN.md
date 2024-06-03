@@ -33,9 +33,12 @@ BE_PORT=7087
 FE_PATH=app/web/views
 # 前端页面路径
 
+DB_TYPE=redis
+# 数据流类型, 支持 sqlite 和 redis
+
 DBC=redis://127.0.0.1:6379
-# redis 数据库连接地址
-# 格式 redis[s]://[[username][:password]@][host][:port][/db-number]
+# sqlite 文件路径或者是 redis 数据库连接地址
+# 如果 DB_TYPE 选择 redis，则格式为 redis[s]://[[username][:password]@][host][:port][/db-number]
 
 LOG_PATH=runtime/logs
 # 运行时日志目录
@@ -57,6 +60,7 @@ git clone https://github.com/w-xuefeng/vanguard.git
 cd vanguard
 docker build -t vanguard .
 # docker build -t vanguard . --build-arg DBC=redis://127.0.0.1:6379
+# docker build -t vanguard . --build-arg DBC=mydb.sqlite
 ```
 
 3. 运行镜像，docker 容器内部服务默认使用端口 7087，映射容器外端口 8080
