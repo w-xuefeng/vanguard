@@ -8,7 +8,7 @@
 
 - Vanguard is a minimalist gateway service powered by [bun](https://bun.sh)
 - The configuration interface is built using [react](https://react.dev/) + [umijs](https://umijs.org/)
-- Use [redis](https://redis.io/) as a persistent storage solution
+- Use [SQLite](https://www.sqlite.org/) / [redis](https://redis.io/) as a persistent storage solution
 
 ## What functions are there
 

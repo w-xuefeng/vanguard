@@ -8,7 +8,7 @@
 
 - Vanguard 是一个由 [bun](https://bun.sh) 驱动的极简网关服务
 - 配置界面使用 [react](https://react.dev/) + [umijs](https://umijs.org/) 构建
-- 使用 [redis](https://redis.io/) 作为持久化存储方案
+- 使用 [SQLite](https://www.sqlite.org/) / [redis](https://redis.io/) 作为持久化存储方案
 
 ## 有何功能
 
