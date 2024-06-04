@@ -22,6 +22,7 @@ export function getDotEnv(mode?: string) {
   return {
     ...projectEnv,
     ...process.env,
+    DB_TYPE: process.env.DB_TYPE || projectEnv.DB_TYPE,
     DBC: process.env.DBC || projectEnv.DBC,
     BUN_MODE: mode,
     __DEV__: mode === "dev",

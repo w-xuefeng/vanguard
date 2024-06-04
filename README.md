@@ -34,10 +34,12 @@ FE_PATH=app/web/views
 # Front-end page path
 
 DB_TYPE=redis
+# DB_TYPE=sqlite
 # Database type, support sqlite and redis
 
 DBC=redis://127.0.0.1:6379
-# sqlite file path or redis database connection address
+# DBC=mydb.sqlite
+# SQLite file path or redis database connection address
 # If DB_TYPE is redis, the format is redis[s]://[[username][:password]@][host][:port][/db-number]
 
 LOG_PATH=runtime/logs
@@ -54,13 +56,13 @@ git clone https://github.com/w-xuefeng/vanguard.git
 
 2. Enter the project directory and build the image
 
-   _Note: redis is not included in the docker environment, you can use a remote redis connection or install it manually outside the container and configure it in the environment variables_
+   _Note: redis is not included in the docker environment, if you choose redis，you can use a remote redis connection or install it manually outside the container and configure it in the environment variables_
 
 ```shell
 cd vanguard
 docker build -t vanguard .
-# docker build -t vanguard . --build-arg DBC=redis://127.0.0.1:6379
-# docker build -t vanguard . --build-arg DBC=mydb.sqlite
+# docker build -t vanguard . --build-arg DB_TYPE=redis DBC=redis://127.0.0.1:6379
+# docker build -t vanguard . --build-arg DB_TYPE=sqlite DBC=mydb.sqlite
 ```
 
 3. Run the image, docker container internal services use port 7087 by default, mapped outside the container port 8080
@@ -79,7 +81,7 @@ git clone https://github.com/w-xuefeng/vanguard.git
 
 2. Enter the project directory, install the dependencies and start the service, which uses port 7087 by default
 
-   _Note: redis needs to be installed and configured in advance, either using a remote redis connection or installed locally and configured in the environment variable_
+   _Note: if you choose redis, redis needs to be installed and configured in advance, either using a remote redis connection or installed locally and configured in the environment variable_
 
 ```shell
 cd vanguard
@@ -103,7 +105,7 @@ Install bun
 curl -fsSL https://bun.sh/install | bash
 ```
 
-[Install redis](https://redis.io/docs/getting-started/installation/)，If there is a remote redis available, you can use the remote connection
+If you choose redis, [install redis](https://redis.io/docs/getting-started/installation/)，if there is a remote redis available, you can use the remote connection
 
 ```dotenv
 DBC=redis[s]://[[username][:password]@][host][:port][/db-number]

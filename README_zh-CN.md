@@ -34,10 +34,12 @@ FE_PATH=app/web/views
 # 前端页面路径
 
 DB_TYPE=redis
+# DB_TYPE=sqlite
 # 数据流类型, 支持 sqlite 和 redis
 
 DBC=redis://127.0.0.1:6379
-# sqlite 文件路径或者是 redis 数据库连接地址
+# DBC=mydb.sqlite
+# SQLite 文件路径或者是 redis 数据库连接地址
 # 如果 DB_TYPE 选择 redis，则格式为 redis[s]://[[username][:password]@][host][:port][/db-number]
 
 LOG_PATH=runtime/logs
@@ -54,13 +56,13 @@ git clone https://github.com/w-xuefeng/vanguard.git
 
 2. 进入项目目录，构建镜像
 
-   _注：docker 环境内不包含 redis, 可使用远程 redis 连接或者在容器外手动安装并配置在环境变量中_
+   _注：docker 环境内不包含 redis, 如果使用 redis，可使用远程 redis 连接或者在容器外手动安装并配置在环境变量中_
 
 ```shell
 cd vanguard
 docker build -t vanguard .
-# docker build -t vanguard . --build-arg DBC=redis://127.0.0.1:6379
-# docker build -t vanguard . --build-arg DBC=mydb.sqlite
+# docker build -t vanguard . --build-arg DB_TYPE=redis DBC=redis://127.0.0.1:6379
+# docker build -t vanguard . --build-arg DB_TYPE=sqlite DBC=mydb.sqlite
 ```
 
 3. 运行镜像，docker 容器内部服务默认使用端口 7087，映射容器外端口 8080
@@ -79,7 +81,7 @@ git clone https://github.com/w-xuefeng/vanguard.git
 
 2. 进入项目目录，安装依赖，启动服务，服务默认使用端口 7087
 
-   _注：需要提前安装并配置好 redis，可使用远程 redis 连接或者在本地安装并配置在环境变量中_
+   _注：如果使用 redis，需要提前安装并配置好 redis，可使用远程 redis 连接或者在本地安装并配置在环境变量中_
 
 ```shell
 cd vanguard
@@ -103,7 +105,7 @@ bun serve
 curl -fsSL https://bun.sh/install | bash
 ```
 
-[安装 redis](https://redis.io/docs/getting-started/installation/)，如果有可用的远程 redis, 可以使用远程连接
+如果使用 redis，则[安装 redis](https://redis.io/docs/getting-started/installation/)，如果有可用的远程 redis, 可以使用远程连接
 
 ```dotenv
 DBC=redis[s]://[[username][:password]@][host][:port][/db-number]
