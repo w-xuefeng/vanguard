@@ -3,6 +3,7 @@ import { JSONSafeParse } from "../utils";
 export enum IBPType {
   path = "path",
   ip = "ip",
+  ipath = 'ipath'
 }
 
 export interface IBPItem {

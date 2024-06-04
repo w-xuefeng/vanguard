@@ -8,7 +8,11 @@ export function ban(c: Context, banList: IBPItem[]) {
   const hit = banList.find((item) => {
     const banIP = item.type === IBPType.ip && item.content === ip;
     const banPath = item.type === IBPType.path && item.content === path;
-    return banIP || banPath;
+    const banIPath = item.type === IBPType.ipath && (() => {
+      const [confIP, confPath] = item.content.split('|');
+      return confIP === ip && confPath === path;
+    })();
+    return banIP || banPath || banIPath;
   });
   return !!hit;
 }
@@ -19,7 +23,11 @@ export function pick(c: Context, pickList: IBPItem[]) {
   const hit = pickList.find((item) => {
     const pickIP = item.type === IBPType.ip && item.content === ip;
     const pickPath = item.type === IBPType.path && item.content === path;
-    return pickIP || pickPath;
+    const pickIPath = item.type === IBPType.ipath && (() => {
+      const [confIP, confPath] = item.content.split('|');
+      return confIP === ip && confPath === path;
+    })();
+    return pickIP || pickPath || pickIPath;
   });
   return !!hit;
 }
