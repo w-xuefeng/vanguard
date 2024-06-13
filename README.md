@@ -93,7 +93,9 @@ npm run i
 bun serve
 ```
 
-Visit the service path `/_` to access the configuration screen
+Visit the service path `/_` and login account to access the configuration screen
+
+（default user: `admin`, password: `admin`）
 
 ## Development Debugging
 

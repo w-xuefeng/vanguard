@@ -128,7 +128,8 @@ bun start
 ```
 
 访问服务路径 `http://localhost:7086/_` 或 `http://localhost:7087/_`
-即可进入配置界面
+
+登录后即可进入配置界面 （默认用户名：`admin`, 密码：`admin`）
 
 4. 目录结构
 
