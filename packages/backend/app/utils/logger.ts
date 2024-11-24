@@ -1,7 +1,7 @@
 import type { Context, Next } from "hono";
 import { HTTP_CODE } from "../guard/const";
 import { env } from "./env";
-import { createPathSync, existsSync, pathJoin } from "./file";
+import { appendFile, createPathSync, existsSync, pathJoin } from "./file";
 import { getClientIP } from ".";
 import colors from "colors";
 
@@ -9,26 +9,26 @@ export async function logToFile(content: string, rootPath: string) {
   try {
     const date = new Date();
     const year = date.getFullYear();
-    const month = date.getMonth() + 1;
-    const day = date.getDate();
-    const az = (e: number) => e < 10 ? `0${e}` : e;
-    const fileName = `${year}-${az(month)}-${az(day)}.log`;
+    const month = `${date.getMonth() + 1}`.padStart(2, "0");
+    const day = `${date.getDate()}`.padStart(2, "0");
+    const fileName = `${year}-${month}-${day}.log`;
     const logFile = pathJoin([rootPath, year], fileName);
     if (!existsSync(logFile)) {
       createPathSync("file", logFile);
     }
-    const file = Bun.file(logFile);
-    await Bun.write(logFile, `${await file.text()}${content}\n`);
+    await appendFile(logFile, `${content}\n`, { encoding: "utf-8" });
   } catch {
     // ignore
   }
 }
 
 export async function sLog(info: string, prefix?: string) {
-  prefix = prefix ||
-    `${process.env.PROJECT_NAME}::logger ${
-      new Date(Date.now()).toLocaleString("zh-CN", { hour12: false })
-    }`;
+  prefix =
+    prefix ||
+    `${process.env.PROJECT_NAME}::logger ${new Date(Date.now()).toLocaleString(
+      "zh-CN",
+      { hour12: false },
+    )}`;
   await logToFile(`[${prefix}] ${info}`, env.LOG_PATH);
 }
 
@@ -79,9 +79,8 @@ export async function logReqOk(
   result: string | number | boolean | null | object = "",
   next?: Next,
 ) {
-  const req = typeof bodyOrQuery === "object"
-    ? JSON.stringify(bodyOrQuery)
-    : bodyOrQuery;
+  const req =
+    typeof bodyOrQuery === "object" ? JSON.stringify(bodyOrQuery) : bodyOrQuery;
   const res = typeof result === "object" ? JSON.stringify(result) : result;
   await logReq(c, next, HTTP_CODE.OK, `request:${req} response:${res}`);
 }
@@ -93,9 +92,8 @@ export async function logReqFail(
   result: string | number | boolean | null | object = "",
   next?: Next,
 ) {
-  const req = typeof bodyOrQuery === "object"
-    ? JSON.stringify(bodyOrQuery)
-    : bodyOrQuery;
+  const req =
+    typeof bodyOrQuery === "object" ? JSON.stringify(bodyOrQuery) : bodyOrQuery;
   const res = typeof result === "object" ? JSON.stringify(result) : result;
   await logReq(c, next, statusCode, `request:${req} response:${res}`);
 }

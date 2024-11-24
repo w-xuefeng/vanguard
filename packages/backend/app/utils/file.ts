@@ -1,11 +1,13 @@
 import { mkdirSync, writeFileSync } from "node:fs";
+import path from "node:path";
 
 export { existsSync } from "node:fs";
+export { appendFile } from "node:fs/promises";
 
 export function pathJoin(
   prevPath: string | number | (string | number)[],
   nextPath: string | number | (string | number)[],
-  separator = "/",
+  separator = path.sep,
 ) {
   const handleSinglePath = (singlePath: string | number) => {
     return `${singlePath}`.endsWith(separator)
