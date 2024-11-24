@@ -26,5 +26,6 @@ dist-ssr
 *.db.lock
 *.user.lock
 *.sqlite
+build-image.sh
 
 runtime

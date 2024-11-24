@@ -60,15 +60,35 @@ git clone https://github.com/w-xuefeng/vanguard.git
 
 ```shell
 cd vanguard
-docker build -t vanguard .
-# docker build -t vanguard . --build-arg DB_TYPE=redis DBC=redis://127.0.0.1:6379
-# docker build -t vanguard . --build-arg DB_TYPE=sqlite DBC=mydb.sqlite
+
+# 使用 redis 作为数据库构建镜像
+docker buildx build \
+  --platform linux/amd64 \
+  --build-arg BE_PORT=7087 \
+  --build-arg DB_TYPE=redis \
+  --build-arg DBC=redis://[:password@]127.0.0.1:6379 \
+  --build-arg LOG_PATH=/runtime/logs \
+  --load \
+  -t vanguard \
+  .
+
+# 使用 sqlite 作为数据库构建镜像
+docker buildx build \
+  --platform linux/amd64 \
+  --build-arg BE_PORT=7087 \
+  --build-arg DB_TYPE=sqlite \
+  --build-arg DBC=/runtime/database/mydb.sqlite \
+  --build-arg LOG_PATH=/runtime/logs \
+  --load \
+  -t vanguard \
+  .
 ```
 
 3. 运行镜像，docker 容器内部服务默认使用端口 7087，映射容器外端口 8080
 
 ```shell
-docker run -id --name=vanguard -p 8080:7087 vanguard
+# 挂载容器外部目录用于日志输出:
+docker run -v /home/user/runtime/vanguard:/runtime -id --name=vanguard -p 8080:7087 vanguard
 ```
 
 ### 不使用 docker

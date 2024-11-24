@@ -22,6 +22,8 @@ export function getDotEnv(mode?: string) {
   return {
     ...projectEnv,
     ...process.env,
+    BE_PORT: process.env.BE_PORT || projectEnv.BE_PORT,
+    LOG_PATH: process.env.LOG_PATH || projectEnv.LOG_PATH,
     DB_TYPE: process.env.DB_TYPE || projectEnv.DB_TYPE,
     DBC: process.env.DBC || projectEnv.DBC,
     BUN_MODE: mode,

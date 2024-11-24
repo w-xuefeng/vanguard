@@ -60,15 +60,35 @@ git clone https://github.com/w-xuefeng/vanguard.git
 
 ```shell
 cd vanguard
-docker build -t vanguard .
-# docker build -t vanguard . --build-arg DB_TYPE=redis DBC=redis://127.0.0.1:6379
-# docker build -t vanguard . --build-arg DB_TYPE=sqlite DBC=mydb.sqlite
+
+# Using Redis as a database to build an image
+docker buildx build \
+  --platform linux/amd64 \
+  --build-arg BE_PORT=7087 \
+  --build-arg DB_TYPE=redis \
+  --build-arg DBC=redis://[:password@]127.0.0.1:6379 \
+  --build-arg LOG_PATH=/runtime/logs \
+  --load \
+  -t vanguard \
+  .
+
+# Using SQLite as a database to build an image
+docker buildx build \
+  --platform linux/amd64 \
+  --build-arg BE_PORT=7087 \
+  --build-arg DB_TYPE=sqlite \
+  --build-arg DBC=/runtime/database/mydb.sqlite \
+  --build-arg LOG_PATH=/runtime/logs \
+  --load \
+  -t vanguard \
+  .
 ```
 
 3. Run the image, docker container internal services use port 7087 by default, mapped outside the container port 8080
 
 ```shell
-docker run -id --name=vanguard -p 8080:7087 vanguard
+# Mount the external directory of the container for log output:
+docker run -v /home/user/runtime/vanguard:/runtime -id --name=vanguard -p 8080:7087 vanguard
 ```
 
 ### Do not use Docker
