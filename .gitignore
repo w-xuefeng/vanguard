@@ -27,5 +27,6 @@ dist-ssr
 *.user.lock
 *.sqlite
 build-image.sh
+vanguard.tar
 
 runtime
