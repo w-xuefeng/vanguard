@@ -8,6 +8,7 @@
     "i": "sh check-bun.sh && bun install",
     "ii": "sh check-bun.sh && bun run clean-deps && bun install",
     "clean-deps": "sh clean-deps.sh",
+    "dev:cf": "cd packages/cloudflare && bun run dev",
     "dev:fe": "cd packages/frontend && bun run dev",
     "dev:be": "cd packages/backend && bun run dev",
     "start": "run-p dev:fe dev:be",
