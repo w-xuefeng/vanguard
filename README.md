@@ -18,6 +18,7 @@
 - Support for custom interceptors/checkers
 - Support access path black/white list
 - Support visit ip black/white list
+- Support deployment via [Cloudflare pages/workers + KV]
 - More features and experience optimization continue to be improved...
 
 ## How to use
