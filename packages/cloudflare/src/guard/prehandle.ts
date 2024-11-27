@@ -31,10 +31,18 @@ export default async function prehandle(
     urlInstance.search && !urlInstance.pathname.endsWith("/")
       ? `${nextOrigin}/`
       : nextOrigin;
+  const endsWithSlash = nextOriginString.endsWith("/") ? "/" : "";
+
   const url = nextOrigin
     ? ignorePrefix
-      ? rawUrl.replace(`${urlInstance.origin}/${prefix}`, nextOriginString)
-      : rawUrl.replace(urlInstance.origin, nextOriginString)
+      ? rawUrl.replace(
+          `${urlInstance.origin}/${prefix}${endsWithSlash}`,
+          nextOriginString,
+        )
+      : rawUrl.replace(
+          `${urlInstance.origin}${endsWithSlash}`,
+          nextOriginString,
+        )
     : undefined;
 
   return {
