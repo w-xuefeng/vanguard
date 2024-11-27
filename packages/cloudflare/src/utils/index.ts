@@ -2,6 +2,7 @@ import type { Context } from "hono";
 import { Base64 } from "js-base64";
 import { logErr } from "./logger";
 import { User } from "../database/type";
+import { KeyDAO } from "../database/dao/key-dao";
 
 export function getClientIP(c: Context) {
   const XRealIP = c.req.header("X-Real-IP");
@@ -48,7 +49,13 @@ export const encodeUserPassword = async (user: User) => {
   return user;
 };
 
-export const generateKey = async () => {
+export const generateKey = async (
+  c: Context<{ Bindings: CloudflareBindings }>,
+) => {
+  const preKey = await KeyDAO.readKey(c);
+  if (preKey?.publicKey && preKey?.privateKey) {
+    return importKeys(preKey.publicKey, preKey.privateKey);
+  }
   const keyPair = await crypto.subtle.generateKey(
     {
       name: "RSA-OAEP",
@@ -59,6 +66,8 @@ export const generateKey = async () => {
     true,
     ["encrypt", "decrypt"],
   );
+  const keys = await exportKeys(keyPair as CryptoKeyPair);
+  await KeyDAO.writeKey(c, keys);
   return keyPair;
 };
 
@@ -83,3 +92,51 @@ export const decryptText = async (text: string, key: CryptoKey) => {
   );
   return new TextDecoder().decode(decrypted);
 };
+
+export async function exportKeys(keyPair: CryptoKeyPair) {
+  const publicKey = (await crypto.subtle.exportKey(
+    "spki",
+    keyPair.publicKey,
+  )) as ArrayBuffer;
+  const privateKey = (await crypto.subtle.exportKey(
+    "pkcs8",
+    keyPair.privateKey,
+  )) as ArrayBuffer;
+
+  return {
+    publicKey: Base64.fromUint8Array(new Uint8Array(publicKey)),
+    privateKey: Base64.fromUint8Array(new Uint8Array(privateKey)),
+  };
+}
+
+export async function importKeys(
+  publicKeyData: string,
+  privateKeyData: string,
+) {
+  const publicKeyBinary = Base64.toUint8Array(publicKeyData);
+  const privateKeyBinary = Base64.toUint8Array(privateKeyData);
+
+  const publicKey = await crypto.subtle.importKey(
+    "spki",
+    publicKeyBinary,
+    {
+      name: "RSA-OAEP",
+      hash: "SHA-256",
+    },
+    true,
+    ["encrypt"],
+  );
+
+  const privateKey = await crypto.subtle.importKey(
+    "pkcs8",
+    privateKeyBinary,
+    {
+      name: "RSA-OAEP",
+      hash: "SHA-256",
+    },
+    true,
+    ["decrypt"],
+  );
+
+  return { publicKey, privateKey };
+}

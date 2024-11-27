@@ -6,8 +6,9 @@ import prepareSQLite from "./prepare-sqlite";
 
 export const RULE_SET_KEY = "vanguard-rules";
 export const USER_SET_KEY = "vanguard-users";
-export { RULE_SET_TABLE, USER_SET_TABLE } from './prepare-sqlite';
+export const KEYS_SET_KEY = "vanguard-keys";
 
+export { RULE_SET_TABLE, USER_SET_TABLE } from "./prepare-sqlite";
 
 export async function connectRedis(cause?: string) {
   const client = createClient({ url: env.DBC });
@@ -28,7 +29,7 @@ export async function connectRedis(cause?: string) {
 }
 
 export async function connectSQLite(cause?: string) {
-  const db = new Database(env.DBC || 'mydb.sqlite');
+  const db = new Database(env.DBC || "mydb.sqlite");
   prepareSQLite(db);
   await sLog(`SQLite Connect ${cause ? `for ${cause}` : ""}`);
   return db;

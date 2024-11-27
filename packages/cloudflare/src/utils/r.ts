@@ -79,7 +79,7 @@ export async function useAuthInterceptor(c: Context) {
     return tokenExistCheck;
   }
 
-  const tokenInfo = await decodeToken(token!);
+  const tokenInfo = await decodeToken(c, token!);
   const tokenExpiredCheck = await checkException(
     c,
     tokenInfo.expired || !tokenInfo.text,

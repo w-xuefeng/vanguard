@@ -1,7 +1,8 @@
-import { Database } from "bun:sqlite"
+import { Database } from "bun:sqlite";
 
 export const RULE_SET_TABLE = "vanguard_rules";
 export const USER_SET_TABLE = "vanguard_users";
+export const KEY_SET_TABLE = "vanguard_keys";
 
 export default function prepareSQLite(db: Database) {
   db.run(`
@@ -18,6 +19,12 @@ export default function prepareSQLite(db: Database) {
       pickList TEXT NOT NULL,
       checkers TEXT NOT NULL,
       ignorePrefix TEXT NOT NULL
+    );
+  `);
+  db.run(`
+    CREATE TABLE IF NOT EXISTS ${KEY_SET_TABLE} (
+      name TEXT PRIMARY KEY,
+      value TEXT NOT NULL
     );
   `);
 }

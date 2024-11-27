@@ -2,6 +2,7 @@ import type { Context } from "hono";
 import { Base64 } from "js-base64";
 import { logErr } from "./logger";
 import { User } from "../database/type";
+import { KeyDAO } from "../database/dao";
 
 export function getClientIP(c: Context) {
   const XRealIP = c.req.header("X-Real-IP");
@@ -46,6 +47,10 @@ export const encodeUserPassword = async (user: User) => {
 };
 
 export const generateKey = async () => {
+  const preKey = await KeyDAO.readKey();
+  if (preKey?.publicKey && preKey?.privateKey) {
+    return importKeys(preKey.publicKey, preKey.privateKey);
+  }
   const keyPair = await crypto.subtle.generateKey(
     {
       name: "RSA-OAEP",
@@ -56,6 +61,8 @@ export const generateKey = async () => {
     true,
     ["encrypt", "decrypt"],
   );
+  const keys = await exportKeys(keyPair);
+  await KeyDAO.writeKey(keys);
   return keyPair;
 };
 
@@ -80,3 +87,45 @@ export const decryptText = async (text: string, key: CryptoKey) => {
   );
   return new TextDecoder().decode(decrypted);
 };
+
+export async function exportKeys(keyPair: CryptoKeyPair) {
+  const publicKey = await crypto.subtle.exportKey("spki", keyPair.publicKey);
+  const privateKey = await crypto.subtle.exportKey("pkcs8", keyPair.privateKey);
+
+  return {
+    publicKey: Base64.fromUint8Array(new Uint8Array(publicKey)),
+    privateKey: Base64.fromUint8Array(new Uint8Array(privateKey)),
+  };
+}
+
+export async function importKeys(
+  publicKeyData: string,
+  privateKeyData: string,
+) {
+  const publicKeyBinary = Base64.toUint8Array(publicKeyData);
+  const privateKeyBinary = Base64.toUint8Array(privateKeyData);
+
+  const publicKey = await crypto.subtle.importKey(
+    "spki",
+    publicKeyBinary,
+    {
+      name: "RSA-OAEP",
+      hash: "SHA-256",
+    },
+    true,
+    ["encrypt"],
+  );
+
+  const privateKey = await crypto.subtle.importKey(
+    "pkcs8",
+    privateKeyBinary,
+    {
+      name: "RSA-OAEP",
+      hash: "SHA-256",
+    },
+    true,
+    ["decrypt"],
+  );
+
+  return { publicKey, privateKey };
+}

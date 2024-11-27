@@ -331,7 +331,7 @@ export async function login(c: Context<{ Bindings: CloudflareBindings }>) {
     return passwordException.res;
   }
 
-  const token = await encodeToken(rs!.value!.name!);
+  const token = await encodeToken(c, rs!.value!.name!);
   const data = {
     token,
     name: body.name,
