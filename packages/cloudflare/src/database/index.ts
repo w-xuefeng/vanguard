@@ -2,20 +2,21 @@ import { logErr } from "../utils/logger";
 import { RuleDAO } from "./dao";
 import { type IBPItem } from "./type";
 import { type Context } from "hono";
+import { type IChecker } from "@vanguard/shared/checker/types";
 
 /**
  * query nextOrigin and guard-rules and ban-pick-List form database by prefix
  * const rs = await queryGuardsByPrefix(context, prefix);
  * rs.banList     ->  IBPItem[]
  * rs.pickList    ->  IBPItem[]
- * rs.checkers    ->  string[]
+ * rs.checkers    ->  IChecker[]
  * rs.nextOrigin  ->  string
  */
 export async function queryGuardsByPrefix(c: Context, prefix?: string) {
   const rs = {
     banList: [] as IBPItem[],
     pickList: [] as IBPItem[],
-    checkers: [] as string[],
+    checkers: [] as IChecker[],
     nextOrigin: "",
     ignorePrefix: false,
   };

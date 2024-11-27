@@ -1,5 +1,6 @@
 import { logErr } from "../utils/logger";
 import { RuleDAO } from "./dao";
+import { type IChecker } from "@vanguard/shared/checker/types";
 import { type IBPItem } from "./type";
 
 /**
@@ -7,14 +8,14 @@ import { type IBPItem } from "./type";
  * const rs = await queryGuardsByPrefix(prefix);
  * rs.banList     ->  IBPItem[]
  * rs.pickList    ->  IBPItem[]
- * rs.checkers    ->  string[]
+ * rs.checkers    ->  IChecker[]
  * rs.nextOrigin  ->  string
  */
 export async function queryGuardsByPrefix(prefix?: string) {
   const rs = {
     banList: [] as IBPItem[],
     pickList: [] as IBPItem[],
-    checkers: [] as string[],
+    checkers: [] as IChecker[],
     nextOrigin: "",
     ignorePrefix: false,
   };

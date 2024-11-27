@@ -2,7 +2,7 @@ import type { Context, Next } from "hono";
 import { HTTP_CODE, HTTP_MSG } from "./const";
 import proxyRequest from "./proxyRequest";
 import prehandle from "./prehandle";
-import useCheck from "./checker";
+import useCheck from "@vanguard/shared/checker";
 import R from "../utils/r";
 
 export { notFound } from "./proxyRequest";
@@ -13,7 +13,7 @@ export default async function guards(c: Context, next: Next) {
     return c.json(R.fail(HTTP_CODE.BAN, HTTP_MSG.BAN));
   }
   if (!pick) {
-    const rs = useCheck(c, checkers);
+    const rs = await useCheck(c, checkers);
     if (!rs.next) {
       return c.json(
         R.fail(HTTP_CODE.CHECK_FAIL, rs.message || HTTP_MSG.CHECK_FAIL),
