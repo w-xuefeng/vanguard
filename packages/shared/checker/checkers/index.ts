@@ -124,7 +124,7 @@ export async function checkBody(c: Context, checker: IBodyChecker) {
   }
 
   if (checker.bodyType === "json" && checker.property) {
-    const json = await cloneRequest.json();
+    const json = (await cloneRequest.json()) as Record<string, any>;
     return jsonCheck(json, checker.property);
   }
 
