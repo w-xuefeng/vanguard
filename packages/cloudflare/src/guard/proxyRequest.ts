@@ -51,9 +51,30 @@ export default async function proxyRequest(url: string, c: Context) {
   if (!headers.has("trace-id")) {
     headers.set("trace-id", c.env.traceId);
   }
-  const req = new Request(url, Object.assign({}, c.req.raw, { headers }));
+  const originalReq = c.req.raw.clone();
+  const originalReqForLog = c.req.raw.clone();
+  const req = new Request(url, {
+    headers,
+    method: c.req.method,
+    redirect: originalReq.redirect,
+    body: originalReq.body,
+    signal: originalReq.signal,
+    integrity: originalReq.integrity,
+    cf: originalReq.cf,
+    fetcher: originalReq.fetcher,
+  });
+  const reqForLog = new Request(url, {
+    headers,
+    method: c.req.method,
+    redirect: originalReqForLog.redirect,
+    body: originalReqForLog.body,
+    signal: originalReqForLog.signal,
+    integrity: originalReqForLog.integrity,
+    cf: originalReqForLog.cf,
+    fetcher: originalReqForLog.fetcher,
+  });
   const rs = await fetch(req);
-  await handleFetchLog(c, req.clone(), rs.clone());
+  await handleFetchLog(c, reqForLog, rs.clone());
   return c.newResponse(
     rs.body,
     rs.status as StatusCode,
