@@ -13,14 +13,24 @@ import { blobDetection, isFile, transformOperator } from "./common";
 
 export function checkURL(c: Context, checker: IURLChecker) {
   return {
-    next: transformOperator(c.req.url, checker.expectValue, checker.operator),
+    next: transformOperator(
+      c.req.url,
+      checker.expectValue,
+      checker.operator,
+      checker.parseValue,
+    ),
     message: checker.message,
   };
 }
 
 export function checkPath(c: Context, checker: IPathChecker) {
   return {
-    next: transformOperator(c.req.path, checker.expectValue, checker.operator),
+    next: transformOperator(
+      c.req.path,
+      checker.expectValue,
+      checker.operator,
+      checker.parseValue,
+    ),
     message: checker.message,
   };
 }
@@ -39,6 +49,7 @@ export function checkQueries(c: Context, checker: IQueriesChecker) {
       c.req.queries(checker.queryName)?.at(checker.index || 0),
       checker.expectValue,
       checker.operator,
+      checker.parseValue,
     ),
     message: checker.message,
   };
@@ -50,6 +61,7 @@ export function checkQuery(c: Context, checker: IQueryChecker) {
       c.req.query(checker.queryName),
       checker.expectValue,
       checker.operator,
+      checker.parseValue,
     ),
     message: checker.message,
   };
@@ -61,6 +73,7 @@ export function checkHeaders(c: Context, checker: IHeadersChecker) {
       c.req.header(checker.headerName),
       checker.expectValue,
       checker.operator,
+      checker.parseValue,
     ),
     message: checker.message,
   };
@@ -85,14 +98,24 @@ export async function checkBody(c: Context, checker: IBodyChecker) {
 
   const textCheck = (text: string) => {
     return {
-      next: transformOperator(text, checker.expectValue, checker.operator),
+      next: transformOperator(
+        text,
+        checker.expectValue,
+        checker.operator,
+        checker.parseValue,
+      ),
       message: checker.message,
     };
   };
 
   const jsonCheck = (json: Record<string, any>, key: string) => {
     return {
-      next: transformOperator(json[key], checker.expectValue, checker.operator),
+      next: transformOperator(
+        json[key],
+        checker.expectValue,
+        checker.operator,
+        checker.parseValue,
+      ),
       message: checker.message,
     };
   };
@@ -111,7 +134,12 @@ export async function checkBody(c: Context, checker: IBodyChecker) {
       };
     }
     return {
-      next: transformOperator(data, checker.expectValue, checker.operator),
+      next: transformOperator(
+        data,
+        checker.expectValue,
+        checker.operator,
+        checker.parseValue,
+      ),
       message: checker.message,
     };
   };

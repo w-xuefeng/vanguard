@@ -28,13 +28,7 @@ async function handleFetchLog(c: Context, req: Request, rs: Response) {
       rsLogAble ? await rs.text() : rs.body ? "<UnsupportedLog>" : "not body"
     }`,
   ].join("\n");
-  await logFetch(
-    c,
-    c.env.traceId,
-    rs.url,
-    rs.status,
-    logContent,
-  );
+  await logFetch(c, c.env.traceId, rs.url, rs.status, logContent);
 }
 
 export default async function proxyRequest(url: string, c: Context) {
@@ -54,9 +48,6 @@ export default async function proxyRequest(url: string, c: Context) {
 export async function notFound(c: Context) {
   await sLog(`NotFound request: '${c.req.url}'`);
   return c.json(
-    R.fail(
-      HTTP_CODE.NOT_FOUND,
-      `${c.req.method} ${c.req.path} not found`,
-    ),
+    R.fail(HTTP_CODE.NOT_FOUND, `${c.req.method} ${c.req.path} not found`),
   );
 }

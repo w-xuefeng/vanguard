@@ -1,8 +1,3 @@
-```
-npm install
-npm run dev
-```
+# @vanguard/cloudflare
 
-```
-npm run deploy
-```
+> Gateway vanguard for cloudflare

@@ -1,4 +1,22 @@
-import type { IChecker, ICustomExpressionChecker, TOperator } from "../types";
+import type {
+  IChecker,
+  ICustomExpressionChecker,
+  TOperator,
+  TValueParser,
+} from "../types";
+
+export function getParser(valueParser: TValueParser) {
+  switch (valueParser) {
+    case "String":
+      return String;
+    case "Number":
+      return Number;
+    case "Boolean":
+      return Boolean;
+    default:
+      return String;
+  }
+}
 
 export function isCustomExpression(
   checker: IChecker,
@@ -22,19 +40,25 @@ export function blobDetection(
   key: keyof Blob | keyof File,
   expectValue: string | number,
   operator?: TOperator,
+  valueParser?: TValueParser,
 ) {
   const value = blob[key];
   if (typeof value === "string" || typeof value === "number") {
-    return transformOperator(value, expectValue, operator);
+    return transformOperator(value, expectValue, operator, valueParser);
   }
   return true;
 }
 
 export function transformOperator(
-  value: File | string | number | undefined | null,
-  expectValue: string | number,
+  originalValue: File | string | number | undefined | null,
+  originalExpectValue: string | number,
   operator?: TOperator,
+  valueParser: TValueParser = "String",
 ) {
+  const parser = getParser(valueParser);
+  const value = parser(originalValue);
+  const expectValue = parser(originalExpectValue);
+
   if (!operator) {
     return value == expectValue;
   }

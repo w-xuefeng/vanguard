@@ -8,7 +8,9 @@
     ".vscode",
     ".vscode-insiders",
     ".umirc.ts",
-    "pnpm-lock.yaml"
+    "pnpm-lock.yaml",
+    "settings.json",
+    "runtime"
   ],
   "cSpell.words": [
     "antd",

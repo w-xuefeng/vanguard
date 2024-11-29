@@ -3,6 +3,8 @@ export interface ICheckerResponse {
   message?: string;
 }
 
+export type TValueParser = "String" | "Number" | "Boolean";
+
 export type TOperator =
   | "=="
   | "==="
@@ -27,6 +29,7 @@ export interface IBaseChecker<T> {
   expectValue: string | number;
   operator?: TOperator;
   message?: string;
+  parseValue?: "String" | "Number" | "Boolean";
 }
 
 export interface IQueriesChecker extends IBaseChecker<"queries"> {
