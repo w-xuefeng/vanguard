@@ -225,7 +225,7 @@ The value of `type` is as follows
   "bodyType": "formData",
   "property": "age",
   "expectValue": 18,
-  "operator": ">",
+  "operator": ">=",
   "message": "the person is too young"
 }
 
@@ -236,6 +236,15 @@ The value of `type` is as follows
   "fileProperty": "size",
   "expectValue": 102400,
   "operator": "<",
+  "message": "the file is too large"
+}
+
+{
+  "type": "body",
+  "bodyType": "blob",
+  "fileProperty": "size",
+  "expectValue": 10240,
+  "operator": "<=",
   "message": "the file is too large"
 }
 
