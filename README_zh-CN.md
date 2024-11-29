@@ -182,4 +182,4 @@ bun start
         └ 📜 types
 ```
 
-## [Checker Config](./packages/shared/checker/README_zh-CN.md)
+## [Checker 配置](./packages/shared/checker/README_zh-CN.md)
