@@ -3,7 +3,7 @@ import type { IChecker, ICheckerResponse } from "./types";
 import checkerSwitch from "./checkers";
 import { isCustomExpression } from "./checkers/common";
 
-export function check(c: Context, checker: IChecker) {
+export async function check(c: Context, checker: IChecker) {
   const handleError = (error: unknown) => {
     let message = "[Checker runtime error]";
     if (error instanceof Error) {
@@ -21,8 +21,8 @@ export function check(c: Context, checker: IChecker) {
     try {
       const checkerFunc = new Function("c", checkerFuncString) as (
         c: Context,
-      ) => ICheckerResponse;
-      return checkerFunc(c);
+      ) => ICheckerResponse | Promise<ICheckerResponse>;
+      return await checkerFunc(c);
     } catch (error) {
       return handleError(error);
     }
@@ -36,7 +36,7 @@ export function check(c: Context, checker: IChecker) {
   }
 
   try {
-    return checkerSwitch(c, checker);
+    return await checkerSwitch(c, checker);
   } catch (error) {
     return handleError(error);
   }
