@@ -182,3 +182,5 @@ to access the configuration
         ├ 📜 models
         └ 📜 types
 ```
+
+## [Checker Config](./packages/shared/checker/README.md)

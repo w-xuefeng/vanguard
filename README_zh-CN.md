@@ -181,3 +181,5 @@ bun start
         ├ 📜 models
         └ 📜 types
 ```
+
+## [Checker Config](./packages/shared/checker/README_zh-CN.md)
