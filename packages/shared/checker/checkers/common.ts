@@ -31,7 +31,10 @@ export function isCustomExpression(
 
 export function isFile(data: FormDataEntryValue | null): data is File {
   return (
-    data !== null && Object.prototype.toString.call(data) === "[object File]"
+    data !== null &&
+    ["[object File]", "[object Blob]"].includes(
+      Object.prototype.toString.call(data),
+    )
   );
 }
 
