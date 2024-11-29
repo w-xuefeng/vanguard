@@ -91,15 +91,15 @@
 | `parseValue` | 解析目标值和期望值的方法，取值如下文所示，默认值为 `String` |
 | `operator` | 操作符，值如上文所示，默认值为 `==` |
 | `message` | 不满足时返回的错误信息 |
-| `headerName` (仅当类型为 `headers` 时) | 要检测 header 的属性名称 |
-| `queryName` (仅当类型为 `query` 或 `queries` 时) | 要检测的 URLSearchParams 名称 |
-| `checkType` (仅当类型为 `queries` 时) | 检测一个或全部，值为 `all` \| `single` |
-| `expectAllValue` (仅当类型为 `queries` 时) | 期望值数组 |
-| `index` (仅当类型为 `queries` 且 checkType 为 `single` 时) | query 索引下标，从0开始 |
-| `bodyType` (仅当类型为 `body` 时) | 请求体的类型，取值如下：`json` \| `text` \| `formData` \| `blob` |
-| `property` (仅当类型为 `body` 时) | 检测请求体的属性 |
-| `fileProperty` (仅当类型为 `body` 且 bodyType 为 `formData` 或 `blob` 时) | `File` 或 `Blob` 的属性名称，例如 `name`、`size`、`type` |
-| `expression` (仅当类型为 `customExpression` 时) | 自定义表达式，此字符串将传递给 `new Function` 的第二个参数，第一个参数为名为 'c' 的上下文变量，必须返回一个具有布尔类型的 `next` 值的对象 |
+| `headerName` (仅当 type 为 `headers` 时) | 要检测 header 的属性名称 |
+| `queryName` (仅当 type 型为 `query` 或 `queries` 时) | 要检测的 URLSearchParams 名称 |
+| `checkType` (仅当 type 为 `queries` 时) | 检测一个或全部，值为 `all` \| `single` |
+| `expectAllValue` (仅当 type 为 `queries` 时) | 期望值数组 |
+| `index` (仅当 type 为 `queries` 且 checkType 为 `single` 时) | query 索引下标，从0开始 |
+| `bodyType` (仅当 type 为 `body` 时) | 请求体的类型，取值如下：`json` \| `text` \| `formData` \| `blob` |
+| `property` (仅当 type 为 `body` 时) | 检测请求体的属性 |
+| `fileProperty` (仅当 type 为 `body` 且 bodyType 为 `formData` 或 `blob` 时) | `File` 或 `Blob` 的属性名称，例如 `name`、`size`、`type` |
+| `expression` (仅当 type 为 `customExpression` 时) | 自定义表达式，此字符串将传递给 `new Function` 的第二个参数，第一个参数为名为 'c' 的上下文变量，必须返回一个具有布尔类型的 `next` 值的对象 |
 
 `parseValue` 的取值如下
 
@@ -123,7 +123,7 @@
 
 ## 检查器示例
 
-- 1.`url` 
+- 1.`url` 检查器
 
 ```json
 {

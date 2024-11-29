@@ -124,7 +124,7 @@ The value of `type` is as follows
 
 ## Example of checker
 
-- 1.`url` 
+- 1.`url` Checker
 
 ```json
 {
