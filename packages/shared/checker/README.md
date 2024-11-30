@@ -158,7 +158,7 @@ The value of `type` is as follows
 ```json
 {
   "type": "headers",
-  "headerName": "from",
+  "headerName": "authorization",
   "expectValue": "Bearer",
   "operator": "startsWith",
   "message": "Access Denied"

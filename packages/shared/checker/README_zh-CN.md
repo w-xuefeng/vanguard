@@ -157,7 +157,7 @@
 ```json
 {
   "type": "headers",
-  "headerName": "from",
+  "headerName": "authorization",
   "expectValue": "Bearer",
   "operator": "startsWith",
   "message": "访问被拒绝"
