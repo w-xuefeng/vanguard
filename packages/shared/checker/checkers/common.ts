@@ -1,11 +1,12 @@
 import type {
   IChecker,
   ICustomExpressionChecker,
+  IObjectChecker,
   TOperator,
   TValueParser,
 } from "../types";
 
-export function getParser(valueParser: TValueParser) {
+export function getParser(valueParser?: TValueParser) {
   switch (valueParser) {
     case "String":
       return String;
@@ -14,7 +15,7 @@ export function getParser(valueParser: TValueParser) {
     case "Boolean":
       return Boolean;
     default:
-      return String;
+      return (value: any) => value;
   }
 }
 
@@ -53,10 +54,10 @@ export function blobDetection(
 }
 
 export function transformOperator(
-  originalValue: File | string | number | undefined | null,
+  originalValue: string | number | undefined | null,
   originalExpectValue: string | number,
   operator?: TOperator,
-  valueParser: TValueParser = "String",
+  valueParser?: TValueParser,
 ) {
   const parser = getParser(valueParser);
   const value = parser(originalValue);
@@ -65,6 +66,7 @@ export function transformOperator(
   if (!operator) {
     return value == expectValue;
   }
+
   const valueNecessary = value !== null && value !== void 0;
   const map = {
     "==": value == expectValue,
@@ -92,4 +94,21 @@ export function transformOperator(
       String(expectValue).endsWith(`${value}`),
   };
   return map[operator];
+}
+
+export function handleObjectChecker(
+  originalValue: string | number | undefined | null,
+  checker: IObjectChecker,
+) {
+  if (checker.pattern) {
+    return new RegExp(checker.pattern, checker.patternFlags).test(
+      String(originalValue),
+    );
+  }
+  return transformOperator(
+    originalValue,
+    checker.expectValue,
+    checker.operator,
+    checker.parseValue,
+  );
 }

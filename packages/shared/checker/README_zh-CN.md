@@ -88,8 +88,10 @@
 | - | - |
 | `type` | 检查器的类型，取值如下文所示 |
 | `expectValue` | 期望值 |
-| `parseValue` | 解析目标值和期望值的方法，取值如下文所示，默认值为 `String` |
+| `parseValue` | 解析目标值和期望值的方法，取值如下文所示，默认值为 `value => value` |
 | `operator` | 操作符，值如上文所示，默认值为 `==` |
+| `pattern` | 正则字符串，优先级比 `operator` 高 |
+| `patternFlags` | 正则匹配标志的字符串，（`g`,`i`,`m`,`s`,`u`,`y`）|
 | `message` | 不满足时返回的错误信息 |
 | `headerName` (仅当 type 为 `headers` 时) | 要检测 header 的属性名称 |
 | `queryName` (仅当 type 型为 `query` 或 `queries` 时) | 要检测的 URLSearchParams 名称 |
@@ -105,6 +107,7 @@
 
 | 类型 | 描述 |
 | - | - |
+| 默认值 | value => value |
 | `String` | String(value) |
 | `Number` | Number(value) |
 | `Boolean` | Boolean(value) |
@@ -142,6 +145,13 @@
   "expectValue": "/prefix/specific-path",
   "operator": "startsWith",
   "message": "仅可访问 /prefix/specific-path"
+}
+
+{
+  "type": "path",
+  "pattern": "\\/archive\\/\\d{4}\\/\\d{1,2}\\/\\d{1,2}\\/.+$",
+  "patternFlags": "i",
+  "message": "仅可访问 archive/year/month/date/*"
 }
 
 {

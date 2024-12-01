@@ -88,8 +88,10 @@ which generally contains the following properties
 | - | - |
 | `type` | The types of checkers, with values as shown below |
 | `expectValue` | Expected value |
-| `parseValue` | Methods for parsing target values and expected values，with values as shown above, default value is `String` |
+| `parseValue` | Methods for parsing target values and expected values，with values as shown above, default value is `value => value` |
 | `operator` | Operator, with values as shown above, default value is `==` |
+| `pattern` | Regular expression string with higher priority than `operator` |
+| `patternFlags` | A string of regular matching flags, (`g`, `i`, `m`, `s`, `u`, `y`) |
 | `message` | Error message returned when not satisfied |
 | `headerName` (only type is `headers`) | The header attribute name to be detected |
 | `queryName` (only type is `query` or `queries`) | The URLSearchParams name to be detected |
@@ -106,6 +108,7 @@ The value of `parseValue` is as follows
 
 | type | description |
 | - | - |
+| default | value => value |
 | `String` | String(value) |
 | `Number` | Number(value) |
 | `Boolean` | Boolean(value) |
@@ -143,6 +146,13 @@ The value of `type` is as follows
   "expectValue": "/prefix/specific-path",
   "operator": "startsWith",
   "message": "Only accessible /prefix/specific-path"
+}
+
+{
+  "type": "path",
+  "pattern": "\\/archive\\/\\d{4}\\/\\d{1,2}\\/\\d{1,2}\\/.+$",
+  "patternFlags": "i",
+  "message": "Only accessible the path with the 'archive/year/month/date/*' pattern"
 }
 
 {

@@ -29,7 +29,9 @@ export interface IBaseChecker<T> {
   expectValue: string | number;
   operator?: TOperator;
   message?: string;
-  parseValue?: "String" | "Number" | "Boolean";
+  parseValue?: TValueParser;
+  pattern?: string;
+  patternFlags?: string;
 }
 
 export interface IQueriesChecker extends IBaseChecker<"queries"> {

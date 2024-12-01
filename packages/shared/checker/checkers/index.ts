@@ -9,28 +9,18 @@ import type {
   IURLChecker,
   ICheckerResponse,
 } from "../types";
-import { blobDetection, isFile, transformOperator } from "./common";
+import { blobDetection, isFile, handleObjectChecker } from "./common";
 
 export function checkURL(c: Context, checker: IURLChecker) {
   return {
-    next: transformOperator(
-      c.req.url,
-      checker.expectValue,
-      checker.operator,
-      checker.parseValue,
-    ),
+    next: handleObjectChecker(c.req.url, checker),
     message: checker.message,
   };
 }
 
 export function checkPath(c: Context, checker: IPathChecker) {
   return {
-    next: transformOperator(
-      c.req.path,
-      checker.expectValue,
-      checker.operator,
-      checker.parseValue,
-    ),
+    next: handleObjectChecker(c.req.path, checker),
     message: checker.message,
   };
 }
@@ -45,11 +35,9 @@ export function checkQueries(c: Context, checker: IQueriesChecker) {
     };
   }
   return {
-    next: transformOperator(
+    next: handleObjectChecker(
       c.req.queries(checker.queryName)?.at(checker.index || 0),
-      checker.expectValue,
-      checker.operator,
-      checker.parseValue,
+      checker,
     ),
     message: checker.message,
   };
@@ -57,24 +45,14 @@ export function checkQueries(c: Context, checker: IQueriesChecker) {
 
 export function checkQuery(c: Context, checker: IQueryChecker) {
   return {
-    next: transformOperator(
-      c.req.query(checker.queryName),
-      checker.expectValue,
-      checker.operator,
-      checker.parseValue,
-    ),
+    next: handleObjectChecker(c.req.query(checker.queryName), checker),
     message: checker.message,
   };
 }
 
 export function checkHeaders(c: Context, checker: IHeadersChecker) {
   return {
-    next: transformOperator(
-      c.req.header(checker.headerName),
-      checker.expectValue,
-      checker.operator,
-      checker.parseValue,
-    ),
+    next: handleObjectChecker(c.req.header(checker.headerName), checker),
     message: checker.message,
   };
 }
@@ -98,48 +76,38 @@ export async function checkBody(c: Context, checker: IBodyChecker) {
 
   const textCheck = (text: string) => {
     return {
-      next: transformOperator(
-        text,
-        checker.expectValue,
-        checker.operator,
-        checker.parseValue,
-      ),
+      next: handleObjectChecker(text, checker),
       message: checker.message,
     };
   };
 
   const jsonCheck = (json: Record<string, any>, key: string) => {
     return {
-      next: transformOperator(
-        json[key],
-        checker.expectValue,
-        checker.operator,
-        checker.parseValue,
-      ),
+      next: handleObjectChecker(json[key], checker),
       message: checker.message,
     };
   };
 
   const formDataCheck = (formData: FormData, key: string, fileKey?: string) => {
     const data = formData.get(key);
-    if (isFile(data) && fileKey) {
-      return {
-        next: blobDetection(
-          data,
-          fileKey as keyof File,
-          checker.expectValue,
-          checker.operator,
-        ),
-        message: checker.message,
-      };
+    if (isFile(data)) {
+      return fileKey && fileKey in data
+        ? {
+            next: blobDetection(
+              data,
+              fileKey as keyof File,
+              checker.expectValue,
+              checker.operator,
+            ),
+            message: checker.message,
+          }
+        : {
+            next: false,
+            message: "The file property is not supported",
+          };
     }
     return {
-      next: transformOperator(
-        data,
-        checker.expectValue,
-        checker.operator,
-        checker.parseValue,
-      ),
+      next: handleObjectChecker(data, checker),
       message: checker.message,
     };
   };
