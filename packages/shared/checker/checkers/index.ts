@@ -8,8 +8,14 @@ import type {
   IQueryChecker,
   IURLChecker,
   ICheckerResponse,
+  IRemoteChecker,
 } from "../types";
-import { blobDetection, isFile, handleObjectChecker } from "./common";
+import {
+  blobDetection,
+  isFile,
+  handleObjectChecker,
+  helperFunc,
+} from "./common";
 
 export function checkURL(c: Context, checker: IURLChecker) {
   return {
@@ -151,6 +157,63 @@ export async function checkBody(c: Context, checker: IBodyChecker) {
   };
 }
 
+export async function checkRemote(c: Context, checker: IRemoteChecker) {
+  const nextField = checker.nextField || [];
+  const messageField = checker.messageField || [];
+  if (!nextField.length) {
+    nextField.push("next");
+  }
+  if (!messageField.length) {
+    messageField.push("message");
+  }
+
+  const handleBody = (body?: Record<string, any>) => {
+    if (!body) {
+      return void 0;
+    }
+    return JSON.stringify(
+      Object.fromEntries(
+        Object.entries(body).map(([key, value]) => [key, helperFunc(c, value)]),
+      ),
+    );
+  };
+
+  const fetcher = fetch(checker.url, {
+    method: checker.method || "GET",
+    headers: {
+      "content-type": "application/json;charset=utf-8",
+      ...checker.headers,
+    },
+    body: handleBody(checker.body),
+  }).then((rs) => rs.json());
+  const timer = new Promise((resolve) => {
+    setTimeout(() => {
+      resolve({
+        [nextField[0]]: false,
+        [messageField[0]]: "The Remote request timed out",
+      });
+    }, checker.timeout || 5000);
+  });
+  const rs = await Promise.race([fetcher, timer]);
+  let currentNext: any = rs;
+  for (let index = 0; index < nextField.length; index++) {
+    const nextKey = nextField[index];
+    currentNext = currentNext[nextKey];
+  }
+  let currentMessage: any = rs;
+  for (let index = 0; index < messageField.length; index++) {
+    const messageKey = messageField[index];
+    currentMessage = currentMessage[messageKey];
+  }
+  return {
+    next: Boolean(currentNext),
+    message:
+      typeof currentMessage === "string" && currentMessage
+        ? currentMessage
+        : checker.message,
+  };
+}
+
 export default function checkerSwitch(
   c: Context,
   checker: IObjectChecker,
@@ -168,5 +231,7 @@ export default function checkerSwitch(
       return checkBody(c, checker);
     case "headers":
       return checkHeaders(c, checker);
+    case "remote":
+      return checkRemote(c, checker);
   }
 }

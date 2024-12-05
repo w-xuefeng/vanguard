@@ -51,6 +51,16 @@ export interface IBodyChecker extends IBaseChecker<"body"> {
   property?: string;
   fileProperty?: string;
 }
+export interface IRemoteChecker extends IBaseChecker<"remote"> {
+  url: string;
+  method?: "GET" | "POST" | "PUT" | "DELETE" | "HEAD" | "OPTIONS" | "PATCH";
+  headers?: Record<string, string>;
+  body?: Record<string, string>;
+  nextField?: string[];
+  messageField?: string[];
+  timeout?: number;
+}
+
 export interface IURLChecker extends IBaseChecker<"url"> {}
 export interface IPathChecker extends IBaseChecker<"path"> {}
 export interface ICustomExpressionChecker {
@@ -64,6 +74,7 @@ export type IObjectChecker =
   | IHeadersChecker
   | IBodyChecker
   | IURLChecker
-  | IPathChecker;
+  | IPathChecker
+  | IRemoteChecker;
 
 export type IChecker = string | IObjectChecker | ICustomExpressionChecker;

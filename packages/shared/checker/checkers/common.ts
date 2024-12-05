@@ -1,3 +1,4 @@
+import type { Context } from "hono";
 import type {
   IChecker,
   ICustomExpressionChecker,
@@ -111,4 +112,16 @@ export function handleObjectChecker(
     checker.operator,
     checker.parseValue,
   );
+}
+
+export function helperFunc(c: Context, text: string) {
+  const headerRs = text.match(/\$header\((?<headerName>.+)\)/);
+  if (headerRs?.groups?.headerName) {
+    return c.req.header(headerRs.groups.headerName);
+  }
+  const queryRs = text.match(/\$query\((?<queryName>.+)\)/);
+  if (queryRs?.groups?.queryName) {
+    return c.req.header(queryRs.groups.queryName);
+  }
+  return text;
 }
