@@ -117,11 +117,13 @@ export function handleObjectChecker(
 export function helperFunc(c: Context, text: string) {
   const headerRs = text.match(/\$header\((?<headerName>.+)\)/);
   if (headerRs?.groups?.headerName) {
-    return c.req.header(headerRs.groups.headerName);
+    const value = c.req.header(headerRs.groups.headerName);
+    return text.replace(/\$header\((?<headerName>.+)\)/, value || "");
   }
   const queryRs = text.match(/\$query\((?<queryName>.+)\)/);
   if (queryRs?.groups?.queryName) {
-    return c.req.header(queryRs.groups.queryName);
+    const value = c.req.header(queryRs.groups.queryName);
+    return text.replace(/\$query\((?<queryName>.+)\)/, value || "");
   }
   return text;
 }

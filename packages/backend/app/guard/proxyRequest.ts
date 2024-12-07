@@ -1,5 +1,4 @@
 import type { Context } from "hono";
-import type { StatusCode } from "hono/utils/http-status";
 import R from "../utils/r";
 import { HTTP_CODE } from "./const";
 import { logFetch, sLog } from "../utils/logger";
@@ -42,7 +41,7 @@ export default async function proxyRequest(url: string, c: Context) {
   const req = new Request(c.req.raw, new Request(url, { headers }));
   const rs = await fetch(req);
   await handleFetchLog(c, req.clone(), rs.clone());
-  return c.newResponse(rs.body, rs.status as StatusCode, rs.headers.toJSON());
+  return c.newResponse(rs.body, rs);
 }
 
 export async function notFound(c: Context) {

@@ -32,6 +32,7 @@ export interface IBaseChecker<T> {
   parseValue?: TValueParser;
   pattern?: string;
   patternFlags?: string;
+  where?: IObjectChecker;
 }
 
 export interface IQueriesChecker extends IBaseChecker<"queries"> {

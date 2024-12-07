@@ -214,24 +214,44 @@ export async function checkRemote(c: Context, checker: IRemoteChecker) {
   };
 }
 
-export default function checkerSwitch(
+export function internalCheckerOrWhereSwitch(
+  c: Context,
+  checkerOrWhere: IObjectChecker,
+): ICheckerResponse | Promise<ICheckerResponse> {
+  switch (checkerOrWhere.type) {
+    case "url":
+      return checkURL(c, checkerOrWhere);
+    case "path":
+      return checkPath(c, checkerOrWhere);
+    case "queries":
+      return checkQueries(c, checkerOrWhere);
+    case "query":
+      return checkQuery(c, checkerOrWhere);
+    case "body":
+      return checkBody(c, checkerOrWhere);
+    case "headers":
+      return checkHeaders(c, checkerOrWhere);
+    case "remote":
+      return checkRemote(c, checkerOrWhere);
+  }
+}
+
+export async function handleWhere(c: Context, where?: IObjectChecker) {
+  if (!where) {
+    return {
+      next: false,
+    };
+  }
+  return await internalCheckerOrWhereSwitch(c, where);
+}
+
+export default async function checkerSwitch(
   c: Context,
   checker: IObjectChecker,
-): ICheckerResponse | Promise<ICheckerResponse> {
-  switch (checker.type) {
-    case "url":
-      return checkURL(c, checker);
-    case "path":
-      return checkPath(c, checker);
-    case "queries":
-      return checkQueries(c, checker);
-    case "query":
-      return checkQuery(c, checker);
-    case "body":
-      return checkBody(c, checker);
-    case "headers":
-      return checkHeaders(c, checker);
-    case "remote":
-      return checkRemote(c, checker);
+): Promise<ICheckerResponse> {
+  const { next } = await handleWhere(c, checker.where);
+  if (!next) {
+    return { next: true };
   }
+  return await internalCheckerOrWhereSwitch(c, checker);
 }
