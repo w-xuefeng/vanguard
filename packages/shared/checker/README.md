@@ -74,35 +74,59 @@ The checker is an object, such as
 
 ```json
 {
-  "type": "path",
-  "expectValue": "/api",
-  "parseValue": "String",
-  "operator": "startsWith",
-  "message": "Access Denied"
+  "where": {
+    "type": "path",
+    "expectValue": "/prefix/api/",
+    "operator": "startsWith"
+  },
+  "type": "remote",
+  "url": "https://auth.user-center-example.com/public/v1/token/verify",
+  "method": "post",
+  "body": {
+    "token": "$header(Authorization)"
+  },
+  "nextField": [
+    "data",
+    "valid"
+  ],
+  "messageField": [
+    "data",
+    "message"
+  ],
+  "message": "token invalid"
 }
 ```
 
 which generally contains the following properties
 
-| property | description |
-| - | - |
-| `type` | The types of checkers, with values as shown below |
-| `expectValue` | Expected value |
-| `parseValue` | Methods for parsing target values and expected values，with values as shown above, default value is `value => value` |
-| `operator` | Operator, with values as shown above, default value is `==` |
-| `pattern` | Regular expression string with higher priority than `operator` |
-| `patternFlags` | A string of regular matching flags, (`g`, `i`, `m`, `s`, `u`, `y`) |
-| `message` | Error message returned when not satisfied |
-| `headerName` (only type is `headers`) | The header attribute name to be detected |
-| `queryName` (only type is `query` or `queries`) | The URLSearchParams name to be detected |
-| `checkType` (only type is `queries`) | Detect one or all, with values of `all` \| `single`' |
-| `expectAllValue` (only type is `queries`) | Expected value array |
-| `index` (only type is `queries` and checkType is `single`) | the query index |
-| `bodyType` (only type is `body`) | The type of the request body takes the following values: `json` \| `text` \| `formData` \| `blob` |
-| `property` (only type is `body`) | To detect the property of the request body |
-| `fileProperty` (only type is `body` and bodyType is `formData` or `blob`) | The property name of `File` or `Blob`, such as `name`、`size`、`type` |
-| `expression` (only type is `customExpression`) | Custom expression, this string will be passed to the second parameter of the `new Function`, with the first parameter being the context variable named 'c', and
- must return an object with `next` value of boolean type |
+| Property | Description | Required |
+| - | - | - |
+| `type` | The types of checkers, with values as shown below | Required |
+| `expectValue` | Expected value | Required |
+| `parseValue` | Methods for parsing target values and expected values，with values as shown above, default value is `value => value` | Optional |
+| `operator` | Operator, with values as shown above, default value is `==` | Optional |
+| `pattern` | Regular expression string with higher priority than `operator` | Optional |
+| `patternFlags` | A string of regular matching flags, (`g`, `i`, `m`, `s`, `u`, `y`) | Optional |
+| `message` | Error message returned when not satisfied | Optional |
+| `headerName` (only type is `headers`) | The header attribute name to be detected | Required only type is `headers` |
+| `queryName` (only type is `query` or `queries`) | The URLSearchParams name to be detected | Required only type is `query` or `queries` |
+| `checkType` (only type is `queries`) | Detect one or all, with values of `all` \| `single`' | Optional |
+| `expectAllValue` (only type is `queries`) | Expected value array | Optional |
+| `index` (only type is `queries` and checkType is `single`) | the query index | Optional |
+| `bodyType` (only type is `body`) | The type of the request body takes the following values: `json` \| `text` \| `formData` \| `blob` | Required only type is `body` |
+| `property` (only type is `body`) | To detect the property of the request body | Required only type is `body` |
+| `fileProperty` (only type is `body` and bodyType is `formData` or `blob`) | The property name of `File` or `Blob`, such as `name`、`size`、`type` | Required only type is `body` and bodyType is `formData` or `blob` |
+| `url` (only type is `remote`) | The URL of a remote API | Required only type is `remote |
+| `method` (only type is `remote`) | The request method of a remote API, default is `GET` | Optional |
+| `headers` (only type is `remote`) | The request headers of a remote API  | Optional |
+| `body` (only type is `remote`) | The request body of a remote API, if it is necessary | Optional |
+| `nextField` (only type is `remote`) | The remote API response body verification result field, in string array format, such as: `["grandparent", "parent", "next"]`, default `["next"]` | Optional |
+| `messageField` (only type is `remote`) | The remote API response body verification result message field, in string array format, such as: `["grandparent", "parent", "message"]`, default `["message"]` | Optional |
+| `timeout` (only type is `remote`) | The request timeout of a remote API, default is 5000ms, request timeout means verification fails | Optional |
+| `expression` (only type is `customExpression`) | Custom expression, this string will be passed to the second parameter of the `new Function`, with the first parameter being the context variable named 'c', and must return an object with `next` value of boolean type | Required only type is `customExpression` |
+| `where` | Limit the scope of checker verification. If 'where' is configured, the checker will only be executed if the 'where' condition is met | Optional |
+ 
+The form of `where` is similar to `checker` and is a subset of `checker`
 
 The value of `parseValue` is as follows
 
@@ -269,7 +293,34 @@ The value of `type` is as follows
 }
 ```
 
-- 7.`customExpression` checker
+- 7.`remote` checker
+
+```json
+{
+  "where": {
+    "type": "path",
+    "expectValue": "/prefix/api/",
+    "operator": "startsWith"
+  },
+  "type": "remote",
+  "url": "https://auth.user-center-example.com/public/v1/token/verify",
+  "method": "post",
+  "body": {
+    "token": "$header(Authorization)"
+  },
+  "nextField": [
+    "data",
+    "valid"
+  ],
+  "messageField": [
+    "data",
+    "message"
+  ],
+  "message": "token invalid"
+}
+```
+
+- 8.`customExpression` checker
 
 ```text
 "return { next: Number(c.req.query('level')) > 5, message: 'the level is too low' }"
