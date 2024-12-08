@@ -147,6 +147,7 @@ The value of `type` is as follows
 | `query` | check context.req.query(queryName) |
 | `queries` | check context.req.queries(queryName) |
 | `body` | check context.req.body |
+| `remote`| check by calling remote interface |
 | `customExpression` | custom expression |
 
 ## Example of checker
