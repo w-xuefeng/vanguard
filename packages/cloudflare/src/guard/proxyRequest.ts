@@ -28,6 +28,7 @@ async function handleFetchLog(
   const reqLogAble = logAbleTypes.some((e) => reqType?.startsWith(e));
   const rsLogAble = logAbleTypes.some((e) => rsType?.startsWith(e));
   const logContent = [
+    `[Request Method]: ${req.method}`,
     `[Request Content-Type]: ${reqType}`,
     `[Request Header]: ${reqHeaders}`,
     `[Request Body]: ${

@@ -16,6 +16,7 @@ async function handleFetchLog(c: Context, req: Request, rs: Response) {
   const reqLogAble = logAbleTypes.some((e) => reqType?.startsWith(e));
   const rsLogAble = logAbleTypes.some((e) => rsType?.startsWith(e));
   const logContent = [
+    `[Request Method]: ${req.method}`,
     `[Request Content-Type]: ${reqType}`,
     `[Request Header]: ${reqHeaders}`,
     `[Request Body]: ${
@@ -38,9 +39,26 @@ export default async function proxyRequest(url: string, c: Context) {
   if (!headers.has("trace-id")) {
     headers.set("trace-id", c.env.traceId);
   }
-  const req = new Request(c.req.raw, new Request(url, { headers }));
+  const originalReq = c.req.raw.clone();
+  const originalReqForLog = c.req.raw.clone();
+  const req = new Request(url, {
+    headers,
+    method: c.req.method,
+    redirect: originalReq.redirect,
+    body: originalReq.body,
+    signal: originalReq.signal,
+    integrity: originalReq.integrity,
+  });
+  const reqForLog = new Request(url, {
+    headers,
+    method: c.req.method,
+    redirect: originalReqForLog.redirect,
+    body: originalReqForLog.body,
+    signal: originalReqForLog.signal,
+    integrity: originalReqForLog.integrity,
+  });
   const rs = await fetch(req);
-  await handleFetchLog(c, req.clone(), rs.clone());
+  await handleFetchLog(c, reqForLog, rs.clone());
   return c.newResponse(rs.body, rs);
 }
 
