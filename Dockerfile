@@ -1,4 +1,8 @@
-FROM feuxw/bun-node:1.3
+# for amd64
+FROM feuxw/bun-node:1.4
+
+# for arm64
+# FROM feuxw/bun-node:1.4-arm64
 
 WORKDIR /usr/src/app
 COPY . /usr/src/app

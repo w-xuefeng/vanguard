@@ -2,3 +2,4 @@ node_modules
 npm-debug.log
 runtime
 cloudflare
+docker-build-run.sh

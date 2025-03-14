@@ -30,3 +30,4 @@ build-image.sh
 vanguard.tar
 
 runtime
+docker-build-run.sh
