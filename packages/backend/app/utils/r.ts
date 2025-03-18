@@ -117,7 +117,7 @@ export function allowCrossRequest(c: Context) {
   );
   c.res.headers.set(
     "Access-Control-Allow-Headers",
-    "Content-Type,Authorization,Trace-Id,Token",
+    "Content-Type,Authorization,Trace-Id,Token,Accept-Language",
   );
   c.res.headers.set("Access-Control-Max-Age", "86400");
 }
