@@ -108,3 +108,16 @@ export async function useAuthInterceptor(c: Context) {
     res: null,
   };
 }
+
+export function allowCrossRequest(c: Context) {
+  c.res.headers.set("Access-Control-Allow-Origin", "*");
+  c.res.headers.set(
+    "Access-Control-Allow-Methods",
+    "GET, POST, OPTIONS, PUT, DELETE, PATCH",
+  );
+  c.res.headers.set(
+    "Access-Control-Allow-Headers",
+    "Content-Type,Authorization,Trace-Id,Token",
+  );
+  c.res.headers.set("Access-Control-Max-Age", "86400");
+}

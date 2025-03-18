@@ -3,7 +3,7 @@ import { HTTP_CODE, HTTP_MSG } from "./const";
 import proxyRequest from "./proxyRequest";
 import prehandle from "./prehandle";
 import useCheck from "@vanguard/shared/checker";
-import R from "../utils/r";
+import R, { allowCrossRequest } from "../utils/r";
 
 export { notFound } from "./proxyRequest";
 
@@ -11,6 +11,7 @@ export default async function guards(
   c: Context<{ Bindings: CloudflareBindings }>,
   next: Next,
 ) {
+  allowCrossRequest(c);
   const { url, ban, pick, checkers } = await prehandle(c);
   if (ban) {
     return c.json(R.fail(HTTP_CODE.BAN, HTTP_MSG.BAN));
