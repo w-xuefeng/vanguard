@@ -83,7 +83,7 @@ export const decryptText = async (text: string, key: CryptoKey) => {
       name: "RSA-OAEP",
     },
     key,
-    Base64.toUint8Array(text),
+    Base64.toUint8Array(text) as BufferSource,
   );
   return new TextDecoder().decode(decrypted);
 };
@@ -102,8 +102,8 @@ export async function importKeys(
   publicKeyData: string,
   privateKeyData: string,
 ) {
-  const publicKeyBinary = Base64.toUint8Array(publicKeyData);
-  const privateKeyBinary = Base64.toUint8Array(privateKeyData);
+  const publicKeyBinary = Base64.toUint8Array(publicKeyData) as BufferSource;
+  const privateKeyBinary = Base64.toUint8Array(privateKeyData) as BufferSource;
 
   const publicKey = await crypto.subtle.importKey(
     "spki",
